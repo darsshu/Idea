@@ -8,63 +8,109 @@ import {
   Button, 
   Box, 
   CssBaseline, 
-  ThemeProvider 
+  IconButton,
+  useTheme,
+  CircularProgress
 } from '@mui/material';
 import SportsCricketIcon from '@mui/icons-material/SportsCricket';
-import theme from './theme';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
 import Home from './pages/Home';
 import ActiveMonitors from './pages/ActiveMonitors';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeContextProvider, useColorMode } from './context/ThemeContext';
 import './App.css';
 
 const PrivateRoute = ({ children }) => {
   const { token, loading } = useAuth();
-  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}>Loading...</Box>;
+  if (loading) return (
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+      <CircularProgress />
+    </Box>
+  );
   return token ? children : <Navigate to="/login" />;
 };
 
 const NavBar = () => {
   const { user, logout } = useAuth();
+  const theme = useTheme();
+  const colorMode = useColorMode();
 
   return (
-    <AppBar position="static" elevation={0} sx={{ background: 'linear-gradient(90deg, #1a237e 0%, #0d47a1 100%)' }}>
-      <Toolbar>
-        <SportsCricketIcon sx={{ mr: 2 }} />
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
-          Cricket Notifier
-        </Typography>
-        {user ? (
-          <>
-            <Button color="inherit" component={Link} to="/">Home</Button>
-            <Button color="inherit" component={Link} to="/monitors">Monitors</Button>
-            <Box sx={{ ml: 2, display: 'flex', alignItems: 'center' }}>
-              <Typography variant="body2" sx={{ mr: 2, fontWeight: 'medium' }}>
-                Hi, {user.name}
-              </Typography>
-              <Button color="secondary" variant="contained" size="small" onClick={logout} sx={{ borderRadius: 2 }}>
-                Logout
-              </Button>
-            </Box>
-          </>
-        ) : (
-          <>
-            <Button color="inherit" component={Link} to="/login">Login</Button>
-            <Button color="inherit" component={Link} to="/register">Register</Button>
-          </>
-        )}
-      </Toolbar>
+    <AppBar position="sticky" elevation={0}>
+      <Container maxWidth="lg">
+        <Toolbar disableGutters>
+          <SportsCricketIcon sx={{ mr: 1, color: 'primary.main', fontSize: 28 }} />
+          <Typography 
+            variant="h6" 
+            component={Link} 
+            to="/"
+            sx={{ 
+              flexGrow: 1, 
+              fontWeight: 800, 
+              color: 'text.primary', 
+              textDecoration: 'none',
+              letterSpacing: '-0.5px'
+            }}
+          >
+            CRICKET<span style={{ color: theme.palette.primary.main }}>NOTIFIER</span>
+          </Typography>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <IconButton onClick={colorMode.toggleColorMode} color="inherit">
+              {theme.palette.mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+            </IconButton>
+
+            {user ? (
+              <>
+                <Button color="inherit" component={Link} to="/" sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>Home</Button>
+                <Button color="inherit" component={Link} to="/monitors" sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>Monitors</Button>
+                <Box sx={{ ml: 1, display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <Typography variant="body2" sx={{ display: { xs: 'none', md: 'block' }, fontWeight: 600 }}>
+                    {user.name}
+                  </Typography>
+                  <Button 
+                    color="primary" 
+                    variant="contained" 
+                    size="small" 
+                    onClick={logout} 
+                    sx={{ boxShadow: 'none' }}
+                  >
+                    Logout
+                  </Button>
+                </Box>
+              </>
+            ) : (
+              <>
+                <Button color="inherit" component={Link} to="/login">Login</Button>
+                <Button variant="contained" component={Link} to="/register">Register</Button>
+              </>
+            )}
+          </Box>
+        </Toolbar>
+      </Container>
     </AppBar>
   );
 };
 
 function AppContent() {
+  const theme = useTheme();
+  
   return (
-    <Box sx={{ flexGrow: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', bgcolor: '#f5f7fa' }}>
+    <Box 
+      sx={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        minHeight: '100vh', 
+        bgcolor: 'background.default',
+        transition: 'background-color 0.3s ease'
+      }}
+    >
       <NavBar />
 
-      <Container component="main" sx={{ mt: 4, mb: 4, flex: 1 }}>
+      <Container component="main" sx={{ mt: 6, mb: 6, flex: 1 }}>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -82,10 +128,21 @@ function AppContent() {
         </Routes>
       </Container>
 
-      <Box component="footer" sx={{ py: 3, px: 2, mt: 'auto', backgroundColor: '#e0e0e0', textAlign: 'center' }}>
-        <Typography variant="body2" color="text.secondary">
-          © {new Date().getFullYear()} Cricket Ticket Notifier. All rights reserved.
-        </Typography>
+      <Box 
+        component="footer" 
+        sx={{ 
+          py: 4, 
+          px: 2, 
+          mt: 'auto', 
+          borderTop: `1px solid ${theme.palette.divider}`,
+          bgcolor: 'background.paper' 
+        }}
+      >
+        <Container maxWidth="lg">
+          <Typography variant="body2" color="text.secondary" align="center">
+            © {new Date().getFullYear()} Cricket Ticket Notifier. Built with Passion for Fans.
+          </Typography>
+        </Container>
       </Box>
     </Box>
   );
@@ -93,12 +150,12 @@ function AppContent() {
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeContextProvider>
       <CssBaseline />
       <AuthProvider>
         <AppContent />
       </AuthProvider>
-    </ThemeProvider>
+    </ThemeContextProvider>
   );
 }
 
