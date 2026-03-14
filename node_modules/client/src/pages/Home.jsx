@@ -25,7 +25,8 @@ const Home = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/monitor`, { url, email });
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      const response = await axios.post(`${apiUrl}/api/monitor`, { url, email });
       setSnackbar({ 
         open: true, 
         message: 'Monitoring started successfully!', 

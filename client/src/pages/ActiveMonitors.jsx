@@ -28,7 +28,8 @@ const ActiveMonitors = () => {
   const fetchMonitors = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/monitors`);
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      const response = await axios.get(`${apiUrl}/api/monitors`);
       setMonitors(response.data);
       setError(null);
     } catch (err) {
@@ -47,7 +48,8 @@ const ActiveMonitors = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this monitor?')) {
       try {
-        await axios.delete(`${import.meta.env.VITE_API_URL}/api/monitor/${id}`);
+        const apiUrl = import.meta.env.VITE_API_URL || '';
+        await axios.delete(`${apiUrl}/api/monitor/${id}`);
         setMonitors(monitors.filter(m => m.id !== id));
       } catch (err) {
         setError('Failed to delete monitor.');
