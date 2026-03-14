@@ -24,6 +24,7 @@ import AddMonitor from './pages/AddMonitor';
 import ActiveMonitors from './pages/ActiveMonitors';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import AdminEvents from './pages/AdminEvents';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeContextProvider, useColorMode } from './context/ThemeContext';
 import './App.css';
@@ -94,6 +95,7 @@ const NavBar = () => {
               <Button component={Link} to="/" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>Home</Button>
               <Button component={Link} to="/add-monitor" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>Match Notification</Button>
               <Button component={Link} to="/monitors" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>History</Button>
+              <Button component={Link} to="/admin/events" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>Admin</Button>
             </Stack>
           )}
 
@@ -194,6 +196,13 @@ function AppContent() {
             <PrivateRoute>
               <Container maxWidth="lg" sx={{ py: { xs: 2, md: 2 } }}>
                 <AddMonitor />
+              </Container>
+            </PrivateRoute>
+          } />
+          <Route path="/admin/events" element={
+            <PrivateRoute>
+              <Container maxWidth="xl" sx={{ py: { xs: 4, md: 8 } }}>
+                <AdminEvents />
               </Container>
             </PrivateRoute>
           } />

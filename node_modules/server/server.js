@@ -7,6 +7,7 @@ const storage = require('./services/storage');
 const monitorRoutes = require('./routes/monitor');
 const cronRoutes = require('./routes/cron');
 const authRoutes = require('./routes/auth');
+const eventRoutes = require('./routes/event');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -40,6 +41,7 @@ app.use(async (req, res, next) => {
 app.use('/api', monitorRoutes);
 app.use('/api', cronRoutes);
 app.use('/api', authRoutes);
+app.use('/api', eventRoutes);
 
 app.get('/', (req, res) => {
     res.send('Cricket Ticket Notifier API is running...');

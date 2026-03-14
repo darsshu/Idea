@@ -14,7 +14,9 @@ import {
   Slide,
   Zoom,
   InputAdornment,
-  useTheme
+  useTheme,
+  Grid,
+  CardMedia
 } from '@mui/material';
 import axios from 'axios';
 import SportsCricketIcon from '@mui/icons-material/SportsCricket';
@@ -33,13 +35,31 @@ const AddMonitor = () => {
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [showContent, setShowContent] = useState(false);
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
     setShowContent(true);
+    fetchEvents();
     if (user?.email) {
       setEmail(user.email);
     }
   }, [user]);
+
+  const fetchEvents = async () => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      const res = await axios.get(`${apiUrl}/api/events`);
+      setEvents(res.data);
+    } catch (err) {
+      console.error('Failed to fetch events', err);
+    }
+  };
+
+  const handleSelectEvent = (eventUrl) => {
+    setUrl(eventUrl);
+    window.scrollTo({ top: document.getElementById('notification-form')?.offsetTop - 100, behavior: 'smooth' });
+    setSnackbar({ open: true, message: 'Event selected! Click track to start.', severity: 'info' });
+  };
 
   const validateForm = () => {
     let isValid = true;
@@ -178,8 +198,47 @@ const AddMonitor = () => {
         </Box>
       </Fade>
 
+      {/* Events Selection Grid */}
+      {events.length > 0 && (
+        <Fade in={showContent} style={{ transitionDelay: '200ms' }}>
+          <Box sx={{ mb: 6 }}>
+            <Typography variant="h5" fontWeight={700} sx={{ mb: 3, textAlign: 'center' }}>
+              Select an Event to Track
+            </Typography>
+            <Grid container spacing={2}>
+              {events.map((event) => (
+                <Grid item xs={12} sm={6} md={4} key={event._id}>
+                  <Card 
+                    sx={{ 
+                      borderRadius: 3, 
+                      cursor: 'pointer',
+                      transition: 'all 0.3s',
+                      border: url === event.eventUrl ? `2px solid ${theme.palette.primary.main}` : '1px solid transparent',
+                      '&:hover': { transform: 'scale(1.03)', boxShadow: 10 }
+                    }}
+                    onClick={() => handleSelectEvent(event.eventUrl)}
+                  >
+                    <CardMedia
+                      component="img"
+                      height="140"
+                      image={event.imageUrl}
+                      alt={event.title}
+                    />
+                    <CardContent sx={{ p: 1.5 }}>
+                      <Typography variant="subtitle2" fontWeight={700} align="center" noWrap>
+                        {event.title}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        </Fade>
+      )}
+
       <Zoom in={showContent} style={{ transitionDelay: showContent ? '300ms' : '0ms' }}>
-        <Box>
+        <Box id="notification-form">
           <Card 
             elevation={24} 
             sx={{ 
