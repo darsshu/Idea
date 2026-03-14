@@ -1,0 +1,52 @@
+const cron = require('node-cron');
+const storage = require('./storage');
+const scraper = require('./scraper');
+const notifier = require('./notifier');
+require('dotenv').config();
+
+const runMonitoring = async () => {
+    console.log('--- Starting Monitoring Cycle ---');
+    const monitors = storage.getMonitors();
+
+    for (const monitor of monitors) {
+        // Skip if already found and notified (optional, maybe user wants updates)
+        // For now, let's keep monitoring but only notify on change
+        
+        try {
+            console.log(`Checking: ${monitor.url} for ${monitor.email}`);
+            const result = await scraper.checkAvailability(monitor.url);
+            
+            const statusChanged = monitor.isAvailable !== result.available;
+            
+            storage.updateMonitor(monitor.id, {
+                isAvailable: result.available,
+                status: result.available ? 'Available' : 'Sold Out',
+                matchName: result.title,
+                lastChecked: new Date().toISOString()
+            });
+
+            if (result.available && statusChanged) {
+                console.log(`!!! Tickets Available for ${result.title} !!!`);
+                await notifier.sendNotification(monitor.email, monitor.url, result.title);
+            }
+        } catch (error) {
+            console.error(`Error monitoring ${monitor.url}:`, error);
+        }
+    }
+    console.log('--- Monitoring Cycle Complete ---');
+};
+
+const startScheduler = () => {
+    const interval = process.env.SCRAPE_INTERVAL || 1;
+    console.log(`Scheduler started. Interval: ${interval} minutes`);
+    
+    // Run once on startup
+    runMonitoring();
+
+    // Schedule subsequent runs
+    cron.schedule(`*/${interval} * * * *`, () => {
+        runMonitoring();
+    });
+};
+
+module.exports = { startScheduler };
