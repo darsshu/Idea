@@ -26,6 +26,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminEvents from './pages/AdminEvents';
 import AdminLogin from './pages/AdminLogin';
+import AdminLayout from './components/AdminLayout';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeContextProvider, useColorMode } from './context/ThemeContext';
 import './App.css';
@@ -172,6 +173,7 @@ const NavBar = () => {
 
 function AppContent() {
   const theme = useTheme();
+  const location = useLocation();
   
   return (
     <Box 
@@ -183,7 +185,8 @@ function AppContent() {
         transition: 'background-color 0.3s ease'
       }}
     >
-      <NavBar />
+      {/* Conditionally hide NavBar for admin routes */}
+      {!location.pathname.startsWith('/admin') && <NavBar />}
 
       <Box component="main" sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', position: 'relative' }}>
         <Routes>
@@ -215,45 +218,54 @@ function AppContent() {
               </Container>
             </PrivateRoute>
           } />
-          <Route path="/admin/events" element={
+          
+          {/* Admin Routes with Layout */}
+          <Route path="/admin/*" element={
             <AdminRoute>
-              <Container maxWidth="xl" sx={{ py: { xs: 4, md: 8 } }}>
-                <AdminEvents />
-              </Container>
+              <AdminLayout>
+                <Routes>
+                  <Route path="events" element={<AdminEvents />} />
+                  <Route path="*" element={<Navigate to="events" />} />
+                </Routes>
+              </AdminLayout>
             </AdminRoute>
           } />
+
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Box>
 
-      <Box 
-        component="footer" 
-        sx={{ 
-          pt: 5,
-          pb: 4, 
-          px: 2, 
-          mt: 'auto', 
-          borderTop: `1px solid ${theme.palette.divider}`,
-          bgcolor: 'background.paper',
-          position: 'relative',
-          zIndex: 2
-        }}
-      >
-        <Container maxWidth="xl" sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 3 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, opacity: 0.9 }}>
-            <SportsCricketIcon sx={{ color: 'primary.main', fontSize: 28 }} />
-            <Typography variant="body1" sx={{ fontWeight: 800, letterSpacing: '-0.5px' }}>CRICKET<Box component="span" sx={{color: 'primary.main'}}>NOTIFIER</Box></Typography>
-          </Box>
-          <Typography variant="body2" color="text.secondary" align="center" sx={{ fontWeight: 500 }}>
-            © {new Date().getFullYear()} All rights reserved. Built with Passion for Fans.
-          </Typography>
-          <Stack direction="row" spacing={3}>
-            <Button size="small" sx={{ color: 'text.secondary', fontWeight: 600, minWidth: 'auto', p: 0, '&:hover': { color: 'primary.main', bgcolor: 'transparent' } }}>Terms</Button>
-            <Button size="small" sx={{ color: 'text.secondary', fontWeight: 600, minWidth: 'auto', p: 0, '&:hover': { color: 'primary.main', bgcolor: 'transparent' } }}>Privacy</Button>
-            <Button size="small" sx={{ color: 'text.secondary', fontWeight: 600, minWidth: 'auto', p: 0, '&:hover': { color: 'primary.main', bgcolor: 'transparent' } }}>Contact</Button>
-          </Stack>
-        </Container>
-      </Box>
+      {/* Conditionally hide Footer for admin routes */}
+      {!location.pathname.startsWith('/admin') && (
+        <Box 
+          component="footer" 
+          sx={{ 
+            pt: 5,
+            pb: 4, 
+            px: 2, 
+            mt: 'auto', 
+            borderTop: `1px solid ${theme.palette.divider}`,
+            bgcolor: 'background.paper',
+            position: 'relative',
+            zIndex: 2
+          }}
+        >
+          <Container maxWidth="xl" sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 3 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, opacity: 0.9 }}>
+              <SportsCricketIcon sx={{ color: 'primary.main', fontSize: 28 }} />
+              <Typography variant="body1" sx={{ fontWeight: 800, letterSpacing: '-0.5px' }}>CRICKET<Box component="span" sx={{color: 'primary.main'}}>NOTIFIER</Box></Typography>
+            </Box>
+            <Typography variant="body2" color="text.secondary" align="center" sx={{ fontWeight: 500 }}>
+              © {new Date().getFullYear()} All rights reserved. Built with Passion for Fans.
+            </Typography>
+            <Stack direction="row" spacing={3}>
+              <Button size="small" sx={{ color: 'text.secondary', fontWeight: 600, minWidth: 'auto', p: 0, '&:hover': { color: 'primary.main', bgcolor: 'transparent' } }}>Terms</Button>
+              <Button size="small" sx={{ color: 'text.secondary', fontWeight: 600, minWidth: 'auto', p: 0, '&:hover': { color: 'primary.main', bgcolor: 'transparent' } }}>Privacy</Button>
+              <Button size="small" sx={{ color: 'text.secondary', fontWeight: 600, minWidth: 'auto', p: 0, '&:hover': { color: 'primary.main', bgcolor: 'transparent' } }}>Contact</Button>
+            </Stack>
+          </Container>
+        </Box>
+      )}
     </Box>
   );
 }
