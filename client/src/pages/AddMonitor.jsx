@@ -229,7 +229,7 @@ const AddMonitor = () => {
               WebkitTextFillColor: 'transparent',
               letterSpacing: '-0.5px'
             }}>
-              Match <span className="highlight" style={{ WebkitTextFillColor: 'initial', background: 'transparent' }}>Notification</span>
+              Upcoming <span className="highlight" style={{ WebkitTextFillColor: 'initial', background: 'transparent' }}>Match</span>
             </Typography>
           </Box>
           <Typography variant="h6" sx={{

@@ -86,15 +86,15 @@ const Home = () => {
   };
 
   return (
-    <Box sx={{ 
-      position: 'relative', 
-      width: '100%', 
-      minHeight: 'calc(100vh - 64px)', 
-      display: 'flex', 
+    <Box sx={{
+      position: 'relative',
+      width: '100%',
+      minHeight: 'calc(100vh - 64px)',
+      display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center', 
+      alignItems: 'center',
       justifyContent: 'center',
-      overflow: 'hidden' 
+      overflow: 'hidden'
     }}>
       <BackgroundScene />
 
@@ -103,9 +103,9 @@ const Home = () => {
 
           {/* Centralized Hero Section */}
           <Grid item xs={12}>
-            <motion.div 
-              variants={containerVariants} 
-              initial="hidden" 
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
               animate="visible"
               style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}
             >
@@ -133,21 +133,7 @@ const Home = () => {
                 </Typography>
               </motion.div>
 
-              <motion.div variants={itemVariants}>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} style={{ display: 'inline-block' }}>
-                  <Button
-                    component={Link}
-                    to="/add-monitor"
-                    variant="contained"
-                    color="primary"
-                    size="medium"
-                    startIcon={<AddCircleOutlineIcon />}
-                    sx={{ py: 1.5, px: 4, mb: 6, borderRadius: 3, fontWeight: 700, boxShadow: '0 4px 15px rgba(25,118,210,0.3)' }}
-                  >
-                    Create Ticket Setup
-                  </Button>
-                </motion.div>
-              </motion.div>
+
 
               <motion.div variants={itemVariants} style={{ width: '100%', maxWidth: '1200px' }}>
                 <Paper
@@ -177,19 +163,19 @@ const Home = () => {
           {/* Features Row */}
           <Grid item xs={12}>
             <motion.div variants={containerVariants} initial="hidden" animate="visible">
-              <Box sx={{ 
-                display: 'flex', 
-                flexDirection: { xs: 'column', md: 'row' }, 
-                gap: 3, 
+              <Box sx={{
+                display: 'flex',
+                flexDirection: { xs: 'column', md: 'row' },
+                gap: 3,
                 justifyContent: 'center',
                 alignItems: 'stretch',
                 mt: 4
               }}>
                 {features.map((feature, index) => (
-                  <motion.div 
-                    key={index} 
-                    variants={rightItemVariants} 
-                    whileHover={{ y: -10, scale: 1.02 }} 
+                  <motion.div
+                    key={index}
+                    variants={rightItemVariants}
+                    whileHover={{ y: -10, scale: 1.02 }}
                     transition={{ type: 'spring', stiffness: 300 }}
                     style={{ flex: 1, maxWidth: '500px' }}
                   >

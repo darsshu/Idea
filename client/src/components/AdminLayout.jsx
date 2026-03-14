@@ -64,7 +64,7 @@ const AdminLayout = ({ children }) => {
   };
 
   const menuItems = [
-    { text: 'Manage Events', icon: <EventIcon />, path: '/admin/events' },
+    { text: 'Upcoming Match', icon: <EventIcon />, path: '/admin/events' },
   ];
 
   const secondaryMenuItems = [
