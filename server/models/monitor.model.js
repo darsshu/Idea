@@ -43,4 +43,4 @@ monitorSchema.set('toJSON', {
     }
 });
 
-module.exports = mongoose.model('Monitor', monitorSchema);
+module.exports = mongoose.models.Monitor || mongoose.model('Monitor', monitorSchema);
