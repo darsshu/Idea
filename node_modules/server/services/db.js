@@ -3,9 +3,8 @@ const mongoose = require('mongoose');
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-    console.error('CRITICAL: MONGODB_URI is not defined in environment variables.');
-    console.error('Please add MONGODB_URI to your Vercel Project Settings > Environment Variables.');
-    throw new Error('Please define the MONGODB_URI environment variable inside .env or Vercel settings');
+    console.error('❌ MONGODB_URI is MISSING in environment variables.');
+    console.log('Current environment variables:', Object.keys(process.env).filter(key => !key.includes('SECRET') && !key.includes('KEY')));
 }
 
 /**
@@ -34,10 +33,12 @@ async function connectDB() {
     }
 
     try {
+        console.log('Attempting to connect to MongoDB...');
         cached.conn = await cached.promise;
-        console.log('MongoDB successfully connected');
+        console.log('✅ MongoDB successfully connected');
     } catch (e) {
-        console.error('MongoDB connection failed:', e.message);
+        console.error('❌ MongoDB connection failed:', e.message);
+        console.error('Full connection error:', e);
         cached.promise = null;
         throw e;
     }
