@@ -1,24 +1,37 @@
 import React from 'react';
-import { Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
-import { 
-  AppBar, 
-  Toolbar, 
-  Typography, 
-  Container, 
-  Button, 
-  Box, 
-  CssBaseline, 
+import { Routes, Route, Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Container,
+  Button,
+  Box,
+  CssBaseline,
   IconButton,
   useTheme,
   CircularProgress,
   Stack,
   Avatar,
   Menu,
-  MenuItem
+  MenuItem,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider
 } from '@mui/material';
 import SportsCricketIcon from '@mui/icons-material/SportsCricket';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import MenuIcon from '@mui/icons-material/Menu';
+import HomeIcon from '@mui/icons-material/Home';
+import EventIcon from '@mui/icons-material/Event';
+import HistoryIcon from '@mui/icons-material/History';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import LogoutIcon from '@mui/icons-material/Logout';
 import Home from './pages/Home';
 import AddMonitor from './pages/AddMonitor';
 import ActiveMonitors from './pages/ActiveMonitors';
@@ -56,13 +69,81 @@ const NavBar = () => {
   const theme = useTheme();
   const colorMode = useColorMode();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleMenu = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
+  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
+
+  const navItems = [
+    { text: 'Home', icon: <HomeIcon />, path: '/' },
+    { text: 'Upcoming Match', icon: <EventIcon />, path: '/add-monitor' },
+    { text: 'History', icon: <HistoryIcon />, path: '/monitors' },
+  ];
+
+  if (user?.role === 'admin') {
+    navItems.push({ text: 'Admin', icon: <AdminPanelSettingsIcon />, path: '/admin/events' });
+  }
+
+  const drawer = (
+    <Box sx={{ width: 280, height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{
+        p: 2.5,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 1.5,
+        background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+        color: 'white'
+      }}>
+        <SportsCricketIcon />
+        <Typography variant="h6" sx={{ fontWeight: 800, fontSize: '1rem' }}>NOTIFIER</Typography>
+      </Box>
+      <Divider />
+      <List sx={{ p: 1, flexGrow: 1 }}>
+        {navItems.map((item) => (
+          <ListItem key={item.text} disablePadding sx={{ mb: 0.5 }}>
+            <ListItemButton
+              component={Link}
+              to={item.path}
+              onClick={handleDrawerToggle}
+              selected={location.pathname === item.path}
+              sx={{
+                borderRadius: 2,
+                py: 1.5,
+                '&.Mui-selected': {
+                  bgcolor: 'primary.main',
+                  color: 'white',
+                  '&:hover': { bgcolor: 'primary.dark' },
+                  '& .MuiListItemIcon-root': { color: 'white' }
+                }
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 40 }}>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} primaryTypographyProps={{ fontWeight: 600 }} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      {user && (
+        <Box sx={{ p: 1.5 }}>
+          <ListItemButton
+            onClick={() => { logout(); handleDrawerToggle(); }}
+            sx={{ borderRadius: 2, color: 'error.main', py: 1.5 }}
+          >
+            <ListItemIcon sx={{ minWidth: 40, color: 'error.main' }}><LogoutIcon /></ListItemIcon>
+            <ListItemText primary="Logout" primaryTypographyProps={{ fontWeight: 700 }} />
+          </ListItemButton>
+        </Box>
+      )}
+    </Box>
+  );
 
   return (
-    <AppBar 
-      position="sticky" 
+    <AppBar
+      position="sticky"
       elevation={0}
       sx={{
         background: theme.palette.mode === 'light' ? 'rgba(255,255,255,0.85)' : 'rgba(18,18,18,0.85)',
@@ -74,32 +155,46 @@ const NavBar = () => {
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ height: 64, justifyContent: 'space-between' }}>
-          
-          {/* Logo Section */}
-          <Box component={Link} to="/" sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-            <Box sx={{ 
-              p: 1.2, 
-              borderRadius: 3, 
-              background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-              display: 'flex',
-              mr: 2,
-              color: 'white',
-              boxShadow: '0 4px 15px rgba(25,118,210,0.3)'
-            }}>
-              <SportsCricketIcon sx={{ fontSize: 26 }} />
+
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {user && (
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerToggle}
+                sx={{ mr: 1, display: { md: 'none' }, color: 'text.primary' }}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
+
+            {/* Logo Section */}
+            <Box component={Link} to="/" sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+              <Box sx={{
+                p: 1.2,
+                borderRadius: 3,
+                background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                display: 'flex',
+                mr: 2,
+                color: 'white',
+                boxShadow: '0 4px 15px rgba(25,118,210,0.3)'
+              }}>
+                <SportsCricketIcon sx={{ fontSize: 26 }} />
+              </Box>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 800,
+                  color: 'text.primary',
+                  letterSpacing: '-0.3px',
+                  fontSize: '1.1rem',
+                  display: { xs: 'none', sm: 'block' }
+                }}
+              >
+                CRICKET<span style={{ color: theme.palette.primary.main }}>NOTIFIER</span>
+              </Typography>
             </Box>
-            <Typography 
-              variant="h6" 
-              sx={{ 
-                fontWeight: 800, 
-                color: 'text.primary',
-                letterSpacing: '-0.3px',
-                fontSize: '1.1rem',
-                display: { xs: 'none', sm: 'block' }
-              }}
-            >
-              CRICKET<span style={{ color: theme.palette.primary.main }}>NOTIFIER</span>
-            </Typography>
           </Box>
 
           {/* Navigation Links (Center) */}
@@ -122,20 +217,20 @@ const NavBar = () => {
 
             {user ? (
               <>
-                <Box 
-                  sx={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    gap: 1.5, 
-                    cursor: 'pointer', 
-                    p: 0.5, 
-                    pr: 2.5, 
-                    borderRadius: 8, 
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1.5,
+                    cursor: 'pointer',
+                    p: 0.5,
+                    pr: 2.5,
+                    borderRadius: 8,
                     border: '1px solid',
                     borderColor: 'divider',
                     transition: 'all 0.2s',
-                    '&:hover': { bgcolor: 'action.hover', borderColor: 'primary.main' } 
-                  }} 
+                    '&:hover': { bgcolor: 'action.hover', borderColor: 'primary.main' }
+                  }}
                   onClick={handleMenu}
                 >
                   <Avatar sx={{ width: 32, height: 32, background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`, fontSize: '0.875rem', fontWeight: 700, color: 'white' }}>
@@ -168,6 +263,18 @@ const NavBar = () => {
           </Box>
         </Toolbar>
       </Container>
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 280, borderRadius: '0 20px 20px 0' },
+        }}
+      >
+        {drawer}
+      </Drawer>
     </AppBar>
   );
 };
@@ -175,13 +282,13 @@ const NavBar = () => {
 function AppContent() {
   const theme = useTheme();
   const location = useLocation();
-  
+
   return (
-    <Box 
-      sx={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        minHeight: '100vh', 
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
         bgcolor: 'background.default',
         transition: 'background-color 0.3s ease'
       }}
@@ -189,10 +296,10 @@ function AppContent() {
       {/* Conditionally hide NavBar for admin routes */}
       {!location.pathname.startsWith('/admin') && <NavBar />}
 
-      <Box component="main" sx={{ 
-        flexGrow: 1, 
-        display: 'flex', 
-        flexDirection: 'column', 
+      <Box component="main" sx={{
+        flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column',
         position: 'relative',
         width: '100%',
       }}>
@@ -225,7 +332,7 @@ function AppContent() {
               </Container>
             </PrivateRoute>
           } />
-          
+
           {/* Admin Routes with Layout */}
           <Route path="/admin/*" element={
             <AdminRoute>
@@ -244,13 +351,13 @@ function AppContent() {
 
       {/* Conditionally hide Footer for admin routes */}
       {!location.pathname.startsWith('/admin') && (
-        <Box 
-          component="footer" 
-          sx={{ 
+        <Box
+          component="footer"
+          sx={{
             pt: 5,
-            pb: 4, 
-            px: 2, 
-            mt: 'auto', 
+            pb: 4,
+            px: 2,
+            mt: 'auto',
             borderTop: `1px solid ${theme.palette.divider}`,
             bgcolor: 'background.paper',
             position: 'relative',
@@ -260,7 +367,7 @@ function AppContent() {
           <Container maxWidth="xl" sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2, opacity: 0.9 }}>
               <SportsCricketIcon sx={{ color: 'primary.main', fontSize: 24 }} />
-              <Typography variant="body2" sx={{ fontWeight: 800, letterSpacing: '-0.3px' }}>CRICKET<Box component="span" sx={{color: 'primary.main'}}>NOTIFIER</Box></Typography>
+              <Typography variant="body2" sx={{ fontWeight: 800, letterSpacing: '-0.3px' }}>CRICKET<Box component="span" sx={{ color: 'primary.main' }}>NOTIFIER</Box></Typography>
             </Box>
             <Typography variant="body2" color="text.secondary" align="center" sx={{ fontWeight: 500 }}>
               © {new Date().getFullYear()} All rights reserved. Built with Passion for Fans.
