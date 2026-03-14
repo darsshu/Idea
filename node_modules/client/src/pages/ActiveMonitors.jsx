@@ -170,12 +170,11 @@ const ActiveMonitors = () => {
                   elevation={0}
                   sx={{
                     display: 'flex',
-                    flexDirection: { xs: 'column', md: 'row' },
-                    alignItems: { xs: 'stretch', md: 'center' },
+                    width: '100%',
                     border: '1px solid',
                     borderColor: 'divider',
-                    borderRadius: 4,
-                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                    borderRadius: 3,
+                    transition: 'all 0.3s ease',
                     position: 'relative',
                     overflow: 'hidden',
                     bgcolor: 'background.paper',
@@ -186,13 +185,13 @@ const ActiveMonitors = () => {
                       top: 0,
                       width: '6px',
                       height: '100%',
-                      background: `linear-gradient(to bottom, ${getStatusColor(monitor.status)}, ${theme.palette.secondary.main})`,
-                      opacity: 0.8
+                      background: getStatusColor(monitor.status),
+                      opacity: 0.9
                     },
                     '&:hover': {
-                      transform: 'translateY(-6px)',
-                      borderColor: 'primary.main',
-                      boxShadow: (theme) => theme.palette.mode === 'light' ? '0 20px 40px -10px rgba(0,0,0,0.1)' : '0 20px 40px -10px rgba(0,0,0,0.5)',
+                      transform: 'translateY(-3px)',
+                      boxShadow: theme.palette.mode === 'light' ? '0 10px 30px rgba(0,0,0,0.06)' : '0 10px 30px rgba(0,0,0,0.4)',
+                      borderColor: getStatusColor(monitor.status),
                     }
                   }}
                 >
@@ -200,29 +199,42 @@ const ActiveMonitors = () => {
                     display: 'flex',
                     flexDirection: { xs: 'column', md: 'row' },
                     alignItems: { xs: 'flex-start', md: 'center' },
+                    justifyContent: 'space-between',
                     width: '100%',
-                    p: { xs: 3, md: 4 },
-                    pl: { xs: 4, md: 5 }, // Account for the colored bar on left
-                    gap: { xs: 3, md: 4 }
+                    p: 2.5,
+                    pl: 3.5, // Space for the left colored bar
+                    gap: { xs: 2.5, md: 4 }
                   }}>
 
-                    {/* Column 1: Match Name and Status */}
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5, flex: 1 }}>
+                    {/* Column 1: Icon, Match Name, and Status */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5, flex: 1, minWidth: 0, width: '100%' }}>
                       <Avatar
                         sx={{
                           background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                          width: { xs: 48, md: 56 },
-                          height: { xs: 48, md: 56 },
-                          boxShadow: '0 8px 16px rgba(25,118,210,0.2)',
-                          transition: 'transform 0.3s',
-                          '&:hover': { transform: 'rotate(15deg) scale(1.1)' }
+                          width: { xs: 48, md: 54 },
+                          height: { xs: 48, md: 54 },
+                          boxShadow: '0 4px 12px rgba(25,118,210,0.15)',
+                          flexShrink: 0
                         }}
                       >
-                        <SportsCricketIcon />
+                        <SportsCricketIcon fontSize="medium" />
                       </Avatar>
-                      <Box>
-                        <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1.3, letterSpacing: '-0.3px', color: 'text.primary', mb: 0.5 }}>
-                          {monitor.matchName}
+                      
+                      <Box sx={{ minWidth: 0, flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                        <Typography 
+                          variant="h6" 
+                          noWrap
+                          title={monitor.matchName || 'Cricket Match Event'}
+                          sx={{ 
+                            fontWeight: 800, 
+                            lineHeight: 1.3, 
+                            letterSpacing: '-0.3px', 
+                            color: 'text.primary', 
+                            mb: 0.5,
+                            width: '100%'
+                          }}
+                        >
+                          {monitor.matchName || 'Cricket Match Event'}
                         </Typography>
                         <Chip
                           size="small"
@@ -234,14 +246,12 @@ const ActiveMonitors = () => {
                             border: `1px solid ${getStatusColor(monitor.status)}40`,
                             px: 1,
                             height: 24,
-                            '& .MuiChip-label': { px: 1.5 }
+                            '& .MuiChip-label': { px: 1.5 },
+                            marginTop: '2px'
                           }}
                         />
                       </Box>
                     </Box>
-
-                    <Divider orientation="vertical" flexItem sx={{ display: { xs: 'none', md: 'block' }, mx: 1 }} />
-                    <Divider sx={{ display: { xs: 'block', md: 'none' }, width: '100%' }} />
 
                     {/* Column 2: Last Checked */}
                     <Box sx={{
@@ -249,46 +259,48 @@ const ActiveMonitors = () => {
                       alignItems: 'center',
                       gap: 2,
                       minWidth: { md: '180px' },
-                      py: { xs: 0, md: 1 }
+                      flexShrink: 0,
+                      borderLeft: { md: `1px solid ${theme.palette.divider}` },
+                      borderTop: { xs: `1px solid ${theme.palette.divider}`, md: 'none' },
+                      pt: { xs: 2, md: 0 },
+                      pl: { md: 4 },
+                      width: { xs: '100%', md: 'auto' }
                     }}>
                       <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Box sx={{ position: 'absolute', width: 36, height: 36, borderRadius: '50%', bgcolor: 'primary.main', opacity: 0.1 }} />
-                        <AccessTimeIcon sx={{ fontSize: 20, color: 'text.secondary', zIndex: 1 }} />
+                        <Box sx={{ position: 'absolute', width: 32, height: 32, borderRadius: '50%', border: `1px solid ${theme.palette.divider}`, bgcolor: 'background.default' }} />
+                        <AccessTimeIcon sx={{ fontSize: 16, color: 'text.secondary', zIndex: 1 }} />
                       </Box>
                       <Box>
-                        <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Last Checked</Typography>
-                        <Typography variant="body2" sx={{ fontWeight: 700, color: 'text.secondary' }}>
+                        <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.8px', fontSize: '0.65rem' }}>
+                          Last Checked
+                        </Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 700, color: 'text.secondary', fontSize: '0.85rem' }}>
                           {new Date(monitor.lastChecked).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                         </Typography>
                       </Box>
                     </Box>
-
-                    <Divider orientation="vertical" flexItem sx={{ display: { xs: 'none', md: 'block' }, mx: 1 }} />
-                    <Divider sx={{ display: { xs: 'block', md: 'none' }, width: '100%' }} />
 
                     {/* Column 3: Actions */}
                     <Box sx={{
                       display: 'flex',
                       alignItems: 'center',
                       gap: 1.5,
-                      width: { xs: '100%', md: 'auto' }
+                      flexShrink: 0,
+                      width: { xs: '100%', md: 'auto' },
+                      pl: { md: 2 }
                     }}>
                       <Button
                         variant="contained"
                         color="primary"
-                        startIcon={<LaunchIcon sx={{ fontSize: 18 }} />}
+                        startIcon={<LaunchIcon sx={{ fontSize: 16 }} />}
                         href={monitor.url}
                         target="_blank"
+                        disableElevation
                         sx={{
                           fontWeight: 800,
-                          borderRadius: 3,
-                          px: 3,
-                          py: 1.2,
-                          boxShadow: (theme) => `0 6px 16px ${theme.palette.primary.main}40`,
-                          '&:hover': {
-                            boxShadow: (theme) => `0 8px 24px ${theme.palette.primary.main}60`,
-                            transform: 'translateY(-2px)'
-                          },
+                          borderRadius: 2,
+                          px: 2.5,
+                          py: 0.8,
                           transition: 'all 0.2s',
                           flex: { xs: 1, md: 'none' }
                         }}
@@ -300,19 +312,19 @@ const ActiveMonitors = () => {
                         onClick={() => handleDelete(monitor._id || monitor.id)}
                         aria-label="Delete Monitor"
                         sx={{
-                          border: '2px solid',
+                          border: '1px solid',
                           borderColor: 'error.light',
-                          borderRadius: 3,
-                          p: 1.2,
-                          '&:hover': { bgcolor: 'error.main', color: 'white', borderColor: 'error.main', transform: 'scale(1.1)' },
-                          transition: 'all 0.2s',
-                          bgcolor: 'background.paper',
-                          zIndex: 10
+                          borderRadius: 2,
+                          p: '6px',
+                          color: 'error.main',
+                          '&:hover': { bgcolor: 'error.main', color: 'white', borderColor: 'error.main' },
+                          transition: 'all 0.2s'
                         }}
                       >
                         <DeleteIcon fontSize="small" />
                       </IconButton>
                     </Box>
+
                   </Box>
                 </Card>
               </Grow>
