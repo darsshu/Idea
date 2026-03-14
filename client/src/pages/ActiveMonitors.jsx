@@ -64,7 +64,7 @@ const ActiveMonitors = () => {
       try {
         const apiUrl = import.meta.env.VITE_API_URL || '';
         await axios.delete(`${apiUrl}/api/monitor/${id}`);
-        setMonitors(monitors.filter(m => m.id !== id));
+        setMonitors(monitors.filter(m => (m._id || m.id) !== id));
       } catch (err) {
         setError('Failed to remove monitor.');
       }
@@ -164,7 +164,7 @@ const ActiveMonitors = () => {
       ) : (
         <Grid container spacing={3}>
           {monitors.map((monitor, index) => (
-            <Grid item xs={12} key={monitor.id}>
+            <Grid item xs={12} key={monitor._id || monitor.id}>
               <Grow in={true} timeout={500 + (index * 100)}>
                 <Card 
                   elevation={0}
@@ -196,131 +196,109 @@ const ActiveMonitors = () => {
                     }
                   }}
                 >
-                  <CardContent sx={{ 
-                    flex: 1, 
-                    p: { xs: 3, md: 4 }, 
+                  <Box sx={{ 
                     display: 'flex', 
                     flexDirection: { xs: 'column', md: 'row' },
                     alignItems: { xs: 'flex-start', md: 'center' },
-                    gap: { xs: 3, md: 4 },
-                    pl: { xs: 4, md: 5 } // Account for the colored bar on left
-                  }}>
-                    {/* Icon and Title */}
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5, minWidth: { md: '300px' } }}>
+                    width: '100%',
+                    p: { xs: 3, md: 4 },
+                    pl: { xs: 4, md: 5 }, // Account for the colored bar on left
+                    gap: { xs: 3, md: 4 }
+                   }}>
+                    
+                    {/* Column 1: Match Name and Status */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5, flex: 1 }}>
                       <Avatar 
                         sx={{ 
                           background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                          width: { xs: 56, md: 64 }, 
-                          height: { xs: 56, md: 64 },
-                          boxShadow: '0 8px 16px rgba(25,118,210,0.3)',
+                          width: { xs: 48, md: 56 }, 
+                          height: { xs: 48, md: 56 },
+                          boxShadow: '0 8px 16px rgba(25,118,210,0.2)',
                           transition: 'transform 0.3s',
                           '&:hover': { transform: 'rotate(15deg) scale(1.1)' }
                         }}
                       >
-                        <SportsCricketIcon fontSize="medium" />
+                        <SportsCricketIcon />
                       </Avatar>
                       <Box>
-                        <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1.3, letterSpacing: '-0.3px', color: 'text.primary' }}>
+                        <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1.3, letterSpacing: '-0.3px', color: 'text.primary', mb: 0.5 }}>
                           {monitor.matchName || 'Match Details Syncing...'}
                         </Typography>
                         <Chip 
                           size="small"
                           label={monitor.status} 
                           sx={{ 
-                            mt: 1,
                             bgcolor: `${getStatusColor(monitor.status)}15`, 
                             color: getStatusColor(monitor.status),
                             fontWeight: 800,
                             border: `1px solid ${getStatusColor(monitor.status)}40`,
                             px: 1,
-                            letterSpacing: '0.5px'
+                            height: 24,
+                            '& .MuiChip-label': { px: 1.5 }
                           }} 
                         />
                       </Box>
                     </Box>
 
-                    {/* Details Stack */}
-                    <Stack 
-                      direction={{ xs: 'column', md: 'row' }} 
-                      spacing={{ xs: 2.5, md: 5 }} 
-                      sx={{ flex: 1, mt: { xs: 2, md: 0 }, width: '100%' }}
-                    >
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <Box sx={{ position: 'absolute', width: 40, height: 40, borderRadius: '50%', bgcolor: 'primary.main', opacity: 0.1 }} />
-                          <AccessTimeIcon sx={{ fontSize: 24, color: 'text.secondary', zIndex: 1 }} />
-                        </Box>
-                        <Box>
-                          <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Last Checked</Typography>
-                          <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.secondary' }}>
-                            {new Date(monitor.lastChecked).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-                          </Typography>
-                        </Box>
+                    <Divider orientation="vertical" flexItem sx={{ display: { xs: 'none', md: 'block' }, mx: 1 }} />
+                    <Divider sx={{ display: { xs: 'block', md: 'none' }, width: '100%' }} />
+
+                    {/* Column 2: Last Checked */}
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: 2,
+                      minWidth: { md: '180px' },
+                      py: { xs: 0, md: 1 }
+                    }}>
+                      <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Box sx={{ position: 'absolute', width: 36, height: 36, borderRadius: '50%', bgcolor: 'primary.main', opacity: 0.1 }} />
+                        <AccessTimeIcon sx={{ fontSize: 20, color: 'text.secondary', zIndex: 1 }} />
                       </Box>
-                      
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1, minWidth: 0 }}>
-                        <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <Box sx={{ position: 'absolute', width: 40, height: 40, borderRadius: '50%', bgcolor: 'secondary.main', opacity: 0.1 }} />
-                          <LinkIcon sx={{ fontSize: 24, color: 'text.secondary', zIndex: 1 }} />
-                        </Box>
-                        <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>
-                           <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Target URL</Typography>
-                           <Typography 
-                             variant="body2" 
-                             sx={{ 
-                               fontWeight: 600,
-                               color: 'primary.main',
-                               whiteSpace: 'nowrap',
-                               overflow: 'hidden',
-                               textOverflow: 'ellipsis',
-                               '&:hover': { textDecoration: 'underline' }
-                             }}
-                           >
-                             {monitor.url}
-                           </Typography>
-                        </Box>
+                      <Box>
+                        <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Last Checked</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 700, color: 'text.secondary' }}>
+                          {new Date(monitor.lastChecked).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                        </Typography>
                       </Box>
-                    </Stack>
-                  </CardContent>
-                  
-                  <Divider orientation="vertical" flexItem sx={{ display: { xs: 'none', md: 'block' }, borderStyle: 'solid', borderWidth: '1px', borderColor: 'divider', my: 3 }} />
-                  <Divider sx={{ display: { xs: 'block', md: 'none' }, borderStyle: 'solid', borderWidth: '1px', borderColor: 'divider', mx: 4 }} />
-                  
-                  <CardActions sx={{ 
-                    p: { xs: 3, md: 4 }, 
-                    justifyContent: { xs: 'flex-start', md: 'center' }, 
-                    bgcolor: { xs: 'background.default', md: 'transparent' },
-                    minWidth: { md: '220px' },
-                    gap: 2,
-                    borderBottomLeftRadius: { xs: 16, md: 0 },
-                    borderBottomRightRadius: { xs: 16, md: 16 },
-                    borderTopRightRadius: { xs: 0, md: 16 }
-                  }}>
-                    <Button 
-                      variant="contained"
-                      color="primary" 
-                      startIcon={<LaunchIcon sx={{ fontSize: 18 }} />}
-                      href={monitor.url}
-                      target="_blank"
-                      sx={{ 
-                        fontWeight: 800, 
-                        borderRadius: 3,
-                        px: 3,
-                        py: 1.2,
-                        boxShadow: (theme) => `0 6px 16px ${theme.palette.primary.main}40`,
-                        '&:hover': {
-                           boxShadow: (theme) => `0 8px 24px ${theme.palette.primary.main}60`,
-                           transform: 'translateY(-2px)'
-                        },
-                        transition: 'all 0.2s'
-                      }}
-                    >
-                      Visit
-                    </Button>
-                    <Tooltip title="Delete Monitor" placement="top" arrow>
+                    </Box>
+
+                    <Divider orientation="vertical" flexItem sx={{ display: { xs: 'none', md: 'block' }, mx: 1 }} />
+                    <Divider sx={{ display: { xs: 'block', md: 'none' }, width: '100%' }} />
+
+                    {/* Column 3: Actions */}
+                    <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: 1.5,
+                      width: { xs: '100%', md: 'auto' }
+                    }}>
+                      <Button 
+                        variant="contained"
+                        color="primary" 
+                        startIcon={<LaunchIcon sx={{ fontSize: 18 }} />}
+                        href={monitor.url}
+                        target="_blank"
+                        sx={{ 
+                          fontWeight: 800, 
+                          borderRadius: 3,
+                          px: 3,
+                          py: 1.2,
+                          boxShadow: (theme) => `0 6px 16px ${theme.palette.primary.main}40`,
+                          '&:hover': {
+                             boxShadow: (theme) => `0 8px 24px ${theme.palette.primary.main}60`,
+                             transform: 'translateY(-2px)'
+                          },
+                          transition: 'all 0.2s',
+                          flex: { xs: 1, md: 'none' }
+                        }}
+                      >
+                        Visit
+                      </Button>
                       <IconButton 
                         color="error" 
-                        onClick={() => handleDelete(monitor.id)}
+                        onClick={() => handleDelete(monitor._id || monitor.id)}
+                        aria-label="Delete Monitor"
                         sx={{ 
                           border: '2px solid',
                           borderColor: 'error.light',
@@ -328,13 +306,14 @@ const ActiveMonitors = () => {
                           p: 1.2,
                           '&:hover': { bgcolor: 'error.main', color: 'white', borderColor: 'error.main', transform: 'scale(1.1)' },
                           transition: 'all 0.2s',
-                          bgcolor: 'background.paper'
+                          bgcolor: 'background.paper',
+                          zIndex: 10
                         }}
                       >
-                        <DeleteIcon />
+                        <DeleteIcon fontSize="small" />
                       </IconButton>
-                    </Tooltip>
-                  </CardActions>
+                    </Box>
+                  </Box>
                 </Card>
               </Grow>
             </Grid>
