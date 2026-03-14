@@ -2,16 +2,17 @@ const express = require('express');
 const router = express.Router();
 const connectDB = require('../services/db');
 const storage = require('../services/storage');
+const { protect } = require('../middleware/auth');
 
-// Get all monitors
-router.get('/monitors', async (req, res) => {
+// Get all monitors for the logged in user
+router.get('/monitors', protect, async (req, res) => {
     await connectDB();
-    const monitors = await storage.getMonitors();
+    const monitors = await storage.getMonitors(req.user.id);
     res.json(monitors);
 });
 
 // Add new monitor
-router.post('/monitor', async (req, res) => {
+router.post('/monitor', protect, async (req, res) => {
     try {
         await connectDB();
         const { url, email } = req.body;
@@ -25,7 +26,11 @@ router.post('/monitor', async (req, res) => {
             return res.status(400).json({ error: 'Please provide a valid BookMyShow URL' });
         }
 
-        const monitor = await storage.addMonitor({ url, email });
+        const monitor = await storage.addMonitor({ 
+            url, 
+            email, 
+            createdBy: req.user.id 
+        });
         res.status(201).json(monitor);
     } catch (error) {
         console.error('Error in POST /monitor:', error);
@@ -37,13 +42,13 @@ router.post('/monitor', async (req, res) => {
 });
 
 // Delete monitor
-router.delete('/monitor/:id', async (req, res) => {
+router.delete('/monitor/:id', protect, async (req, res) => {
     const { id } = req.params;
-    const deleted = await storage.deleteMonitor(id);
+    const deleted = await storage.deleteMonitor(id, req.user.id);
     if (deleted) {
         res.json({ message: 'Monitor deleted successfully' });
     } else {
-        res.status(404).json({ error: 'Monitor not found' });
+        res.status(404).json({ error: 'Monitor or user mismatch' });
     }
 });
 

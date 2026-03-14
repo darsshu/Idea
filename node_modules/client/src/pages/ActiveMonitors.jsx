@@ -19,6 +19,7 @@ import axios from 'axios';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import LaunchIcon from '@mui/icons-material/Launch';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useAuth } from '../context/AuthContext';
 
 const ActiveMonitors = () => {
   const [monitors, setMonitors] = useState([]);
@@ -33,7 +34,11 @@ const ActiveMonitors = () => {
       setMonitors(response.data);
       setError(null);
     } catch (err) {
-      setError('Failed to fetch monitors. Is the server running?');
+      if (err.response?.status === 401) {
+          setError('Session expired. Please login again.');
+      } else {
+          setError('Failed to fetch monitors. Is the server running?');
+      }
     } finally {
       setLoading(false);
     }

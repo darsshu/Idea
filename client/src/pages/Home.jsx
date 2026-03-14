@@ -13,10 +13,12 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import SportsCricketIcon from '@mui/icons-material/SportsCricket';
+import { useAuth } from '../context/AuthContext';
 
 const Home = () => {
+  const { user } = useAuth();
   const [url, setUrl] = useState('');
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(user?.email || '');
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 

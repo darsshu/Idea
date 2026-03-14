@@ -1,8 +1,9 @@
 const Monitor = require('../models/monitor.model');
 
-const getMonitors = async () => {
+const getMonitors = async (userId) => {
     try {
-        return await Monitor.find({});
+        const query = userId ? { createdBy: userId } : {};
+        return await Monitor.find(query);
     } catch (error) {
         console.error('Error reading storage:', error);
         return [];
@@ -29,9 +30,11 @@ const updateMonitor = async (id, updates) => {
     }
 };
 
-const deleteMonitor = async (id) => {
+const deleteMonitor = async (id, userId) => {
     try {
-        const result = await Monitor.findByIdAndDelete(id);
+        const query = { _id: id };
+        if (userId) query.createdBy = userId;
+        const result = await Monitor.findOneAndDelete(query);
         return !!result;
     } catch (error) {
         console.error('Error deleting monitor:', error);
