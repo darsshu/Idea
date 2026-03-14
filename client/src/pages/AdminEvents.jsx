@@ -47,13 +47,19 @@ const AdminEvents = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.title || !formData.imageUrl || !formData.eventUrl) {
+    const cleanedData = {
+      title: formData.title.trim(),
+      imageUrl: formData.imageUrl.trim(),
+      eventUrl: formData.eventUrl.trim()
+    };
+
+    if (!cleanedData.title || !cleanedData.imageUrl || !cleanedData.eventUrl) {
       setSnackbar({ open: true, message: 'All fields are required', severity: 'warning' });
       return;
     }
     setLoading(true);
     try {
-      await axios.post(`${apiUrl}/api/events`, formData);
+      await axios.post(`${apiUrl}/api/events`, cleanedData);
       setSnackbar({ open: true, message: 'Event added successfully', severity: 'success' });
       setFormData({ title: '', imageUrl: '', eventUrl: '' });
       fetchEvents();

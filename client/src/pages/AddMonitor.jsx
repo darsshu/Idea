@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Box, 
-  Card, 
-  CardContent, 
-  Typography, 
-  TextField, 
-  Button, 
-  Stack, 
-  Snackbar, 
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  TextField,
+  Button,
+  Stack,
+  Snackbar,
   Alert,
   CircularProgress,
   Fade,
   Slide,
   Zoom,
   InputAdornment,
-  useTheme,
   Grid,
-  CardMedia
+  CardMedia,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  useTheme
 } from '@mui/material';
 import axios from 'axios';
 import SportsCricketIcon from '@mui/icons-material/SportsCricket';
@@ -36,6 +40,9 @@ const AddMonitor = () => {
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [showContent, setShowContent] = useState(false);
   const [events, setEvents] = useState([]);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
     setShowContent(true);
@@ -49,21 +56,65 @@ const AddMonitor = () => {
     try {
       const apiUrl = import.meta.env.VITE_API_URL || '';
       const res = await axios.get(`${apiUrl}/api/events`);
-      setEvents(res.data);
+      console.log('Raw API Events Response:', res.data);
+      // Standardize event object mapping
+      const processedEvents = res.data.map(evt => ({
+        id: evt._id || evt.id,
+        title: evt.title || 'Untitled Event',
+        imageUrl: evt.imageUrl || '',
+        eventUrl: evt.eventUrl || ''
+      }));
+      console.log('Processed Events for UI:', processedEvents);
+      setEvents(processedEvents);
     } catch (err) {
       console.error('Failed to fetch events', err);
     }
   };
 
-  const handleSelectEvent = (eventUrl) => {
-    setUrl(eventUrl);
-    window.scrollTo({ top: document.getElementById('notification-form')?.offsetTop - 100, behavior: 'smooth' });
-    setSnackbar({ open: true, message: 'Event selected! Click track to start.', severity: 'info' });
+  const handleSelectEvent = (event) => {
+    console.log('Event Card Clicked. Raw Data:', event);
+    setSelectedEvent(event);
+    setConfirmOpen(true);
+  };
+
+  const confirmTrack = async () => {
+    if (!selectedEvent) return;
+    setConfirmOpen(false);
+    setLoading(true);
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      const trackingEmail = user?.email;
+      const trackingUrl = selectedEvent?.eventUrl;
+
+      console.log('Final Payload Check:', { trackingUrl, trackingEmail, selectedEvent });
+
+      if (!trackingUrl || !trackingEmail) {
+        setSnackbar({
+          open: true,
+          message: `Missing ${!trackingUrl ? 'Event Link' : 'Logged-in Email'}. Please re-select the event.`,
+          severity: 'error'
+        });
+        return;
+      }
+
+      await axios.post(`${apiUrl}/api/monitor`, { url: trackingUrl, email: trackingEmail });
+      setSuccessOpen(true);
+    } catch (error) {
+      console.error('Tracking Error:', error.response?.data || error.message);
+      setSnackbar({
+        open: true,
+        message: error.response?.data?.error || 'Failed to start monitoring. Please try again.',
+        severity: 'error'
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const validateForm = () => {
     let isValid = true;
-    
+
     // URL validation
     const urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
     if (!url.trim()) {
@@ -99,19 +150,19 @@ const AddMonitor = () => {
     try {
       const apiUrl = import.meta.env.VITE_API_URL || '';
       await axios.post(`${apiUrl}/api/monitor`, { url, email });
-      setSnackbar({ 
-        open: true, 
-        message: 'Monitoring started successfully! We will notify you.', 
-        severity: 'success' 
+      setSnackbar({
+        open: true,
+        message: 'Monitoring started successfully! We will notify you.',
+        severity: 'success'
       });
       setUrl('');
       setUrlError('');
       // Keep email since they might want to add another one with same email
     } catch (error) {
-      setSnackbar({ 
-        open: true, 
-        message: error.response?.data?.error || 'Failed to start monitoring. Please try again.', 
-        severity: 'error' 
+      setSnackbar({
+        open: true,
+        message: error.response?.data?.error || 'Failed to start monitoring. Please try again.',
+        severity: 'error'
       });
     } finally {
       setLoading(false);
@@ -123,10 +174,10 @@ const AddMonitor = () => {
   };
 
   return (
-    <Box sx={{ 
-      maxWidth: 900, 
-      mx: 'auto', 
-      mt: 1, 
+    <Box sx={{
+      maxWidth: 900,
+      mx: 'auto',
+      mt: 1,
       p: 2,
       position: 'relative',
       minHeight: 'auto',
@@ -170,10 +221,10 @@ const AddMonitor = () => {
         <Box sx={{ textAlign: 'center', mb: 4 }}>
           <Box sx={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', mb: 1, gap: 1 }}>
             <NotificationsActiveIcon sx={{ fontSize: 40, color: 'primary.main' }} />
-            <Typography variant="h2" sx={{ 
-              fontWeight: 900, 
-              background: 'linear-gradient(45deg, #1976d2 30%, #9c27b0 90%)', 
-              WebkitBackgroundClip: 'text', 
+            <Typography variant="h2" sx={{
+              fontWeight: 900,
+              background: 'linear-gradient(45deg, #1976d2 30%, #9c27b0 90%)',
+              WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               textShadow: theme.palette.mode === 'dark' ? '0px 4px 20px rgba(25, 118, 210, 0.4)' : '0px 4px 20px rgba(25, 118, 210, 0.2)',
               letterSpacing: '-1px'
@@ -181,8 +232,8 @@ const AddMonitor = () => {
               Match Notification
             </Typography>
           </Box>
-          <Typography variant="h5" sx={{ 
-            fontWeight: 600, 
+          <Typography variant="h5" sx={{
+            fontWeight: 600,
             color: 'text.primary',
             mb: 2,
             display: 'flex',
@@ -208,15 +259,15 @@ const AddMonitor = () => {
             <Grid container spacing={2}>
               {events.map((event) => (
                 <Grid item xs={12} sm={6} md={4} key={event._id}>
-                  <Card 
-                    sx={{ 
-                      borderRadius: 3, 
+                  <Card
+                    sx={{
+                      borderRadius: 3,
                       cursor: 'pointer',
                       transition: 'all 0.3s',
                       border: url === event.eventUrl ? `2px solid ${theme.palette.primary.main}` : '1px solid transparent',
                       '&:hover': { transform: 'scale(1.03)', boxShadow: 10 }
                     }}
-                    onClick={() => handleSelectEvent(event.eventUrl)}
+                    onClick={() => handleSelectEvent(event)}
                   >
                     <CardMedia
                       component="img"
@@ -237,166 +288,129 @@ const AddMonitor = () => {
         </Fade>
       )}
 
-      <Zoom in={showContent} style={{ transitionDelay: showContent ? '300ms' : '0ms' }}>
-        <Box id="notification-form">
-          <Card 
-            elevation={24} 
-            sx={{ 
-              p: { xs: 2, sm: 4, md: 4 }, 
-              mb: 3,
-              position: 'relative',
-              overflow: 'hidden',
-              borderRadius: 4,
-              background: theme.palette.mode === 'dark' ? 'rgba(30, 30, 30, 0.7)' : 'rgba(255, 255, 255, 0.8)',
-              backdropFilter: 'blur(16px)',
-              border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`,
-              boxShadow: theme.palette.mode === 'dark' 
-                ? '0 20px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)'
-                : '0 20px 40px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.5)',
-              transition: 'transform 0.3s ease-in-out',
-              '&:hover': {
-                transform: 'translateY(-5px)',
-              }
+      {/* Confirmation Dialog */}
+      <Dialog
+        open={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        PaperProps={{
+          sx: {
+            borderRadius: 5,
+            p: 2,
+            minWidth: { xs: '90%', sm: 400 },
+            backgroundImage: 'linear-gradient(to bottom right, rgba(25, 118, 210, 0.05), rgba(156, 39, 176, 0.05))'
+          }
+        }}
+      >
+        <DialogTitle sx={{ fontWeight: 900, fontSize: '1.5rem', pb: 1, display: 'flex', color: 'red', alignItems: 'center', gap: 1.5 }}>
+          <NotificationsActiveIcon color="info" /> Confirm Tracking
+        </DialogTitle>
+        <DialogContent>
+          <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5 }}>
+            {selectedEvent?.title}
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Would you like to start monitoring this event for ticket availability?
+          </Typography>
+          <Box sx={{ mt: 3, p: 2, bgcolor: 'action.hover', borderRadius: 3, border: '1px solid', borderColor: 'divider' }}>
+            <Typography variant="caption" display="block" color="text.secondary" sx={{ textTransform: 'uppercase', fontWeight: 800, mb: 0.5 }}>
+              Notifications sent to
+            </Typography>
+            <Typography variant="body2" sx={{ fontWeight: 700, color: 'primary.main' }}>
+              {email}
+            </Typography>
+          </Box>
+        </DialogContent>
+        <DialogActions sx={{ p: 3, gap: 1.5 }}>
+          <Button
+            onClick={() => setConfirmOpen(false)}
+            sx={{ fontWeight: 800, borderRadius: 3, px: 3, color: 'text.secondary' }}
+          >
+            Not Now
+          </Button>
+          <Button
+            onClick={confirmTrack}
+            variant="contained"
+            sx={{
+              fontWeight: 800,
+              borderRadius: 3,
+              px: 4,
+              py: 1.2,
+              background: 'linear-gradient(45deg, #1976d2, #2196f3)',
+              boxShadow: '0 4px 15px rgba(25, 118, 210, 0.3)'
             }}
           >
-            {/* Glossy top highlight */}
-            <Box sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              height: '1px',
-              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)',
-            }} />
+            Start Tracking
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-            <CardContent sx={{ p: '0 !important' }}>
-              <form onSubmit={handleSubmit} noValidate>
-                <Stack spacing={4}>
-                  <TextField
-                    label="Match URL (BookMyShow etc.)"
-                    placeholder="https://in.bookmyshow.com/events/..."
-                    fullWidth
-                    required
-                    value={url}
-                    onChange={(e) => {
-                      setUrl(e.target.value);
-                      if (urlError) setUrlError('');
-                    }}
-                    error={!!urlError}
-                    helperText={urlError}
-                    variant="outlined"
-                    autoComplete="off"
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        transition: '0.3s',
-                        '&:hover': {
-                          boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
-                        },
-                        '&.Mui-focused': {
-                          boxShadow: '0 4px 20px rgba(25, 118, 210, 0.15)',
-                        }
-                      }
-                    }}
-                    InputProps={{
-                      startAdornment: (
-                         <InputAdornment position="start">
-                           <Box sx={{ p: 1, borderRadius: 2, bgcolor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)' }}>
-                             <LinkIcon color={urlError ? "error" : "primary"} />
-                           </Box>
-                         </InputAdornment>
-                      ),
-                    }}
-                  />
+      {/* Success Dialog */}
+      <Dialog
+        open={successOpen}
+        onClose={() => setSuccessOpen(false)}
+        PaperProps={{ sx: { borderRadius: 5, p: 3, textAlign: 'center', maxWidth: 400 } }}
+      >
+        <DialogContent>
+          <Box sx={{
+            width: 80, height: 80, borderRadius: '50%', bgcolor: 'success.main',
+            color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            mx: 'auto', mb: 3, boxShadow: '0 10px 20px rgba(76, 175, 80, 0.3)'
+          }}>
+            <NotificationsActiveIcon sx={{ fontSize: 40 }} />
+          </Box>
+          <Typography variant="h5" fontWeight={900} gutterBottom>Awesome!</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+            We've set up a monitor for <strong>{selectedEvent?.title}</strong>.
+          </Typography>
+          <Typography variant="body2" sx={{ fontWeight: 600, bgcolor: 'success.light', color: 'success.dark', p: 1, borderRadius: 2 }}>
+            We will email you the moment tickets go live!
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: 'center', pb: 3 }}>
+          <Button
+            onClick={() => setSuccessOpen(false)}
+            variant="contained"
+            color="success"
+            sx={{ fontWeight: 800, borderRadius: 3, px: 6, py: 1.5 }}
+          >
+            Great!
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-                  <TextField
-                    label="Email for Notifications"
-                    placeholder="your@email.com"
-                    type="email"
-                    fullWidth
-                    required
-                    value={email}
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                      if (emailError) setEmailError('');
-                    }}
-                    error={!!emailError}
-                    helperText={emailError}
-                    variant="outlined"
-                    autoComplete="email"
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        transition: '0.3s',
-                        '&:hover': {
-                          boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
-                        },
-                        '&.Mui-focused': {
-                          boxShadow: '0 4px 20px rgba(25, 118, 210, 0.15)',
-                        }
-                      }
-                    }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <Box sx={{ p: 1, borderRadius: 2, bgcolor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)' }}>
-                            <EmailIcon color={emailError ? "error" : "primary"} />
-                          </Box>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-
-                  <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
-                    <Button 
-                      type="submit" 
-                      variant="contained" 
-                      size="large" 
-                      disabled={loading}
-                      startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <SportsCricketIcon />}
-                      sx={{ 
-                        py: 2, 
-                        px: 4,
-                        fontSize: '1.2rem',
-                        fontWeight: 700,
-                        borderRadius: 3,
-                        textTransform: 'none',
-                        background: 'linear-gradient(45deg, #1976d2 30%, #2196f3 90%)',
-                        boxShadow: '0 8px 16px rgba(33, 150, 243, 0.3)',
-                        transition: 'all 0.3s ease',
-                        width: { xs: '100%', sm: 'auto' },
-                        minWidth: '250px',
-                        '&:hover': {
-                          transform: 'translateY(-2px) scale(1.02)',
-                          boxShadow: '0 12px 20px rgba(33, 150, 243, 0.4)',
-                          background: 'linear-gradient(45deg, #1565c0 30%, #1976d2 90%)',
-                        },
-                        '&:active': {
-                          transform: 'translateY(1px)',
-                        }
-                      }}
-                    >
-                      {loading ? 'Setting up Monitor...' : 'Track Ticket Availability'}
-                    </Button>
-                  </Box>
-                </Stack>
-              </form>
-            </CardContent>
-          </Card>
+      {/* Manual section removed as per user request */}
+      {/* Keeping loading state overlay if needed */}
+      {loading && (
+        <Box sx={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0, bottom: 0,
+          bgcolor: 'rgba(0,0,0,0.5)',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          gap: 2,
+          color: 'white'
+        }}>
+          <CircularProgress color="inherit" />
+          <Typography variant="h6" fontWeight={700}>Setting up your monitor...</Typography>
         </Box>
-      </Zoom>
+      )}
 
-      <Snackbar 
-        open={snackbar.open} 
-        autoHideDuration={6000} 
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert 
-          onClose={handleCloseSnackbar} 
-          severity={snackbar.severity} 
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
           variant="filled"
           elevation={6}
-          sx={{ 
-            width: '100%', 
+          sx={{
+            width: '100%',
             borderRadius: 2,
             alignItems: 'center',
             '& .MuiAlert-message': {
