@@ -46,9 +46,9 @@ const Register = () => {
     };
 
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="sm" sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Grow in={visible} timeout={800}>
-                <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <Paper 
                         elevation={0} 
                         sx={{ 

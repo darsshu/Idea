@@ -258,7 +258,6 @@ const ActiveMonitors = () => {
                       display: 'flex',
                       alignItems: 'center',
                       gap: 2,
-                      minWidth: { md: '180px' },
                       flexShrink: 0,
                       borderLeft: { md: `1px solid ${theme.palette.divider}` },
                       borderTop: { xs: `1px solid ${theme.palette.divider}`, md: 'none' },

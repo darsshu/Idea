@@ -189,13 +189,19 @@ function AppContent() {
       {/* Conditionally hide NavBar for admin routes */}
       {!location.pathname.startsWith('/admin') && <NavBar />}
 
-      <Box component="main" sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', position: 'relative' }}>
+      <Box component="main" sx={{ 
+        flexGrow: 1, 
+        display: 'flex', 
+        flexDirection: 'column', 
+        position: 'relative',
+        width: '100%',
+      }}>
         <Routes>
           <Route path="/login" element={
-            <Container maxWidth="xl" sx={{ py: { xs: 4, md: 8 } }}><Login /></Container>
+            <Container maxWidth="xl" sx={{ py: { xs: 4, md: 8 }, flexGrow: 1, display: 'flex' }}><Login /></Container>
           } />
           <Route path="/register" element={
-            <Container maxWidth="xl" sx={{ py: { xs: 4, md: 8 } }}><Register /></Container>
+            <Container maxWidth="xl" sx={{ py: { xs: 4, md: 8 }, flexGrow: 1, display: 'flex' }}><Register /></Container>
           } />
           <Route path="/admin" element={
             <Container maxWidth="xl" sx={{ py: { xs: 4, md: 8 } }}><AdminLogin /></Container>
@@ -207,14 +213,14 @@ function AppContent() {
           } />
           <Route path="/monitors" element={
             <PrivateRoute>
-              <Container maxWidth="lg" sx={{ py: { xs: 4, md: 8 } }}>
+              <Container maxWidth="xl" sx={{ py: { xs: 4, md: 6 } }}>
                 <ActiveMonitors />
               </Container>
             </PrivateRoute>
           } />
           <Route path="/add-monitor" element={
             <PrivateRoute>
-              <Container maxWidth="lg" sx={{ py: { xs: 2, md: 2 } }}>
+              <Container maxWidth="xl" sx={{ py: { xs: 2, md: 4 } }}>
                 <AddMonitor />
               </Container>
             </PrivateRoute>

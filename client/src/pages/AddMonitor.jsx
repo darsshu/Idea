@@ -175,28 +175,28 @@ const AddMonitor = () => {
 
   return (
     <Box sx={{
-      maxWidth: 900,
+      width: '100%',
       mx: 'auto',
-      mt: 1,
-      p: 2,
+      p: { xs: 2, md: 4 },
       position: 'relative',
-      minHeight: 'auto',
+      flexGrow: 1,
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      alignItems: 'center'
     }}>
       {/* Background animated gradient blobs */}
       <Box sx={{
         position: 'absolute',
         top: '10%',
         left: '-10%',
-        width: '300px',
-        height: '300px',
+        width: '40vmax',
+        height: '40vmax',
         bgcolor: 'primary.main',
         borderRadius: '50%',
-        filter: 'blur(80px)',
-        opacity: theme.palette.mode === 'dark' ? 0.3 : 0.1,
-        animation: 'float 10s ease-in-out infinite',
+        filter: 'blur(100px)',
+        opacity: theme.palette.mode === 'dark' ? 0.2 : 0.08,
+        animation: 'float 15s ease-in-out infinite',
         zIndex: -1,
         '@keyframes float': {
           '0%, 100%': { transform: 'translateY(0) scale(1)' },
@@ -207,13 +207,13 @@ const AddMonitor = () => {
         position: 'absolute',
         bottom: '10%',
         right: '-10%',
-        width: '250px',
-        height: '250px',
+        width: '35vmax',
+        height: '35vmax',
         bgcolor: 'secondary.main',
         borderRadius: '50%',
-        filter: 'blur(80px)',
-        opacity: theme.palette.mode === 'dark' ? 0.3 : 0.1,
-        animation: 'float 8s ease-in-out infinite reverse',
+        filter: 'blur(100px)',
+        opacity: theme.palette.mode === 'dark' ? 0.2 : 0.08,
+        animation: 'float 12s ease-in-out infinite reverse',
         zIndex: -1,
       }} />
 

@@ -89,19 +89,24 @@ const Home = () => {
     <Box sx={{ position: 'relative', width: '100%', minHeight: 'calc(100vh - 64px)', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
       <BackgroundScene />
 
-      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, py: { xs: 4, md: 2 } }}>
+      <Container maxWidth={false} sx={{ position: 'relative', zIndex: 1, py: { xs: 4, md: 6 }, px: { xs: 2, md: 8 } }}>
         <Grid container spacing={6} alignItems="center">
 
-          {/* Left Column: Hero Text */}
-          <Grid item xs={12} md={6}>
-            <motion.div variants={containerVariants} initial="hidden" animate="visible">
+          {/* Centralized Hero Section */}
+          <Grid item xs={12}>
+            <motion.div 
+              variants={containerVariants} 
+              initial="hidden" 
+              animate="visible"
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}
+            >
               <motion.div variants={itemVariants}>
                 <Typography
                   variant="h1"
                   gutterBottom
                   sx={{
                     fontWeight: 900,
-                    fontSize: { xs: '2.5rem', md: '3.5rem', lg: '4rem' },
+                    fontSize: { xs: '2.5rem', md: '4rem', lg: '5rem' },
                     lineHeight: 1.1,
                     background: (theme) => `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                     WebkitBackgroundClip: 'text',
@@ -114,7 +119,7 @@ const Home = () => {
               </motion.div>
 
               <motion.div variants={itemVariants}>
-                <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 500, mb: 4, lineHeight: 1.6, maxWidth: '85%' }}>
+                <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 500, mb: 4, lineHeight: 1.6, maxWidth: '1000px', mx: 'auto', fontSize: '1.1rem' }}>
                   Automated ticket monitoring for your favorite <span className="highlight">cricket matches</span> and events. We actively monitor availability so you don't have to keep refreshing.
                 </Typography>
               </motion.div>
@@ -128,59 +133,73 @@ const Home = () => {
                     color="primary"
                     size="medium"
                     startIcon={<AddCircleOutlineIcon />}
-                    sx={{ py: 1.5, px: 4, mb: 4, borderRadius: 3, fontWeight: 700, boxShadow: '0 4px 15px rgba(25,118,210,0.3)' }}
+                    sx={{ py: 1.5, px: 4, mb: 6, borderRadius: 3, fontWeight: 700, boxShadow: '0 4px 15px rgba(25,118,210,0.3)' }}
                   >
                     Create Ticket Setup
                   </Button>
                 </motion.div>
               </motion.div>
 
-              <motion.div variants={itemVariants}>
+              <motion.div variants={itemVariants} style={{ width: '100%', maxWidth: '1200px' }}>
                 <Paper
                   elevation={4}
                   sx={{
-                    p: 3,
-                    borderRadius: 4,
+                    p: { xs: 3, md: 4 },
+                    borderRadius: 5,
                     background: (theme) => theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(30, 30, 30, 0.8)',
                     backdropFilter: 'blur(12px)',
                     border: '1px solid',
                     borderColor: 'divider',
                     display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: 2
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: 1.5
                   }}
                 >
-                  {/* <HelpOutlineIcon color="primary" sx={{ mt: 0.5 }} /> */}
-                  <Box>
-                    <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>How it works</Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                      Submit your BookMyShow event URL. We run background checks continuously. The moment tickets drop or cancellations occur, we instantly dispatch an alert to your email, ensuring you're first to book.
-                    </Typography>
-                  </Box>
+                  <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5, letterSpacing: '-0.3px' }}>How it works</Typography>
+                  <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.6, textAlign: 'center', maxWidth: '900px' }}>
+                    Submit your BookMyShow event URL. We run background checks continuously. The moment tickets drop or cancellations occur, we instantly dispatch an alert to your email, ensuring you're first to book.
+                  </Typography>
                 </Paper>
               </motion.div>
             </motion.div>
           </Grid>
 
-          {/* Right Column: Features Stack */}
-          <Grid item xs={12} md={6}>
+          {/* Features Row */}
+          <Grid item xs={12}>
             <motion.div variants={containerVariants} initial="hidden" animate="visible">
-              <Box sx={{ display: 'flex', flexDirection: '', gap: 3 }}>
+              <Box sx={{ 
+                display: 'flex', 
+                flexDirection: { xs: 'column', md: 'row' }, 
+                gap: 3, 
+                justifyContent: 'center',
+                alignItems: 'stretch',
+                mt: 4
+              }}>
                 {features.map((feature, index) => (
-                  <motion.div key={index} variants={rightItemVariants} whileHover={{ x: -10, scale: 1.02 }} transition={{ type: 'spring', stiffness: 300 }}>
+                  <motion.div 
+                    key={index} 
+                    variants={rightItemVariants} 
+                    whileHover={{ y: -10, scale: 1.02 }} 
+                    transition={{ type: 'spring', stiffness: 300 }}
+                    style={{ flex: 1, maxWidth: '500px' }}
+                  >
                     <Paper
                       elevation={3}
                       sx={{
                         p: 3,
+                        height: '100%',
                         display: 'flex',
+                        flexDirection: 'column',
                         alignItems: 'center',
-                        gap: 3,
+                        textAlign: 'center',
+                        gap: 2,
                         borderRadius: 4,
                         backdropFilter: 'blur(10px)',
                         background: (theme) => theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(30, 30, 30, 0.8)',
                         border: '1px solid',
                         borderColor: 'divider',
-                        transition: 'box-shadow 0.3s',
+                        transition: 'all 0.3s',
                         '&:hover': {
                           boxShadow: '0 12px 28px rgba(0,0,0,0.12)',
                           borderColor: 'primary.main',
@@ -198,7 +217,7 @@ const Home = () => {
                         {feature.icon}
                       </Box>
                       <Box>
-                        <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5, fontSize: '1rem' }}>
+                        <Typography variant="h6" sx={{ fontWeight: 700, mb: 1, fontSize: '1.1rem' }}>
                           {feature.title}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
