@@ -1,21 +1,17 @@
 {
   "version": 2,
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/server/server.js"
+      "source": "/api/(.*)",
+      "destination": "/server/server.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "/client/dist/$1",
-      "continue": true
+      "source": "/(.*\\.[a-zA-Z0-9]+)$",
+      "destination": "/client/dist/$1"
     },
     {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/client/dist/index.html"
+      "source": "/((?!api/).*)",
+      "destination": "/client/dist/index.html"
     }
   ],
   "functions": {
