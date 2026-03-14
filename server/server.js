@@ -10,7 +10,14 @@ const cronRoutes = require('./routes/cron');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// Enable CORS with specific origin for production
+app.use(cors({
+    origin: ['https://idea-client-zeta.vercel.app', 'http://localhost:5173'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 // Middleware to ensure DB connection
