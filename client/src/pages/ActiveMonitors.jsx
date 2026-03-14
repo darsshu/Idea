@@ -18,6 +18,7 @@ import {
 import axios from 'axios';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import LaunchIcon from '@mui/icons-material/Launch';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const ActiveMonitors = () => {
   const [monitors, setMonitors] = useState([]);
@@ -42,6 +43,17 @@ const ActiveMonitors = () => {
     const interval = setInterval(fetchMonitors, 30000); // Refresh every 30s
     return () => clearInterval(interval);
   }, []);
+
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this monitor?')) {
+      try {
+        await axios.delete(`${import.meta.env.VITE_API_URL}/api/monitor/${id}`);
+        setMonitors(monitors.filter(m => m.id !== id));
+      } catch (err) {
+        setError('Failed to delete monitor.');
+      }
+    }
+  };
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -110,11 +122,21 @@ const ActiveMonitors = () => {
                     {new Date(monitor.lastChecked).toLocaleTimeString()}
                   </TableCell>
                   <TableCell>
-                    <Link href={monitor.url} target="_blank" rel="noopener">
-                      <IconButton size="small" color="primary">
-                        <LaunchIcon fontSize="small" />
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                      <Link href={monitor.url} target="_blank" rel="noopener noreferrer">
+                        <IconButton size="small" color="primary" title="Open Link">
+                          <LaunchIcon fontSize="small" />
+                        </IconButton>
+                      </Link>
+                      <IconButton 
+                        size="small" 
+                        color="error" 
+                        onClick={() => handleDelete(monitor.id)}
+                        title="Delete Monitor"
+                      >
+                        <DeleteIcon fontSize="small" />
                       </IconButton>
-                    </Link>
+                    </Box>
                   </TableCell>
                 </TableRow>
               ))}

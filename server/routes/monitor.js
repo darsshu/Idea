@@ -25,4 +25,15 @@ router.post('/monitor', (req, res) => {
     res.status(201).json(monitor);
 });
 
+// Delete monitor
+router.delete('/monitor/:id', (req, res) => {
+    const { id } = req.params;
+    const deleted = storage.deleteMonitor(id);
+    if (deleted) {
+        res.json({ message: 'Monitor deleted successfully' });
+    } else {
+        res.status(404).json({ error: 'Monitor not found' });
+    }
+});
+
 module.exports = router;

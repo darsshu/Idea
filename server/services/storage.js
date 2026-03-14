@@ -58,8 +58,19 @@ const updateMonitor = (id, updates) => {
     return null;
 };
 
+const deleteMonitor = (id) => {
+    const monitors = getMonitors();
+    const filteredMonitors = monitors.filter(m => m.id !== id);
+    if (monitors.length !== filteredMonitors.length) {
+        saveMonitors(filteredMonitors);
+        return true;
+    }
+    return false;
+};
+
 module.exports = {
     getMonitors,
     addMonitor,
-    updateMonitor
+    updateMonitor,
+    deleteMonitor
 };
