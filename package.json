@@ -1,0 +1,14 @@
+{
+  "name": "idea-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "install-all": "npm install && cd client && npm install && cd ../server && npm install",
+    "build:client": "cd client && npm run build",
+    "vercel-build": "npm run build:client"
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ]
+}
