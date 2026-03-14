@@ -38,10 +38,31 @@ const checkAvailability = async (url) => {
 
         const available = hasBookButton && !isSoldOut;
 
+        let scrapedTitle = title.replace(/ \| BookMyShow/i, '').replace(/Tickets - BookMyShow/i, '').trim();
+
+        if (!scrapedTitle || scrapedTitle.includes('Movie Tickets') || scrapedTitle.includes('Just a moment')) {
+            try {
+                const urlObj = new URL(url);
+                const parts = urlObj.pathname.split('/').filter(Boolean);
+                const etIndex = parts.findIndex(p => p.startsWith('ET'));
+                if (etIndex > 0) {
+                    const slug = parts[etIndex - 1];
+                    scrapedTitle = slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                } else if (parts.length >= 2) {
+                    const slug = parts[parts.length - 2];
+                    scrapedTitle = slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                }
+            } catch (e) {
+                // Ignore
+            }
+        }
+        
+        if (!scrapedTitle) scrapedTitle = 'Cricket Match';
+
         await browser.close();
         return { 
             available, 
-            title: title.replace(' | BookMyShow', '').replace('Tickets - BookMyShow', '').trim() 
+            title: scrapedTitle
         };
     } catch (error) {
         console.error(`Scraping error for ${url}:`, error.message);

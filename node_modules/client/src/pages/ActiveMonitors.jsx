@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Box, 
-  Typography, 
+import {
+  Box,
+  Typography,
   Grid,
   Card,
   CardContent,
@@ -44,9 +44,9 @@ const ActiveMonitors = () => {
       setError(null);
     } catch (err) {
       if (err.response?.status === 401) {
-          setError('Session expired. Please login again.');
+        setError('Session expired. Please login again.');
       } else {
-          setError('Failed to fetch monitors. Please check your connection.');
+        setError('Failed to fetch monitors. Please check your connection.');
       }
     } finally {
       setLoading(false);
@@ -93,8 +93,8 @@ const ActiveMonitors = () => {
       <Fade in={true} timeout={800}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', mb: 4 }}>
           <Box>
-            <Typography variant="h3" sx={{ 
-              fontWeight: 900, 
+            <Typography variant="h3" sx={{
+              fontWeight: 900,
               mb: 1,
               background: (theme) => `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
               WebkitBackgroundClip: 'text',
@@ -107,11 +107,11 @@ const ActiveMonitors = () => {
             </Typography>
           </Box>
           <Tooltip title="Refresh Data">
-            <IconButton 
-              onClick={fetchMonitors} 
-              sx={{ 
-                bgcolor: 'background.paper', 
-                border: '1px solid', 
+            <IconButton
+              onClick={fetchMonitors}
+              sx={{
+                bgcolor: 'background.paper',
+                border: '1px solid',
                 borderColor: 'divider',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
                 transition: 'all 0.3s',
@@ -132,13 +132,13 @@ const ActiveMonitors = () => {
 
       {monitors.length === 0 ? (
         <Fade in={true} timeout={1000}>
-          <Card 
-            elevation={0} 
-            sx={{ 
-              p: 8, 
-              textAlign: 'center', 
-              bgcolor: 'background.paper', 
-              border: '2px dashed', 
+          <Card
+            elevation={0}
+            sx={{
+              p: 8,
+              textAlign: 'center',
+              bgcolor: 'background.paper',
+              border: '2px dashed',
               borderColor: 'divider',
               borderRadius: 6
             }}
@@ -150,10 +150,10 @@ const ActiveMonitors = () => {
             <Typography variant="body1" color="text.secondary" sx={{ mb: 4, maxWidth: 400, mx: 'auto' }}>
               You haven't started tracking any match yet. Head back to the home page to start!
             </Typography>
-            <Button 
-              variant="contained" 
-              component={RouterLink} 
-              to="/" 
+            <Button
+              variant="contained"
+              component={RouterLink}
+              to="/"
               startIcon={<SportsCricketIcon />}
               size="large"
             >
@@ -166,9 +166,9 @@ const ActiveMonitors = () => {
           {monitors.map((monitor, index) => (
             <Grid item xs={12} key={monitor._id || monitor.id}>
               <Grow in={true} timeout={500 + (index * 100)}>
-                <Card 
+                <Card
                   elevation={0}
-                  sx={{ 
+                  sx={{
                     display: 'flex',
                     flexDirection: { xs: 'column', md: 'row' },
                     alignItems: { xs: 'stretch', md: 'center' },
@@ -196,22 +196,22 @@ const ActiveMonitors = () => {
                     }
                   }}
                 >
-                  <Box sx={{ 
-                    display: 'flex', 
+                  <Box sx={{
+                    display: 'flex',
                     flexDirection: { xs: 'column', md: 'row' },
                     alignItems: { xs: 'flex-start', md: 'center' },
                     width: '100%',
                     p: { xs: 3, md: 4 },
                     pl: { xs: 4, md: 5 }, // Account for the colored bar on left
                     gap: { xs: 3, md: 4 }
-                   }}>
-                    
+                  }}>
+
                     {/* Column 1: Match Name and Status */}
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5, flex: 1 }}>
-                      <Avatar 
-                        sx={{ 
+                      <Avatar
+                        sx={{
                           background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                          width: { xs: 48, md: 56 }, 
+                          width: { xs: 48, md: 56 },
                           height: { xs: 48, md: 56 },
                           boxShadow: '0 8px 16px rgba(25,118,210,0.2)',
                           transition: 'transform 0.3s',
@@ -222,20 +222,20 @@ const ActiveMonitors = () => {
                       </Avatar>
                       <Box>
                         <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1.3, letterSpacing: '-0.3px', color: 'text.primary', mb: 0.5 }}>
-                          {monitor.matchName || 'Match Details Syncing...'}
+                          {monitor.matchName}
                         </Typography>
-                        <Chip 
+                        <Chip
                           size="small"
-                          label={monitor.status} 
-                          sx={{ 
-                            bgcolor: `${getStatusColor(monitor.status)}15`, 
+                          label={monitor.status}
+                          sx={{
+                            bgcolor: `${getStatusColor(monitor.status)}15`,
                             color: getStatusColor(monitor.status),
                             fontWeight: 800,
                             border: `1px solid ${getStatusColor(monitor.status)}40`,
                             px: 1,
                             height: 24,
                             '& .MuiChip-label': { px: 1.5 }
-                          }} 
+                          }}
                         />
                       </Box>
                     </Box>
@@ -244,9 +244,9 @@ const ActiveMonitors = () => {
                     <Divider sx={{ display: { xs: 'block', md: 'none' }, width: '100%' }} />
 
                     {/* Column 2: Last Checked */}
-                    <Box sx={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
+                    <Box sx={{
+                      display: 'flex',
+                      alignItems: 'center',
                       gap: 2,
                       minWidth: { md: '180px' },
                       py: { xs: 0, md: 1 }
@@ -267,27 +267,27 @@ const ActiveMonitors = () => {
                     <Divider sx={{ display: { xs: 'block', md: 'none' }, width: '100%' }} />
 
                     {/* Column 3: Actions */}
-                    <Box sx={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
+                    <Box sx={{
+                      display: 'flex',
+                      alignItems: 'center',
                       gap: 1.5,
                       width: { xs: '100%', md: 'auto' }
                     }}>
-                      <Button 
+                      <Button
                         variant="contained"
-                        color="primary" 
+                        color="primary"
                         startIcon={<LaunchIcon sx={{ fontSize: 18 }} />}
                         href={monitor.url}
                         target="_blank"
-                        sx={{ 
-                          fontWeight: 800, 
+                        sx={{
+                          fontWeight: 800,
                           borderRadius: 3,
                           px: 3,
                           py: 1.2,
                           boxShadow: (theme) => `0 6px 16px ${theme.palette.primary.main}40`,
                           '&:hover': {
-                             boxShadow: (theme) => `0 8px 24px ${theme.palette.primary.main}60`,
-                             transform: 'translateY(-2px)'
+                            boxShadow: (theme) => `0 8px 24px ${theme.palette.primary.main}60`,
+                            transform: 'translateY(-2px)'
                           },
                           transition: 'all 0.2s',
                           flex: { xs: 1, md: 'none' }
@@ -295,11 +295,11 @@ const ActiveMonitors = () => {
                       >
                         Visit
                       </Button>
-                      <IconButton 
-                        color="error" 
+                      <IconButton
+                        color="error"
                         onClick={() => handleDelete(monitor._id || monitor.id)}
                         aria-label="Delete Monitor"
-                        sx={{ 
+                        sx={{
                           border: '2px solid',
                           borderColor: 'error.light',
                           borderRadius: 3,
