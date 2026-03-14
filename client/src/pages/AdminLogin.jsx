@@ -6,23 +6,24 @@ import {
   TextField, 
   Button, 
   Paper, 
-  Link as MuiLink, 
   Alert, 
   CircularProgress,
   InputAdornment,
   IconButton,
   Fade,
-  Grow
+  Grow,
+  useTheme
 } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import SportsCricketIcon from '@mui/icons-material/SportsCricket';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
-const Login = () => {
+const AdminLogin = () => {
+    const theme = useTheme();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -38,7 +39,7 @@ const Login = () => {
         e.preventDefault();
         const success = await login({ email, password });
         if (success) {
-            navigate('/');
+            navigate('/admin/events');
         }
     };
 
@@ -56,7 +57,8 @@ const Login = () => {
                             borderColor: 'divider',
                             bgcolor: 'background.paper',
                             position: 'relative',
-                            overflow: 'hidden'
+                            overflow: 'hidden',
+                            boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
                         }}
                     >
                         {/* Decorative background element */}
@@ -66,18 +68,26 @@ const Login = () => {
                             right: -50, 
                             width: 150, 
                             height: 150, 
-                            bgcolor: 'primary.main', 
+                            bgcolor: 'error.main', 
                             opacity: 0.05, 
                             borderRadius: '50%' 
                         }} />
 
                         <Box sx={{ mb: 4, textAlign: 'center' }}>
-                            <SportsCricketIcon sx={{ fontSize: 48, color: 'primary.main', mb: 2 }} />
+                            <Box sx={{ 
+                                display: 'inline-flex', 
+                                p: 2, 
+                                borderRadius: 4, 
+                                bgcolor: 'rgba(211, 47, 47, 0.1)', 
+                                mb: 2 
+                            }}>
+                                <AdminPanelSettingsIcon sx={{ fontSize: 40, color: 'error.main' }} />
+                            </Box>
                             <Typography variant="h4" sx={{ fontWeight: 900, mb: 1, letterSpacing: '-1px' }}>
-                                Welcome Back
+                                Admin Portal
                             </Typography>
                             <Typography variant="body1" color="text.secondary">
-                                Sign in to manage your ticket monitors
+                                Restricted access for administrators only
                             </Typography>
                         </Box>
 
@@ -95,7 +105,7 @@ const Login = () => {
                                 required
                                 fullWidth
                                 id="email"
-                                label="Email Address"
+                                label="Admin Email"
                                 name="email"
                                 autoComplete="email"
                                 autoFocus
@@ -114,7 +124,7 @@ const Login = () => {
                                 required
                                 fullWidth
                                 name="password"
-                                label="Password"
+                                label="Admin Password"
                                 type={showPassword ? 'text' : 'password'}
                                 id="password"
                                 autoComplete="current-password"
@@ -144,52 +154,20 @@ const Login = () => {
                                 type="submit"
                                 fullWidth
                                 variant="contained"
+                                color="error"
                                 disabled={loading}
                                 size="large"
                                 sx={{ 
                                     mt: 4, 
-                                    mb: 3, 
+                                    mb: 2, 
                                     py: 1.8, 
                                     fontSize: '1.1rem', 
-                                    boxShadow: (theme) => `0 8px 16px ${theme.palette.mode === 'light' ? 'rgba(46, 125, 50, 0.2)' : 'rgba(0, 0, 0, 0.3)'}`
+                                    fontWeight: 700,
+                                    boxShadow: '0 8px 16px rgba(211, 47, 47, 0.2)'
                                 }}
                             >
-                                {loading ? <CircularProgress size={26} color="inherit" /> : 'Continue to Dashboard'}
+                                {loading ? <CircularProgress size={26} color="inherit" /> : 'Log In to Admin Panel'}
                             </Button>
-
-                            <Box sx={{ textAlign: 'center' }}>
-                                <Typography variant="body2" color="text.secondary">
-                                    New to Cricket Notifier?{' '}
-                                    <MuiLink 
-                                        component={Link} 
-                                        to="/register" 
-                                        sx={{ 
-                                            textDecoration: 'none', 
-                                            fontWeight: 700,
-                                            color: 'primary.main',
-                                            '&:hover': { textDecoration: 'underline' }
-                                        }}
-                                    >
-                                        Create an account
-                                    </MuiLink>
-                                </Typography>
-                            </Box>
-                            
-                            <Box sx={{ mt: 3, borderTop: '1px solid', borderColor: 'divider', pt: 2, textAlign: 'center' }}>
-                                <MuiLink 
-                                    component={Link} 
-                                    to="/admin" 
-                                    sx={{ 
-                                        textDecoration: 'none', 
-                                        fontSize: '0.8rem',
-                                        fontWeight: 600,
-                                        color: 'text.secondary',
-                                        '&:hover': { color: 'error.main' }
-                                    }}
-                                >
-                                    Admin Portal Access
-                                </MuiLink>
-                            </Box>
                         </Box>
                     </Paper>
                 </Box>
@@ -198,4 +176,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default AdminLogin;

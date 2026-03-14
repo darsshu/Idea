@@ -25,6 +25,7 @@ import ActiveMonitors from './pages/ActiveMonitors';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminEvents from './pages/AdminEvents';
+import AdminLogin from './pages/AdminLogin';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeContextProvider, useColorMode } from './context/ThemeContext';
 import './App.css';
@@ -37,6 +38,16 @@ const PrivateRoute = ({ children }) => {
     </Box>
   );
   return token ? children : <Navigate to="/login" />;
+};
+
+const AdminRoute = ({ children }) => {
+  const { user, token, loading } = useAuth();
+  if (loading) return (
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+      <CircularProgress />
+    </Box>
+  );
+  return token && user?.role === 'admin' ? children : <Navigate to="/" />;
 };
 
 const NavBar = () => {
@@ -95,7 +106,9 @@ const NavBar = () => {
               <Button component={Link} to="/" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>Home</Button>
               <Button component={Link} to="/add-monitor" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>Match Notification</Button>
               <Button component={Link} to="/monitors" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>History</Button>
-              <Button component={Link} to="/admin/events" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>Admin</Button>
+              {user.role === 'admin' && (
+                <Button component={Link} to="/admin/events" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>Admin</Button>
+              )}
             </Stack>
           )}
 
@@ -180,6 +193,9 @@ function AppContent() {
           <Route path="/register" element={
             <Container maxWidth="xl" sx={{ py: { xs: 4, md: 8 } }}><Register /></Container>
           } />
+          <Route path="/admin" element={
+            <Container maxWidth="xl" sx={{ py: { xs: 4, md: 8 } }}><AdminLogin /></Container>
+          } />
           <Route path="/" element={
             <PrivateRoute>
               <Home />
@@ -200,11 +216,11 @@ function AppContent() {
             </PrivateRoute>
           } />
           <Route path="/admin/events" element={
-            <PrivateRoute>
+            <AdminRoute>
               <Container maxWidth="xl" sx={{ py: { xs: 4, md: 8 } }}>
                 <AdminEvents />
               </Container>
-            </PrivateRoute>
+            </AdminRoute>
           } />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

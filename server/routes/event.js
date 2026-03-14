@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Event = require('../models/event.model');
+const { protect, authorize } = require('../middleware/auth');
 
 // Get all events
 router.get('/events', async (req, res) => {
@@ -13,7 +14,7 @@ router.get('/events', async (req, res) => {
 });
 
 // Create event
-router.post('/events', async (req, res) => {
+router.post('/events', protect, authorize('admin'), async (req, res) => {
     try {
         const { title, imageUrl, eventUrl } = req.body;
         
@@ -31,7 +32,7 @@ router.post('/events', async (req, res) => {
 });
 
 // Delete event
-router.delete('/events/:id', async (req, res) => {
+router.delete('/events/:id', protect, authorize('admin'), async (req, res) => {
     try {
         const evt = await Event.findById(req.params.id);
         if (!evt) {
