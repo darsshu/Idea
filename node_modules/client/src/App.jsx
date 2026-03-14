@@ -92,8 +92,8 @@ const NavBar = () => {
           {user && (
             <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', md: 'flex' }, position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
               <Button component={Link} to="/" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>Home</Button>
-              <Button component={Link} to="/add-monitor" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>Create Monitor</Button>
-              <Button component={Link} to="/monitors" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>My Monitors</Button>
+              <Button component={Link} to="/add-monitor" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>Match Notification</Button>
+              <Button component={Link} to="/monitors" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>History</Button>
             </Stack>
           )}
 
@@ -136,8 +136,8 @@ const NavBar = () => {
                   anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                   PaperProps={{ elevation: 4, sx: { mt: 1.5, minWidth: 180, borderRadius: 3, padding: 1, border: '1px solid', borderColor: 'divider' } }}
                 >
-                  <MenuItem component={Link} to="/monitors" onClick={handleClose} sx={{ borderRadius: 2, mb: 0.5, py: 1.5, fontWeight: 500 }}>My Monitors</MenuItem>
-                  <MenuItem component={Link} to="/add-monitor" onClick={handleClose} sx={{ borderRadius: 2, mb: 1, py: 1.5, fontWeight: 500, display: { md: 'none' } }}>Create Monitor</MenuItem>
+                  <MenuItem component={Link} to="/monitors" onClick={handleClose} sx={{ borderRadius: 2, mb: 0.5, py: 1.5, fontWeight: 500 }}>History</MenuItem>
+                  <MenuItem component={Link} to="/add-monitor" onClick={handleClose} sx={{ borderRadius: 2, mb: 1, py: 1.5, fontWeight: 500, display: { md: 'none' } }}>Match Notification</MenuItem>
                   <Box sx={{ borderTop: '1px solid', borderColor: 'divider', my: 1 }} />
                   <MenuItem onClick={() => { handleClose(); logout(); }} sx={{ borderRadius: 2, color: 'error.main', py: 1.5, fontWeight: 600 }}>Logout</MenuItem>
                 </Menu>
@@ -192,7 +192,7 @@ function AppContent() {
           } />
           <Route path="/add-monitor" element={
             <PrivateRoute>
-              <Container maxWidth="lg" sx={{ py: { xs: 4, md: 8 } }}>
+              <Container maxWidth="lg" sx={{ py: { xs: 2, md: 2 } }}>
                 <AddMonitor />
               </Container>
             </PrivateRoute>

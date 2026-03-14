@@ -93,9 +93,17 @@ const ActiveMonitors = () => {
       <Fade in={true} timeout={800}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', mb: 4 }}>
           <Box>
-            <Typography variant="h3" sx={{ fontWeight: 900, mb: 1 }}>My Monitors</Typography>
-            <Typography variant="body1" color="text.secondary">
-              Managing {monitors.length} active ticket trackers
+            <Typography variant="h3" sx={{ 
+              fontWeight: 900, 
+              mb: 1,
+              background: (theme) => `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
+            }}>
+              History
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 500 }}>
+              Tracking {monitors.length} active match ticket events
             </Typography>
           </Box>
           <Tooltip title="Refresh Data">
@@ -105,7 +113,9 @@ const ActiveMonitors = () => {
                 bgcolor: 'background.paper', 
                 border: '1px solid', 
                 borderColor: 'divider',
-                '&:hover': { bgcolor: 'primary.main', color: 'white' }
+                boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                transition: 'all 0.3s',
+                '&:hover': { bgcolor: 'primary.main', color: 'white', transform: 'rotate(180deg)' }
               }}
             >
               <RefreshIcon />
@@ -154,95 +164,176 @@ const ActiveMonitors = () => {
       ) : (
         <Grid container spacing={3}>
           {monitors.map((monitor, index) => (
-            <Grid item xs={12} md={6} key={monitor.id}>
+            <Grid item xs={12} key={monitor.id}>
               <Grow in={true} timeout={500 + (index * 100)}>
                 <Card 
                   elevation={0}
                   sx={{ 
-                    position: 'relative',
+                    display: 'flex',
+                    flexDirection: { xs: 'column', md: 'row' },
+                    alignItems: { xs: 'stretch', md: 'center' },
                     border: '1px solid',
                     borderColor: 'divider',
+                    borderRadius: 4,
+                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    bgcolor: 'background.paper',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      left: 0,
+                      top: 0,
+                      width: '6px',
+                      height: '100%',
+                      background: `linear-gradient(to bottom, ${getStatusColor(monitor.status)}, ${theme.palette.secondary.main})`,
+                      opacity: 0.8
+                    },
                     '&:hover': {
+                      transform: 'translateY(-6px)',
                       borderColor: 'primary.main',
-                      boxShadow: (theme) => `0 12px 24px -10px ${theme.palette.mode === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.5)'}`
+                      boxShadow: (theme) => theme.palette.mode === 'light' ? '0 20px 40px -10px rgba(0,0,0,0.1)' : '0 20px 40px -10px rgba(0,0,0,0.5)',
                     }
                   }}
                 >
-                  <CardContent sx={{ p: 3 }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+                  <CardContent sx={{ 
+                    flex: 1, 
+                    p: { xs: 3, md: 4 }, 
+                    display: 'flex', 
+                    flexDirection: { xs: 'column', md: 'row' },
+                    alignItems: { xs: 'flex-start', md: 'center' },
+                    gap: { xs: 3, md: 4 },
+                    pl: { xs: 4, md: 5 } // Account for the colored bar on left
+                  }}>
+                    {/* Icon and Title */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5, minWidth: { md: '300px' } }}>
                       <Avatar 
                         sx={{ 
-                          bgcolor: 'primary.main', 
-                          width: 48, 
-                          height: 48,
-                          boxShadow: '0 4px 10px rgba(46, 125, 50, 0.3)'
+                          background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                          width: { xs: 56, md: 64 }, 
+                          height: { xs: 56, md: 64 },
+                          boxShadow: '0 8px 16px rgba(25,118,210,0.3)',
+                          transition: 'transform 0.3s',
+                          '&:hover': { transform: 'rotate(15deg) scale(1.1)' }
                         }}
                       >
-                        <SportsCricketIcon />
+                        <SportsCricketIcon fontSize="medium" />
                       </Avatar>
-                      <Chip 
-                        label={monitor.status} 
-                        sx={{ 
-                          bgcolor: `${getStatusColor(monitor.status)}20`, 
-                          color: getStatusColor(monitor.status),
-                          fontWeight: 700,
-                          border: `1px solid ${getStatusColor(monitor.status)}40`,
-                          px: 1
-                        }} 
-                      />
+                      <Box>
+                        <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1.3, letterSpacing: '-0.3px', color: 'text.primary' }}>
+                          {monitor.matchName || 'Match Details Syncing...'}
+                        </Typography>
+                        <Chip 
+                          size="small"
+                          label={monitor.status} 
+                          sx={{ 
+                            mt: 1,
+                            bgcolor: `${getStatusColor(monitor.status)}15`, 
+                            color: getStatusColor(monitor.status),
+                            fontWeight: 800,
+                            border: `1px solid ${getStatusColor(monitor.status)}40`,
+                            px: 1,
+                            letterSpacing: '0.5px'
+                          }} 
+                        />
+                      </Box>
                     </Box>
 
-                    <Typography variant="h6" sx={{ fontWeight: 800, mb: 1, lineHeight: 1.2 }}>
-                      {monitor.matchName || 'Match Details Syncing...'}
-                    </Typography>
-
-                    <Stack spacing={1.5} sx={{ mt: 2 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                        <AccessTimeIcon sx={{ fontSize: 18, color: 'text.secondary' }} />
-                        <Typography variant="body2" color="text.secondary">
-                          Last Checked: <strong>{new Date(monitor.lastChecked).toLocaleTimeString()}</strong>
-                        </Typography>
+                    {/* Details Stack */}
+                    <Stack 
+                      direction={{ xs: 'column', md: 'row' }} 
+                      spacing={{ xs: 2.5, md: 5 }} 
+                      sx={{ flex: 1, mt: { xs: 2, md: 0 }, width: '100%' }}
+                    >
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Box sx={{ position: 'absolute', width: 40, height: 40, borderRadius: '50%', bgcolor: 'primary.main', opacity: 0.1 }} />
+                          <AccessTimeIcon sx={{ fontSize: 24, color: 'text.secondary', zIndex: 1 }} />
+                        </Box>
+                        <Box>
+                          <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Last Checked</Typography>
+                          <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.secondary' }}>
+                            {new Date(monitor.lastChecked).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                          </Typography>
+                        </Box>
                       </Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                        <LinkIcon sx={{ fontSize: 18, color: 'text.secondary' }} />
-                        <Typography 
-                          variant="body2" 
-                          color="primary" 
-                          sx={{ 
-                            textOverflow: 'ellipsis', 
-                            overflow: 'hidden', 
-                            whiteSpace: 'nowrap',
-                            maxWidth: '250px',
-                            fontWeight: 500
-                          }}
-                        >
-                          {monitor.url}
-                        </Typography>
+                      
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1, minWidth: 0 }}>
+                        <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Box sx={{ position: 'absolute', width: 40, height: 40, borderRadius: '50%', bgcolor: 'secondary.main', opacity: 0.1 }} />
+                          <LinkIcon sx={{ fontSize: 24, color: 'text.secondary', zIndex: 1 }} />
+                        </Box>
+                        <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>
+                           <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Target URL</Typography>
+                           <Typography 
+                             variant="body2" 
+                             sx={{ 
+                               fontWeight: 600,
+                               color: 'primary.main',
+                               whiteSpace: 'nowrap',
+                               overflow: 'hidden',
+                               textOverflow: 'ellipsis',
+                               '&:hover': { textDecoration: 'underline' }
+                             }}
+                           >
+                             {monitor.url}
+                           </Typography>
+                        </Box>
                       </Box>
                     </Stack>
                   </CardContent>
                   
-                  <Divider sx={{ borderStyle: 'dashed' }} />
+                  <Divider orientation="vertical" flexItem sx={{ display: { xs: 'none', md: 'block' }, borderStyle: 'solid', borderWidth: '1px', borderColor: 'divider', my: 3 }} />
+                  <Divider sx={{ display: { xs: 'block', md: 'none' }, borderStyle: 'solid', borderWidth: '1px', borderColor: 'divider', mx: 4 }} />
                   
-                  <CardActions sx={{ p: 2, justifyContent: 'space-between', bgcolor: 'background.default', opacity: 0.9 }}>
+                  <CardActions sx={{ 
+                    p: { xs: 3, md: 4 }, 
+                    justifyContent: { xs: 'flex-start', md: 'center' }, 
+                    bgcolor: { xs: 'background.default', md: 'transparent' },
+                    minWidth: { md: '220px' },
+                    gap: 2,
+                    borderBottomLeftRadius: { xs: 16, md: 0 },
+                    borderBottomRightRadius: { xs: 16, md: 16 },
+                    borderTopRightRadius: { xs: 0, md: 16 }
+                  }}>
                     <Button 
-                      size="small" 
+                      variant="contained"
                       color="primary" 
-                      startIcon={<LaunchIcon sx={{ fontSize: 16 }} />}
+                      startIcon={<LaunchIcon sx={{ fontSize: 18 }} />}
                       href={monitor.url}
                       target="_blank"
-                      sx={{ fontWeight: 700 }}
+                      sx={{ 
+                        fontWeight: 800, 
+                        borderRadius: 3,
+                        px: 3,
+                        py: 1.2,
+                        boxShadow: (theme) => `0 6px 16px ${theme.palette.primary.main}40`,
+                        '&:hover': {
+                           boxShadow: (theme) => `0 8px 24px ${theme.palette.primary.main}60`,
+                           transform: 'translateY(-2px)'
+                        },
+                        transition: 'all 0.2s'
+                      }}
                     >
-                      Visit Event
+                      Visit
                     </Button>
-                    <IconButton 
-                      size="small" 
-                      color="error" 
-                      onClick={() => handleDelete(monitor.id)}
-                      sx={{ '&:hover': { bgcolor: 'error.main', color: 'white' } }}
-                    >
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
+                    <Tooltip title="Delete Monitor" placement="top" arrow>
+                      <IconButton 
+                        color="error" 
+                        onClick={() => handleDelete(monitor.id)}
+                        sx={{ 
+                          border: '2px solid',
+                          borderColor: 'error.light',
+                          borderRadius: 3,
+                          p: 1.2,
+                          '&:hover': { bgcolor: 'error.main', color: 'white', borderColor: 'error.main', transform: 'scale(1.1)' },
+                          transition: 'all 0.2s',
+                          bgcolor: 'background.paper'
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
                   </CardActions>
                 </Card>
               </Grow>
