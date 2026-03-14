@@ -293,8 +293,8 @@ function AppContent() {
         transition: 'background-color 0.3s ease'
       }}
     >
-      {/* Conditionally hide NavBar for admin routes */}
-      {!location.pathname.startsWith('/admin') && <NavBar />}
+      {/* Conditionally hide NavBar for auth and admin routes */}
+      {!['/login', '/register', '/admin'].some(path => location.pathname.startsWith(path)) && <NavBar />}
 
       <Box component="main" sx={{
         flexGrow: 1,
@@ -304,15 +304,9 @@ function AppContent() {
         width: '100%',
       }}>
         <Routes>
-          <Route path="/login" element={
-            <Container maxWidth="xl" sx={{ py: { xs: 4, md: 8 }, flexGrow: 1, display: 'flex' }}><Login /></Container>
-          } />
-          <Route path="/register" element={
-            <Container maxWidth="xl" sx={{ py: { xs: 4, md: 8 }, flexGrow: 1, display: 'flex' }}><Register /></Container>
-          } />
-          <Route path="/admin" element={
-            <Container maxWidth="xl" sx={{ py: { xs: 4, md: 8 } }}><AdminLogin /></Container>
-          } />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/admin" element={<AdminLogin />} />
           <Route path="/" element={
             <PrivateRoute>
               <Home />
@@ -349,8 +343,8 @@ function AppContent() {
         </Routes>
       </Box>
 
-      {/* Conditionally hide Footer for admin routes */}
-      {!location.pathname.startsWith('/admin') && (
+      {/* Conditionally hide Footer for auth and admin routes */}
+      {!['/login', '/register', '/admin'].some(path => location.pathname.startsWith(path)) && (
         <Box
           component="footer"
           sx={{

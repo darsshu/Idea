@@ -44,13 +44,19 @@ const AdminLogin = () => {
     };
 
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="xs" sx={{ 
+            minHeight: '100vh', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            py: 2
+        }}>
             <Grow in={visible} timeout={800}>
-                <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <Paper 
                         elevation={0} 
                         sx={{ 
-                            p: { xs: 4, md: 6 }, 
+                            p: { xs: 3, md: 4 }, 
                             width: '100%', 
                             borderRadius: 6, 
                             border: '1px solid',
@@ -73,20 +79,20 @@ const AdminLogin = () => {
                             borderRadius: '50%' 
                         }} />
 
-                        <Box sx={{ mb: 4, textAlign: 'center' }}>
+                        <Box sx={{ mb: 2, textAlign: 'center' }}>
                             <Box sx={{ 
                                 display: 'inline-flex', 
-                                p: 2, 
+                                p: 1.5, 
                                 borderRadius: 4, 
                                 bgcolor: 'rgba(211, 47, 47, 0.1)', 
-                                mb: 2 
+                                mb: 1.5 
                             }}>
-                                <AdminPanelSettingsIcon sx={{ fontSize: 40, color: 'error.main' }} />
+                                <AdminPanelSettingsIcon sx={{ fontSize: 32, color: 'error.main' }} />
                             </Box>
-                            <Typography variant="h4" sx={{ fontWeight: 900, mb: 1, letterSpacing: '-1px' }}>
+                            <Typography variant="h5" sx={{ fontWeight: 900, mb: 0.5, letterSpacing: '-1px' }}>
                                 Admin Portal
                             </Typography>
-                            <Typography variant="body1" color="text.secondary">
+                            <Typography variant="body2" color="text.secondary">
                                 Restricted access for administrators only
                             </Typography>
                         </Box>
@@ -156,12 +162,12 @@ const AdminLogin = () => {
                                 variant="contained"
                                 color="error"
                                 disabled={loading}
-                                size="large"
+                                size="medium"
                                 sx={{ 
-                                    mt: 4, 
-                                    mb: 2, 
-                                    py: 1.8, 
-                                    fontSize: '1.1rem', 
+                                    mt: 2, 
+                                    mb: 1, 
+                                    py: 1.4, 
+                                    fontSize: '1rem', 
                                     fontWeight: 700,
                                     boxShadow: '0 8px 16px rgba(211, 47, 47, 0.2)'
                                 }}

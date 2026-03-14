@@ -46,13 +46,19 @@ const Register = () => {
     };
 
     return (
-        <Container maxWidth="sm" sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Container maxWidth="xs" sx={{ 
+            minHeight: '100vh', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            py: 2
+        }}>
             <Grow in={visible} timeout={800}>
                 <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <Paper 
                         elevation={0} 
                         sx={{ 
-                            p: { xs: 4, md: 6 }, 
+                            p: { xs: 3, md: 4 }, 
                             width: '100%', 
                             borderRadius: 6, 
                             border: '1px solid',
@@ -74,9 +80,9 @@ const Register = () => {
                             borderRadius: '50%' 
                         }} />
 
-                        <Box sx={{ mb: 4, textAlign: 'center' }}>
-                            <SportsCricketIcon sx={{ fontSize: 48, color: 'primary.main', mb: 2 }} />
-                            <Typography variant="h5" sx={{ fontWeight: 800, mb: 1, letterSpacing: '-0.5px' }}>
+                        <Box sx={{ mb: 2, textAlign: 'center' }}>
+                            <SportsCricketIcon sx={{ fontSize: 36, color: 'primary.main', mb: 1 }} />
+                            <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5, letterSpacing: '-0.5px', fontSize: '1.25rem' }}>
                                 Create Account
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
@@ -163,9 +169,9 @@ const Register = () => {
                                     fullWidth
                                     variant="contained"
                                     disabled={loading}
-                                    size="large"
+                                    size="medium"
                                     sx={{ 
-                                        mt: 2, 
+                                        mt: 1, 
                                         py: 1.2, 
                                         boxShadow: (theme) => `0 4px 12px ${theme.palette.mode === 'light' ? 'rgba(25, 118, 210, 0.2)' : 'rgba(0, 0, 0, 0.3)'}`
                                     }}

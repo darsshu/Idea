@@ -43,13 +43,19 @@ const Login = () => {
     };
 
     return (
-        <Container maxWidth="sm" sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Container maxWidth="xs" sx={{ 
+            minHeight: '100vh', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            py: 2
+        }}>
             <Grow in={visible} timeout={800}>
                 <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <Paper 
                         elevation={0} 
                         sx={{ 
-                            p: { xs: 4, md: 6 }, 
+                            p: { xs: 3, md: 4 }, 
                             width: '100%', 
                             borderRadius: 6, 
                             border: '1px solid',
@@ -71,9 +77,9 @@ const Login = () => {
                             borderRadius: '50%' 
                         }} />
 
-                        <Box sx={{ mb: 4, textAlign: 'center' }}>
-                            <SportsCricketIcon sx={{ fontSize: 48, color: 'primary.main', mb: 2 }} />
-                            <Typography variant="h5" sx={{ fontWeight: 800, mb: 1, letterSpacing: '-0.5px' }}>
+                        <Box sx={{ mb: 3, textAlign: 'center' }}>
+                            <SportsCricketIcon sx={{ fontSize: 40, color: 'primary.main', mb: 1.5 }} />
+                            <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5, letterSpacing: '-0.5px', fontSize: '1.25rem' }}>
                                 Welcome Back
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
