@@ -16,6 +16,7 @@ import SportsCricketIcon from '@mui/icons-material/SportsCricket';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import Home from './pages/Home';
+import AddMonitor from './pages/AddMonitor';
 import ActiveMonitors from './pages/ActiveMonitors';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -66,7 +67,8 @@ const NavBar = () => {
             {user ? (
               <>
                 <Button color="inherit" component={Link} to="/" sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>Home</Button>
-                <Button color="inherit" component={Link} to="/monitors" sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>Monitors</Button>
+                <Button color="inherit" component={Link} to="/add-monitor" sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>Add Monitor</Button>
+                <Button color="inherit" component={Link} to="/monitors" sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>My Monitors</Button>
                 <Box sx={{ ml: 1, display: 'flex', alignItems: 'center', gap: 2 }}>
                   <Typography variant="body2" sx={{ display: { xs: 'none', md: 'block' }, fontWeight: 600 }}>
                     {user.name}
@@ -122,6 +124,11 @@ function AppContent() {
           <Route path="/monitors" element={
             <PrivateRoute>
               <ActiveMonitors />
+            </PrivateRoute>
+          } />
+          <Route path="/add-monitor" element={
+            <PrivateRoute>
+              <AddMonitor />
             </PrivateRoute>
           } />
           <Route path="*" element={<Navigate to="/" />} />
