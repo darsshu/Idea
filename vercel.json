@@ -6,7 +6,11 @@
       "destination": "/server/server.js"
     },
     {
-      "source": "/((?!api/).*)",
+      "source": "/(.*).(js|css|png|jpg|svg|ico)",
+      "destination": "/client/dist/$1.$2"
+    },
+    {
+      "source": "/(.*)",
       "destination": "/client/dist/index.html"
     }
   ],

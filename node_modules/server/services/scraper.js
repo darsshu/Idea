@@ -1,4 +1,5 @@
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
+const chromium = require('@sparticuz/chromium');
 
 /**
  * Scraper service to check ticket availability on BookMyShow
@@ -8,37 +9,42 @@ const puppeteer = require('puppeteer');
 const checkAvailability = async (url) => {
     let browser;
     try {
-        browser = await puppeteer.launch({
-            headless: 'new',
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
-        });
+        const isVercel = process.env.VERCEL || process.env.NODE_ENV === 'production';
+        
+        const options = isVercel ? {
+            args: chromium.args,
+            defaultViewport: chromium.defaultViewport,
+            executablePath: await chromium.executablePath(),
+            headless: chromium.headless,
+            ignoreHTTPSErrors: true,
+        } : {
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            // Adjust this path to your local Chrome installation if needed
+            executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+            headless: true,
+        };
+
+        browser = await puppeteer.launch(options);
         const page = await browser.newPage();
         
-        // Emulate a real user agent
         await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36');
-
         await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
 
-        // Extract title
         const title = await page.title();
-
-        // Check for specific keywords that indicate availability or sold out status
-        // BookMyShow often uses "Sold Out" or "Coming Soon" or "Book" buttons
         const content = await page.content();
         
-        // A common pattern on BMS is a button with text "Book" or "Available"
-        // If "Sold Out" is present and "Book" is absent, it's likely sold out
         const isSoldOut = content.toLowerCase().includes('sold out') || content.toLowerCase().includes('coming soon');
         const hasBookButton = content.toLowerCase().includes('book') || content.toLowerCase().includes('buy tickets');
 
-        // Note: BMS pages can be complex, so this is a simplified heuristic.
-        // In a real scenario, we might need more specific CSS selectors.
         const available = hasBookButton && !isSoldOut;
 
         await browser.close();
-        return { available, title: title.replace(' | BookMyShow', '') };
+        return { 
+            available, 
+            title: title.replace(' | BookMyShow', '').replace('Tickets - BookMyShow', '').trim() 
+        };
     } catch (error) {
-        console.error(`Scraping error for ${url}:`, error);
+        console.error(`Scraping error for ${url}:`, error.message);
         if (browser) await browser.close();
         throw error;
     }
