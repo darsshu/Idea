@@ -6,10 +6,6 @@
       "destination": "/server/server.js"
     },
     {
-      "source": "/(.*\\.[a-zA-Z0-9]+)$",
-      "destination": "/client/dist/$1"
-    },
-    {
       "source": "/((?!api/).*)",
       "destination": "/client/dist/index.html"
     }
