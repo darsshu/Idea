@@ -1,4 +1,5 @@
 {
+  "name": "idea-app",
   "version": 2,
   "builds": [
     {
