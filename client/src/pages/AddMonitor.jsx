@@ -176,20 +176,20 @@ const AddMonitor = () => {
   return (
     <Box sx={{
       width: '100%',
-      mx: 'auto',
-      p: { xs: 2, md: 4 },
-      position: 'relative',
-      flexGrow: 1,
+      minHeight: 'calc(100vh - 150px)',
       display: 'flex',
       flexDirection: 'column',
+      alignItems: 'center',
       justifyContent: 'center',
-      alignItems: 'center'
+      position: 'relative',
+      overflow: 'hidden',
+      py: 4
     }}>
       {/* Background animated gradient blobs */}
       <Box sx={{
         position: 'absolute',
         top: '10%',
-        left: '-10%',
+        left: '5%',
         width: '40vmax',
         height: '40vmax',
         bgcolor: 'primary.main',
@@ -206,7 +206,7 @@ const AddMonitor = () => {
       <Box sx={{
         position: 'absolute',
         bottom: '10%',
-        right: '-10%',
+        right: '5%',
         width: '35vmax',
         height: '35vmax',
         bgcolor: 'secondary.main',
@@ -219,10 +219,11 @@ const AddMonitor = () => {
 
       <Fade in={showContent} timeout={1000}>
         <Box sx={{ textAlign: 'center', mb: 4 }}>
-          <Box sx={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', mb: 1, gap: 1 }}>
-            <NotificationsActiveIcon sx={{ fontSize: 40, color: 'primary.main' }} />
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', mb: 2, gap: 1 }}>
+            <NotificationsActiveIcon sx={{ fontSize: { xs: 32, md: 40 }, color: 'primary.main' }} />
             <Typography variant="h3" sx={{
               fontWeight: 800,
+              textAlign: 'center',
               background: 'linear-gradient(45deg, #1976d2 30%, #9c27b0 90%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',

@@ -93,7 +93,7 @@ const AdminEvents = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{ maxWidth: '1600px', mx: 'auto', width: '100%' }}>
       <Box sx={{ mb: 6, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 2 }}>
         <Box>
           <Typography variant="h4" fontWeight={800} sx={{ letterSpacing: '-0.5px', color: 'text.primary', mb: 0.5 }}>
