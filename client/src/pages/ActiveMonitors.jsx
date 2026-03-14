@@ -27,7 +27,7 @@ const ActiveMonitors = () => {
   const fetchMonitors = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:5000/api/monitors');
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/monitors`);
       setMonitors(response.data);
       setError(null);
     } catch (err) {
