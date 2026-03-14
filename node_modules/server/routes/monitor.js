@@ -1,15 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const storage = require('../services/storage');
+const connectDB = require('../services/db');
 
 // Get all monitors
 router.get('/monitors', async (req, res) => {
+    await connectDB();
     const monitors = await storage.getMonitors();
     res.json(monitors);
 });
 
 // Add new monitor
 router.post('/monitor', async (req, res) => {
+    await connectDB();
     const { url, email } = req.body;
     
     if (!url || !email) {

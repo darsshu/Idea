@@ -19,5 +19,11 @@
       "runtime": "vercel-node@latest",
       "includeFiles": "server/**"
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/cron",
+      "schedule": "*/5 * * * *"
+    }
+  ]
 }

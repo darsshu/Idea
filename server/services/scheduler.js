@@ -36,17 +36,4 @@ const runMonitoring = async () => {
     console.log('--- Monitoring Cycle Complete ---');
 };
 
-const startScheduler = () => {
-    const interval = process.env.SCRAPE_INTERVAL || 1;
-    console.log(`Scheduler started. Interval: ${interval} minutes`);
-    
-    // Run once on startup
-    runMonitoring();
-
-    // Schedule subsequent runs
-    cron.schedule(`*/${interval} * * * *`, () => {
-        runMonitoring();
-    });
-};
-
-module.exports = { startScheduler };
+module.exports = { runMonitoring };

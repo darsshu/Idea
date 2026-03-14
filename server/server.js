@@ -2,10 +2,10 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
-const mongoose = require('mongoose');
+const connectDB = require('./services/db');
 const storage = require('./services/storage');
 const monitorRoutes = require('./routes/monitor');
-const scheduler = require('./services/scheduler');
+const cronRoutes = require('./routes/cron');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -13,17 +13,14 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => {
-        console.log('Connected to MongoDB');
-        // Start background monitoring only after DB connection
-        scheduler.startScheduler();
-    })
+// Connect to MongoDB
+connectDB()
+    .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.error('MongoDB connection error:', err));
 
 // Routes
 app.use('/api', monitorRoutes);
+app.use('/api', cronRoutes);
 
 app.get('/', (req, res) => {
     res.send('Cricket Ticket Notifier API is running...');
