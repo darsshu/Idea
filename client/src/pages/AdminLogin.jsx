@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Container, 
-  Box, 
-  Typography, 
-  TextField, 
-  Button, 
-  Paper, 
-  Alert, 
-  CircularProgress,
-  InputAdornment,
-  IconButton,
-  Fade,
-  Grow,
-  useTheme
+import {
+    Container,
+    Box,
+    Typography,
+    TextField,
+    Button,
+    Paper,
+    Alert,
+    CircularProgress,
+    InputAdornment,
+    IconButton,
+    Fade,
+    Grow,
+    useTheme,
+    Link as MuiLink
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
@@ -44,21 +45,21 @@ const AdminLogin = () => {
     };
 
     return (
-        <Container maxWidth="xs" sx={{ 
-            minHeight: '100vh', 
-            display: 'flex', 
-            alignItems: 'center', 
+        <Container maxWidth="xs" sx={{
+            minHeight: '100vh',
+            display: 'flex',
+            alignItems: 'center',
             justifyContent: 'center',
             py: 2
         }}>
             <Grow in={visible} timeout={800}>
                 <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <Paper 
-                        elevation={0} 
-                        sx={{ 
-                            p: { xs: 3, md: 4 }, 
-                            width: '100%', 
-                            borderRadius: 6, 
+                    <Paper
+                        elevation={0}
+                        sx={{
+                            p: { xs: 3, md: 4 },
+                            width: '100%',
+                            borderRadius: 6,
                             border: '1px solid',
                             borderColor: 'divider',
                             bgcolor: 'background.paper',
@@ -68,33 +69,31 @@ const AdminLogin = () => {
                         }}
                     >
                         {/* Decorative background element */}
-                        <Box sx={{ 
-                            position: 'absolute', 
-                            top: -50, 
-                            right: -50, 
-                            width: 150, 
-                            height: 150, 
-                            bgcolor: 'error.main', 
-                            opacity: 0.05, 
-                            borderRadius: '50%' 
+                        <Box sx={{
+                            position: 'absolute',
+                            top: -50,
+                            right: -50,
+                            width: 150,
+                            height: 150,
+                            bgcolor: 'error.main',
+                            opacity: 0.05,
+                            borderRadius: '50%'
                         }} />
 
                         <Box sx={{ mb: 2, textAlign: 'center' }}>
-                            <Box sx={{ 
-                                display: 'inline-flex', 
-                                p: 1.5, 
-                                borderRadius: 4, 
-                                bgcolor: 'rgba(211, 47, 47, 0.1)', 
-                                mb: 1.5 
+                            <Box sx={{
+                                display: 'inline-flex',
+                                p: 1.5,
+                                borderRadius: 4,
+                                bgcolor: 'rgba(211, 47, 47, 0.1)',
+                                mb: 1.5
                             }}>
                                 <AdminPanelSettingsIcon sx={{ fontSize: 32, color: 'error.main' }} />
                             </Box>
                             <Typography variant="h5" sx={{ fontWeight: 900, mb: 0.5, letterSpacing: '-1px' }}>
                                 Admin Portal
                             </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                Restricted access for administrators only
-                            </Typography>
+
                         </Box>
 
                         {error && (
@@ -155,7 +154,7 @@ const AdminLogin = () => {
                                     ),
                                 }}
                             />
-                            
+
                             <Button
                                 type="submit"
                                 fullWidth
@@ -163,17 +162,33 @@ const AdminLogin = () => {
                                 color="error"
                                 disabled={loading}
                                 size="medium"
-                                sx={{ 
-                                    mt: 2, 
-                                    mb: 1, 
-                                    py: 1.4, 
-                                    fontSize: '1rem', 
+                                sx={{
+                                    mt: 2,
+                                    mb: 1,
+                                    py: 1.4,
+                                    fontSize: '1rem',
                                     fontWeight: 700,
                                     boxShadow: '0 8px 16px rgba(211, 47, 47, 0.2)'
                                 }}
                             >
                                 {loading ? <CircularProgress size={26} color="inherit" /> : 'Log In to Admin Panel'}
                             </Button>
+                        </Box>
+
+                        <Box sx={{ mt: 3, borderTop: '1px solid', borderColor: 'divider', pt: 2, textAlign: 'center' }}>
+                            <MuiLink
+                                component={Link}
+                                to="/login"
+                                sx={{
+                                    textDecoration: 'none',
+                                    fontSize: '0.85rem',
+                                    fontWeight: 700,
+                                    color: 'text.secondary',
+                                    '&:hover': { color: 'primary.main' }
+                                }}
+                            >
+                                ← Back to User Login
+                            </MuiLink>
                         </Box>
                     </Paper>
                 </Box>

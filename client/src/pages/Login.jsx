@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Container, 
-  Box, 
-  Typography, 
-  TextField, 
-  Button, 
-  Paper, 
-  Link as MuiLink, 
-  Alert, 
-  CircularProgress,
-  InputAdornment,
-  IconButton,
-  Fade,
-  Grow
+import {
+    Container,
+    Box,
+    Typography,
+    TextField,
+    Button,
+    Paper,
+    Link as MuiLink,
+    Alert,
+    CircularProgress,
+    InputAdornment,
+    IconButton,
+    Fade,
+    Grow
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -43,21 +43,21 @@ const Login = () => {
     };
 
     return (
-        <Container maxWidth="xs" sx={{ 
-            minHeight: '100vh', 
-            display: 'flex', 
-            alignItems: 'center', 
+        <Container maxWidth="xs" sx={{
+            minHeight: '100vh',
+            display: 'flex',
+            alignItems: 'center',
             justifyContent: 'center',
             py: 2
         }}>
             <Grow in={visible} timeout={800}>
                 <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <Paper 
-                        elevation={0} 
-                        sx={{ 
-                            p: { xs: 3, md: 4 }, 
-                            width: '100%', 
-                            borderRadius: 6, 
+                    <Paper
+                        elevation={0}
+                        sx={{
+                            p: { xs: 3, md: 4 },
+                            width: '100%',
+                            borderRadius: 6,
                             border: '1px solid',
                             borderColor: 'divider',
                             bgcolor: 'background.paper',
@@ -66,15 +66,15 @@ const Login = () => {
                         }}
                     >
                         {/* Decorative background element */}
-                        <Box sx={{ 
-                            position: 'absolute', 
-                            top: -50, 
-                            right: -50, 
-                            width: 150, 
-                            height: 150, 
-                            bgcolor: 'primary.main', 
-                            opacity: 0.05, 
-                            borderRadius: '50%' 
+                        <Box sx={{
+                            position: 'absolute',
+                            top: -50,
+                            right: -50,
+                            width: 150,
+                            height: 150,
+                            bgcolor: 'primary.main',
+                            opacity: 0.05,
+                            borderRadius: '50%'
                         }} />
 
                         <Box sx={{ mb: 3, textAlign: 'center' }}>
@@ -82,9 +82,7 @@ const Login = () => {
                             <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5, letterSpacing: '-0.5px', fontSize: '1.25rem' }}>
                                 Welcome Back
                             </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                Sign in to manage your ticket monitors
-                            </Typography>
+
                         </Box>
 
                         {error && (
@@ -145,17 +143,17 @@ const Login = () => {
                                     ),
                                 }}
                             />
-                            
+
                             <Button
                                 type="submit"
                                 fullWidth
                                 variant="contained"
                                 disabled={loading}
                                 size="large"
-                                sx={{ 
-                                    mt: 3, 
-                                    mb: 2, 
-                                    py: 1.2, 
+                                sx={{
+                                    mt: 3,
+                                    mb: 2,
+                                    py: 1.2,
                                     boxShadow: (theme) => `0 4px 12px ${theme.palette.mode === 'light' ? 'rgba(25, 118, 210, 0.2)' : 'rgba(0, 0, 0, 0.3)'}`
                                 }}
                             >
@@ -165,11 +163,11 @@ const Login = () => {
                             <Box sx={{ textAlign: 'center' }}>
                                 <Typography variant="body2" color="text.secondary">
                                     New to Cricket Notifier?{' '}
-                                    <MuiLink 
-                                        component={Link} 
-                                        to="/register" 
-                                        sx={{ 
-                                            textDecoration: 'none', 
+                                    <MuiLink
+                                        component={Link}
+                                        to="/register"
+                                        sx={{
+                                            textDecoration: 'none',
                                             fontWeight: 700,
                                             color: 'primary.main',
                                             '&:hover': { textDecoration: 'underline' }
@@ -179,13 +177,13 @@ const Login = () => {
                                     </MuiLink>
                                 </Typography>
                             </Box>
-                            
+
                             <Box sx={{ mt: 3, borderTop: '1px solid', borderColor: 'divider', pt: 2, textAlign: 'center' }}>
-                                <MuiLink 
-                                    component={Link} 
-                                    to="/admin" 
-                                    sx={{ 
-                                        textDecoration: 'none', 
+                                <MuiLink
+                                    component={Link}
+                                    to="/admin"
+                                    sx={{
+                                        textDecoration: 'none',
                                         fontSize: '0.8rem',
                                         fontWeight: 600,
                                         color: 'text.secondary',
