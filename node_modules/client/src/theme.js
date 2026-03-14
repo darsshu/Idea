@@ -3,95 +3,88 @@ export const getDesignTokens = (mode) => ({
     mode,
     ...(mode === 'light'
       ? {
-          // palette values for light mode
           primary: {
-            main: '#2e7d32', // Cricket Green
-            light: '#4caf50',
-            dark: '#1b5e20',
+            main: '#1976d2',
+            light: '#42a5f5',
+            dark: '#1565c0',
           },
           secondary: {
-            main: '#fbc02d', // Gold
+            main: '#dc004e',
+            light: '#ff4081',
+            dark: '#c51162',
           },
           background: {
-            default: '#f8fafc',
+            default: '#f5f5f5',
             paper: '#ffffff',
           },
           text: {
-            primary: '#1e293b',
-            secondary: '#64748b',
+            primary: '#212121',
+            secondary: '#757575',
           },
         }
       : {
-          // palette values for dark mode
           primary: {
-            main: '#4ade80', // Vibrant Light Green
-            light: '#86efac',
-            dark: '#166534',
+            main: '#90caf9',
+            light: '#e3f2fd',
+            dark: '#42a5f5',
           },
           secondary: {
-            main: '#fde047', // Light Gold
+            main: '#f48fb1',
+            light: '#fce4ec',
+            dark: '#f06292',
           },
           background: {
-            default: '#0f172a', // Deep Slate
-            paper: '#1e293b',
+            default: '#121212',
+            paper: '#1e1e1e',
           },
           text: {
-            primary: '#f8fafc',
-            secondary: '#94a3b8',
+            primary: '#ffffff',
+            secondary: '#b0bec5',
           },
         }),
   },
   typography: {
-    fontFamily: '"Outfit", "Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     h4: {
-      fontWeight: 800,
-      letterSpacing: '-0.02em',
+      fontWeight: 500,
     },
     h6: {
-      fontWeight: 700,
-      letterSpacing: '-0.01em',
+      fontWeight: 500,
     },
     button: {
-      textTransform: 'none',
-      fontWeight: 600,
+      textTransform: 'uppercase',
+      fontWeight: 500,
     },
   },
   shape: {
-    borderRadius: 12,
+    borderRadius: 4,
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: '10px',
-          padding: '8px 20px',
-          transition: 'all 0.3s ease-in-out',
+          borderRadius: 4,
+          padding: '6px 16px',
+          boxShadow: 'none',
           '&:hover': {
-            transform: 'translateY(-2px)',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+            boxShadow: '0 2px 4px -1px rgba(0,0,0,0.2),0 4px 5px 0 rgba(0,0,0,0.14),0 1px 10px 0 rgba(0,0,0,0.12)',
           },
         },
         containedPrimary: {
-          background: mode === 'light' 
-            ? 'linear-gradient(45deg, #2e7d32 30%, #4caf50 90%)'
-            : 'linear-gradient(45deg, #166534 30%, #4ade80 90%)',
+          background: mode === 'light' ? '#1976d2' : '#90caf9',
+          color: mode === 'light' ? '#fff' : 'rgba(0, 0, 0, 0.87)',
         },
       },
     },
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 16,
-          boxShadow: mode === 'light'
-            ? '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
-            : '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2)',
-          border: mode === 'light' ? '1px solid #e2e8f0' : '1px solid #334155',
-          transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+          borderRadius: 4,
+          boxShadow: '0 2px 1px -1px rgba(0,0,0,0.2),0 1px 1px 0 rgba(0,0,0,0.14),0 1px 3px 0 rgba(0,0,0,0.12)',
+          border: 'none',
+          transition: 'box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           '&:hover': {
-            transform: 'translateY(-5px)',
-            boxShadow: mode === 'light'
-              ? '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
-              : '0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3)',
+            boxShadow: '0 3px 3px -2px rgba(0,0,0,0.2),0 3px 4px 0 rgba(0,0,0,0.14),0 1px 8px 0 rgba(0,0,0,0.12)',
           },
         },
       },
@@ -99,10 +92,9 @@ export const getDesignTokens = (mode) => ({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: mode === 'light' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(15, 23, 42, 0.8)',
-          backdropFilter: 'blur(12px)',
-          color: mode === 'light' ? '#1e293b' : '#f8fafc',
-          borderBottom: mode === 'light' ? '1px solid #e2e8f0' : '1px solid #334155',
+          backgroundColor: mode === 'light' ? '#1976d2' : '#272727',
+          color: '#fff',
+          boxShadow: '0 2px 4px -1px rgba(0,0,0,0.2),0 4px 5px 0 rgba(0,0,0,0.14),0 1px 10px 0 rgba(0,0,0,0.12)',
         },
       },
     },

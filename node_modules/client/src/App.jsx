@@ -40,7 +40,7 @@ const NavBar = () => {
 
   return (
     <AppBar position="sticky" elevation={0}>
-      <Container maxWidth="lg">
+      <Container maxWidth={false}>
         <Toolbar disableGutters>
           <SportsCricketIcon sx={{ mr: 1, color: 'primary.main', fontSize: 28 }} />
           <Typography 
@@ -110,7 +110,7 @@ function AppContent() {
     >
       <NavBar />
 
-      <Container component="main" sx={{ mt: 6, mb: 6, flex: 1 }}>
+      <Container component="main" maxWidth={false} sx={{ mt: 6, mb: 6, flex: 1 }}>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -138,7 +138,7 @@ function AppContent() {
           bgcolor: 'background.paper' 
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth={false}>
           <Typography variant="body2" color="text.secondary" align="center">
             © {new Date().getFullYear()} Cricket Ticket Notifier. Built with Passion for Fans.
           </Typography>
