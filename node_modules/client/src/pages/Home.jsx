@@ -1,121 +1,220 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Box, 
-  Typography, 
-  Fade,
-  Slide,
+import React, { useRef } from 'react';
+import {
+  Box,
+  Typography,
   Grid,
   Paper,
-  Button
+  Button,
+  useTheme,
+  Container
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import LinkIcon from '@mui/icons-material/Link';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import SpeedIcon from '@mui/icons-material/Speed';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
-const Home = () => {
-  const [showContent, setShowContent] = useState(false);
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Sphere, MeshDistortMaterial, Environment, Float, Stars } from '@react-three/drei';
+import { motion } from 'framer-motion';
 
-  useEffect(() => {
-    setShowContent(true);
-  }, []);
+const AnimatedSphere = ({ color, distort, speed, scale, position }) => {
+  const meshRef = useRef();
 
-  const features = [
-    { icon: <LinkIcon color="primary" />, title: 'Paste URL', desc: 'Copy link from BookMyShow' },
-    { icon: <SpeedIcon color="primary" />, title: 'Real-time', desc: 'Checks Every 60 Seconds' },
-    { icon: <NotificationsActiveIcon color="primary" />, title: 'Instantly', desc: 'Email Alert on Availability' },
-  ];
+  useFrame((state) => {
+    meshRef.current.rotation.x = state.clock.elapsedTime * 0.2;
+    meshRef.current.rotation.y = state.clock.elapsedTime * 0.3;
+  });
 
   return (
-    <Box sx={{ maxWidth: 1000, mx: 'auto', mt: 4, px: 2 }}>
-      <Fade in={showContent} timeout={1000}>
-        <Box sx={{ textAlign: 'center', mb: 8 }}>
-          <Typography 
-            variant="h2" 
-            gutterBottom 
-            sx={{ 
-              fontWeight: 900, 
-              fontSize: { xs: '2.5rem', md: '4rem' },
-              background: (theme) => `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              mb: 3
-            }}
-          >
-            Never Miss a Match
-          </Typography>
-          <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 700, mx: 'auto', fontWeight: 500, mb: 5, lineHeight: 1.6 }}>
-            Automated ticket monitoring for your favorite cricket matches and events. 
-            We continuously check for ticket availability so you don't have to.
-          </Typography>
-          <Button 
-            component={Link} 
-            to="/add-monitor" 
-            variant="contained" 
-            color="primary"
-            size="large" 
-            startIcon={<AddCircleOutlineIcon />}
-            sx={{ py: 1.5, px: 4, borderRadius: 2, fontSize: '1.1rem' }}
-          >
-            Create Monitor Form
-          </Button>
-        </Box>
-      </Fade>
+    <Float speed={2} rotationIntensity={1} floatIntensity={2}>
+      <Sphere ref={meshRef} visible args={[1, 100, 200]} scale={scale} position={position}>
+        <MeshDistortMaterial
+          color={color}
+          attach="material"
+          distort={distort}
+          speed={speed}
+          roughness={0.2}
+          metalness={0.8}
+        />
+      </Sphere>
+    </Float>
+  );
+};
 
-      <Slide direction="up" in={showContent} timeout={800}>
-        <Grid container spacing={4}>
-          {features.map((feature, index) => (
-            <Grid item xs={12} sm={4} key={index}>
-              <Paper 
-                elevation={0}
-                sx={{ 
-                  p: 4, 
-                  textAlign: 'center', 
-                  height: '100%',
-                  bgcolor: 'background.paper',
-                  border: '1px solid',
-                  borderColor: 'divider',
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    borderColor: 'primary.main',
-                    transform: 'translateY(-5px)',
-                    boxShadow: '0 10px 20px rgba(0,0,0,0.05)',
-                  }
-                }}
-              >
-                <Box sx={{ 
-                  display: 'inline-flex', 
-                  p: 2, 
-                  borderRadius: '50%', 
-                  bgcolor: (theme) => theme.palette.mode === 'light' ? 'primary.light' : 'primary.dark', 
-                  color: 'white',
-                  mb: 3,
-                }}>
-                  {feature.icon}
-                </Box>
-                <Typography variant="h5" sx={{ fontWeight: 600, mb: 1.5 }}>
-                  {feature.title}
+const BackgroundScene = () => {
+  const theme = useTheme();
+  return (
+    <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: -1, pointerEvents: 'none' }}>
+      <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[10, 10, 5]} intensity={1} />
+        <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
+        <AnimatedSphere color={theme.palette.primary.main} distort={0.4} speed={2} scale={1.8} position={[-3, 1, -2]} />
+        <AnimatedSphere color={theme.palette.secondary.main} distort={0.5} speed={1.5} scale={1.2} position={[3, -1, -3]} />
+        <AnimatedSphere color="#ffffff" distort={0.3} speed={3} scale={0.8} position={[1, 2, -4]} />
+        <Environment preset="city" />
+      </Canvas>
+    </Box>
+  );
+};
+
+const Home = () => {
+  const features = [
+    { icon: <LinkIcon fontSize="large" />, title: 'Paste URL', desc: 'Copy link direct from BookMyShow' },
+    { icon: <SpeedIcon fontSize="large" />, title: 'Real-time Checks', desc: 'Automated pings every 60 Seconds' },
+    { icon: <NotificationsActiveIcon fontSize="large" />, title: 'Instant Alerts', desc: 'Email notification the moment tickets drop' },
+  ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2, delayChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { x: -20, opacity: 0 },
+    visible: { x: 0, opacity: 1, transition: { duration: 0.6, ease: "easeOut" } }
+  };
+
+  const rightItemVariants = {
+    hidden: { x: 20, opacity: 0 },
+    visible: { x: 0, opacity: 1, transition: { duration: 0.6, ease: "easeOut" } }
+  };
+
+  return (
+    <Box sx={{ position: 'relative', width: '100%', minHeight: 'calc(100vh - 64px)', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
+      <BackgroundScene />
+
+      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1, py: { xs: 4, md: 2 } }}>
+        <Grid container spacing={6} alignItems="center">
+
+          {/* Left Column: Hero Text */}
+          <Grid item xs={12} md={6}>
+            <motion.div variants={containerVariants} initial="hidden" animate="visible">
+              <motion.div variants={itemVariants}>
+                <Typography
+                  variant="h1"
+                  gutterBottom
+                  sx={{
+                    fontWeight: 900,
+                    fontSize: { xs: '3.5rem', md: '5.5rem', lg: '6.5rem' },
+                    lineHeight: 1.1,
+                    background: (theme) => `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    mb: 3,
+                    textShadow: '0px 10px 20px rgba(0,0,0,0.1)'
+                  }}
+                >
+                  Never Miss a Match.
                 </Typography>
-                <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                  {feature.desc}
+              </motion.div>
+
+              <motion.div variants={itemVariants}>
+                <Typography variant="h5" color="text.secondary" sx={{ fontWeight: 500, mb: 5, lineHeight: 1.6, maxWidth: '90%' }}>
+                  Automated ticket monitoring for your favorite cricket matches and events. We actively monitor availability so you don't have to keep refreshing.
                 </Typography>
-              </Paper>
-            </Grid>
-          ))}
+              </motion.div>
+
+              <motion.div variants={itemVariants}>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} style={{ display: 'inline-block' }}>
+                  <Button
+                    component={Link}
+                    to="/add-monitor"
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    startIcon={<AddCircleOutlineIcon />}
+                    sx={{ py: 2, px: 5, mb: 4, borderRadius: 8, fontSize: '1.2rem', boxShadow: '0 8px 25px rgba(25,118,210,0.4)' }}
+                  >
+                    Create Ticket Setup
+                  </Button>
+                </motion.div>
+              </motion.div>
+
+              <motion.div variants={itemVariants}>
+                <Paper
+                  elevation={4}
+                  sx={{
+                    p: 3,
+                    borderRadius: 4,
+                    background: (theme) => theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(30, 30, 30, 0.8)',
+                    backdropFilter: 'blur(12px)',
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: 2
+                  }}
+                >
+                  {/* <HelpOutlineIcon color="primary" sx={{ mt: 0.5 }} /> */}
+                  <Box>
+                    <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>How it works</Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>
+                      Submit your BookMyShow event URL. We run background checks continuously. The moment tickets drop or cancellations occur, we instantly dispatch an alert to your email, ensuring you're first to book.
+                    </Typography>
+                  </Box>
+                </Paper>
+              </motion.div>
+            </motion.div>
+          </Grid>
+
+          {/* Right Column: Features Stack */}
+          <Grid item xs={12} md={6}>
+            <motion.div variants={containerVariants} initial="hidden" animate="visible">
+              <Box sx={{ display: 'flex', flexDirection: '', gap: 3 }}>
+                {features.map((feature, index) => (
+                  <motion.div key={index} variants={rightItemVariants} whileHover={{ x: -10, scale: 1.02 }} transition={{ type: 'spring', stiffness: 300 }}>
+                    <Paper
+                      elevation={3}
+                      sx={{
+                        p: 3,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 3,
+                        borderRadius: 4,
+                        backdropFilter: 'blur(10px)',
+                        background: (theme) => theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(30, 30, 30, 0.8)',
+                        border: '1px solid',
+                        borderColor: 'divider',
+                        transition: 'box-shadow 0.3s',
+                        '&:hover': {
+                          boxShadow: '0 12px 28px rgba(0,0,0,0.12)',
+                          borderColor: 'primary.main',
+                        }
+                      }}
+                    >
+                      <Box sx={{
+                        display: 'flex',
+                        p: 2,
+                        borderRadius: '50%',
+                        background: (theme) => `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
+                        color: 'white',
+                        boxShadow: '0 4px 15px rgba(25,118,210,0.3)'
+                      }}>
+                        {feature.icon}
+                      </Box>
+                      <Box>
+                        <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>
+                          {feature.title}
+                        </Typography>
+                        <Typography variant="body1" color="text.secondary">
+                          {feature.desc}
+                        </Typography>
+                      </Box>
+                    </Paper>
+                  </motion.div>
+                ))}
+              </Box>
+            </motion.div>
+          </Grid>
+
         </Grid>
-      </Slide>
-
-      <Fade in={showContent} timeout={1500}>
-        <Box sx={{ mt: 10, textAlign: 'center', p: 4, bgcolor: 'background.paper', borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
-          <Typography variant="h4" gutterBottom sx={{ fontWeight: 700 }}>
-            How it works
-          </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 800, mx: 'auto', lineHeight: 1.8 }}>
-            Our platform allows you to submit any BookMyShow event URL. We then run automated background checks every minute to monitor the event's ticket availability status. The moment tickets go on sale or become available from cancellations, our notification engine immediately dispatches an alert to your submitted email address, ensuring you're always the first to know and book. 
-          </Typography>
-        </Box>
-      </Fade>
+      </Container>
     </Box>
   );
 };
