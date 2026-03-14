@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Link, Navigate } from 'react-router-dom';
+import { Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 import { 
   AppBar, 
   Toolbar, 
@@ -10,7 +10,11 @@ import {
   CssBaseline, 
   IconButton,
   useTheme,
-  CircularProgress
+  CircularProgress,
+  Stack,
+  Avatar,
+  Menu,
+  MenuItem
 } from '@mui/material';
 import SportsCricketIcon from '@mui/icons-material/SportsCricket';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
@@ -38,57 +42,111 @@ const NavBar = () => {
   const { user, logout } = useAuth();
   const theme = useTheme();
   const colorMode = useColorMode();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleMenu = (event) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
 
   return (
-    <AppBar position="sticky" elevation={0}>
-      <Container maxWidth={false}>
-        <Toolbar disableGutters>
-          <SportsCricketIcon sx={{ mr: 1, color: 'primary.main', fontSize: 28 }} />
-          <Typography 
-            variant="h6" 
-            component={Link} 
-            to="/"
-            sx={{ 
-              flexGrow: 1, 
-              fontWeight: 800, 
-              color: 'text.primary', 
-              textDecoration: 'none',
-              letterSpacing: '-0.5px'
-            }}
-          >
-            CRICKET<span style={{ color: theme.palette.primary.main }}>NOTIFIER</span>
-          </Typography>
+    <AppBar 
+      position="sticky" 
+      elevation={0}
+      sx={{
+        background: theme.palette.mode === 'light' ? 'rgba(255,255,255,0.85)' : 'rgba(18,18,18,0.85)',
+        backdropFilter: 'blur(12px)',
+        borderBottom: `1px solid ${theme.palette.divider}`,
+        transition: 'all 0.3s ease',
+        zIndex: theme.zIndex.drawer + 1
+      }}
+    >
+      <Container maxWidth="xl">
+        <Toolbar disableGutters sx={{ height: 75, justifyContent: 'space-between' }}>
+          
+          {/* Logo Section */}
+          <Box component={Link} to="/" sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+            <Box sx={{ 
+              p: 1.2, 
+              borderRadius: 3, 
+              background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+              display: 'flex',
+              mr: 2,
+              color: 'white',
+              boxShadow: '0 4px 15px rgba(25,118,210,0.3)'
+            }}>
+              <SportsCricketIcon sx={{ fontSize: 26 }} />
+            </Box>
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                fontWeight: 900, 
+                color: 'text.primary',
+                letterSpacing: '-0.5px',
+                display: { xs: 'none', sm: 'block' }
+              }}
+            >
+              CRICKET<span style={{ color: theme.palette.primary.main }}>NOTIFIER</span>
+            </Typography>
+          </Box>
 
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <IconButton onClick={colorMode.toggleColorMode} color="inherit">
-              {theme.palette.mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+          {/* Navigation Links (Center) */}
+          {user && (
+            <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', md: 'flex' }, position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+              <Button component={Link} to="/" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>Home</Button>
+              <Button component={Link} to="/add-monitor" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>Create Monitor</Button>
+              <Button component={Link} to="/monitors" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>My Monitors</Button>
+            </Stack>
+          )}
+
+          {/* Actions / User Profile (Right) */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <IconButton onClick={colorMode.toggleColorMode} sx={{ color: 'text.primary', bgcolor: 'action.hover', width: 40, height: 40 }}>
+              {theme.palette.mode === 'dark' ? <LightModeIcon fontSize="small" /> : <DarkModeIcon fontSize="small" />}
             </IconButton>
 
             {user ? (
               <>
-                <Button color="inherit" component={Link} to="/" sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>Home</Button>
-                <Button color="inherit" component={Link} to="/add-monitor" sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>Add Monitor</Button>
-                <Button color="inherit" component={Link} to="/monitors" sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>My Monitors</Button>
-                <Box sx={{ ml: 1, display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <Typography variant="body2" sx={{ display: { xs: 'none', md: 'block' }, fontWeight: 600 }}>
+                <Box 
+                  sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: 1.5, 
+                    cursor: 'pointer', 
+                    p: 0.5, 
+                    pr: 2.5, 
+                    borderRadius: 8, 
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    transition: 'all 0.2s',
+                    '&:hover': { bgcolor: 'action.hover', borderColor: 'primary.main' } 
+                  }} 
+                  onClick={handleMenu}
+                >
+                  <Avatar sx={{ width: 36, height: 36, background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`, fontSize: '1rem', fontWeight: 700, color: 'white' }}>
+                    {user.name?.charAt(0).toUpperCase() || 'U'}
+                  </Avatar>
+                  <Typography variant="body2" sx={{ display: { xs: 'none', sm: 'block' }, fontWeight: 700, color: 'text.primary' }}>
                     {user.name}
                   </Typography>
-                  <Button 
-                    color="primary" 
-                    variant="contained" 
-                    size="small" 
-                    onClick={logout} 
-                    sx={{ boxShadow: 'none' }}
-                  >
-                    Logout
-                  </Button>
                 </Box>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                  transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                  PaperProps={{ elevation: 4, sx: { mt: 1.5, minWidth: 180, borderRadius: 3, padding: 1, border: '1px solid', borderColor: 'divider' } }}
+                >
+                  <MenuItem component={Link} to="/monitors" onClick={handleClose} sx={{ borderRadius: 2, mb: 0.5, py: 1.5, fontWeight: 500 }}>My Monitors</MenuItem>
+                  <MenuItem component={Link} to="/add-monitor" onClick={handleClose} sx={{ borderRadius: 2, mb: 1, py: 1.5, fontWeight: 500, display: { md: 'none' } }}>Create Monitor</MenuItem>
+                  <Box sx={{ borderTop: '1px solid', borderColor: 'divider', my: 1 }} />
+                  <MenuItem onClick={() => { handleClose(); logout(); }} sx={{ borderRadius: 2, color: 'error.main', py: 1.5, fontWeight: 600 }}>Logout</MenuItem>
+                </Menu>
               </>
             ) : (
-              <>
-                <Button color="inherit" component={Link} to="/login">Login</Button>
-                <Button variant="contained" component={Link} to="/register">Register</Button>
-              </>
+              <Stack direction="row" spacing={1.5}>
+                <Button component={Link} to="/login" sx={{ color: 'text.primary', fontWeight: 600, borderRadius: 8, px: 3, py: 1 }}>Log In</Button>
+                <Button component={Link} to="/register" variant="contained" color="primary" sx={{ borderRadius: 8, px: 3, py: 1, fontWeight: 700, boxShadow: '0 4px 14px rgba(25,118,210,0.4)', '&:hover': { boxShadow: '0 6px 20px rgba(25,118,210,0.6)' } }}>Sign Up</Button>
+              </Stack>
             )}
           </Box>
         </Toolbar>
@@ -112,10 +170,14 @@ function AppContent() {
     >
       <NavBar />
 
-      <Container component="main" maxWidth={false} sx={{ mt: 6, mb: 6, flex: 1 }}>
+      <Box component="main" sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', position: 'relative' }}>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={
+            <Container maxWidth="xl" sx={{ py: { xs: 4, md: 8 } }}><Login /></Container>
+          } />
+          <Route path="/register" element={
+            <Container maxWidth="xl" sx={{ py: { xs: 4, md: 8 } }}><Register /></Container>
+          } />
           <Route path="/" element={
             <PrivateRoute>
               <Home />
@@ -123,32 +185,48 @@ function AppContent() {
           } />
           <Route path="/monitors" element={
             <PrivateRoute>
-              <ActiveMonitors />
+              <Container maxWidth="lg" sx={{ py: { xs: 4, md: 8 } }}>
+                <ActiveMonitors />
+              </Container>
             </PrivateRoute>
           } />
           <Route path="/add-monitor" element={
             <PrivateRoute>
-              <AddMonitor />
+              <Container maxWidth="lg" sx={{ py: { xs: 4, md: 8 } }}>
+                <AddMonitor />
+              </Container>
             </PrivateRoute>
           } />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-      </Container>
+      </Box>
 
       <Box 
         component="footer" 
         sx={{ 
-          py: 4, 
+          pt: 5,
+          pb: 4, 
           px: 2, 
           mt: 'auto', 
           borderTop: `1px solid ${theme.palette.divider}`,
-          bgcolor: 'background.paper' 
+          bgcolor: 'background.paper',
+          position: 'relative',
+          zIndex: 2
         }}
       >
-        <Container maxWidth={false}>
-          <Typography variant="body2" color="text.secondary" align="center">
-            © {new Date().getFullYear()} Cricket Ticket Notifier. Built with Passion for Fans.
+        <Container maxWidth="xl" sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 3 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, opacity: 0.9 }}>
+            <SportsCricketIcon sx={{ color: 'primary.main', fontSize: 28 }} />
+            <Typography variant="body1" sx={{ fontWeight: 800, letterSpacing: '-0.5px' }}>CRICKET<Box component="span" sx={{color: 'primary.main'}}>NOTIFIER</Box></Typography>
+          </Box>
+          <Typography variant="body2" color="text.secondary" align="center" sx={{ fontWeight: 500 }}>
+            © {new Date().getFullYear()} All rights reserved. Built with Passion for Fans.
           </Typography>
+          <Stack direction="row" spacing={3}>
+            <Button size="small" sx={{ color: 'text.secondary', fontWeight: 600, minWidth: 'auto', p: 0, '&:hover': { color: 'primary.main', bgcolor: 'transparent' } }}>Terms</Button>
+            <Button size="small" sx={{ color: 'text.secondary', fontWeight: 600, minWidth: 'auto', p: 0, '&:hover': { color: 'primary.main', bgcolor: 'transparent' } }}>Privacy</Button>
+            <Button size="small" sx={{ color: 'text.secondary', fontWeight: 600, minWidth: 'auto', p: 0, '&:hover': { color: 'primary.main', bgcolor: 'transparent' } }}>Contact</Button>
+          </Stack>
         </Container>
       </Box>
     </Box>
