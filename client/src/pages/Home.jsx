@@ -101,22 +101,21 @@ const Home = () => {
                   gutterBottom
                   sx={{
                     fontWeight: 900,
-                    fontSize: { xs: '3.5rem', md: '5.5rem', lg: '6.5rem' },
+                    fontSize: { xs: '2.5rem', md: '3.5rem', lg: '4rem' },
                     lineHeight: 1.1,
                     background: (theme) => `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
-                    mb: 3,
-                    textShadow: '0px 10px 20px rgba(0,0,0,0.1)'
+                    mb: 2,
                   }}
                 >
-                  Never Miss a Match.
+                  Never Miss <span className="highlight" style={{ WebkitTextFillColor: 'initial', background: 'transparent' }}>a Match.</span>
                 </Typography>
               </motion.div>
 
               <motion.div variants={itemVariants}>
-                <Typography variant="h5" color="text.secondary" sx={{ fontWeight: 500, mb: 5, lineHeight: 1.6, maxWidth: '90%' }}>
-                  Automated ticket monitoring for your favorite cricket matches and events. We actively monitor availability so you don't have to keep refreshing.
+                <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 500, mb: 4, lineHeight: 1.6, maxWidth: '85%' }}>
+                  Automated ticket monitoring for your favorite <span className="highlight">cricket matches</span> and events. We actively monitor availability so you don't have to keep refreshing.
                 </Typography>
               </motion.div>
 
@@ -127,9 +126,9 @@ const Home = () => {
                     to="/add-monitor"
                     variant="contained"
                     color="primary"
-                    size="large"
+                    size="medium"
                     startIcon={<AddCircleOutlineIcon />}
-                    sx={{ py: 2, px: 5, mb: 4, borderRadius: 8, fontSize: '1.2rem', boxShadow: '0 8px 25px rgba(25,118,210,0.4)' }}
+                    sx={{ py: 1.5, px: 4, mb: 4, borderRadius: 3, fontWeight: 700, boxShadow: '0 4px 15px rgba(25,118,210,0.3)' }}
                   >
                     Create Ticket Setup
                   </Button>
@@ -199,10 +198,10 @@ const Home = () => {
                         {feature.icon}
                       </Box>
                       <Box>
-                        <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>
+                        <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5, fontSize: '1rem' }}>
                           {feature.title}
                         </Typography>
-                        <Typography variant="body1" color="text.secondary">
+                        <Typography variant="body2" color="text.secondary">
                           {feature.desc}
                         </Typography>
                       </Box>

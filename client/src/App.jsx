@@ -73,7 +73,7 @@ const NavBar = () => {
       }}
     >
       <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ height: 75, justifyContent: 'space-between' }}>
+        <Toolbar disableGutters sx={{ height: 64, justifyContent: 'space-between' }}>
           
           {/* Logo Section */}
           <Box component={Link} to="/" sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
@@ -91,9 +91,10 @@ const NavBar = () => {
             <Typography 
               variant="h6" 
               sx={{ 
-                fontWeight: 900, 
+                fontWeight: 800, 
                 color: 'text.primary',
-                letterSpacing: '-0.5px',
+                letterSpacing: '-0.3px',
+                fontSize: '1.1rem',
                 display: { xs: 'none', sm: 'block' }
               }}
             >
@@ -137,10 +138,10 @@ const NavBar = () => {
                   }} 
                   onClick={handleMenu}
                 >
-                  <Avatar sx={{ width: 36, height: 36, background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`, fontSize: '1rem', fontWeight: 700, color: 'white' }}>
+                  <Avatar sx={{ width: 32, height: 32, background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`, fontSize: '0.875rem', fontWeight: 700, color: 'white' }}>
                     {user.name?.charAt(0).toUpperCase() || 'U'}
                   </Avatar>
-                  <Typography variant="body2" sx={{ display: { xs: 'none', sm: 'block' }, fontWeight: 700, color: 'text.primary' }}>
+                  <Typography variant="body2" sx={{ display: { xs: 'none', sm: 'block' }, fontWeight: 600, color: 'text.primary' }}>
                     {user.name}
                   </Typography>
                 </Box>
@@ -251,9 +252,9 @@ function AppContent() {
           }}
         >
           <Container maxWidth="xl" sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 3 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, opacity: 0.9 }}>
-              <SportsCricketIcon sx={{ color: 'primary.main', fontSize: 28 }} />
-              <Typography variant="body1" sx={{ fontWeight: 800, letterSpacing: '-0.5px' }}>CRICKET<Box component="span" sx={{color: 'primary.main'}}>NOTIFIER</Box></Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2, opacity: 0.9 }}>
+              <SportsCricketIcon sx={{ color: 'primary.main', fontSize: 24 }} />
+              <Typography variant="body2" sx={{ fontWeight: 800, letterSpacing: '-0.3px' }}>CRICKET<Box component="span" sx={{color: 'primary.main'}}>NOTIFIER</Box></Typography>
             </Box>
             <Typography variant="body2" color="text.secondary" align="center" sx={{ fontWeight: 500 }}>
               © {new Date().getFullYear()} All rights reserved. Built with Passion for Fans.

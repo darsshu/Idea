@@ -221,30 +221,30 @@ const AddMonitor = () => {
         <Box sx={{ textAlign: 'center', mb: 4 }}>
           <Box sx={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', mb: 1, gap: 1 }}>
             <NotificationsActiveIcon sx={{ fontSize: 40, color: 'primary.main' }} />
-            <Typography variant="h2" sx={{
-              fontWeight: 900,
+            <Typography variant="h3" sx={{
+              fontWeight: 800,
               background: 'linear-gradient(45deg, #1976d2 30%, #9c27b0 90%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              textShadow: theme.palette.mode === 'dark' ? '0px 4px 20px rgba(25, 118, 210, 0.4)' : '0px 4px 20px rgba(25, 118, 210, 0.2)',
-              letterSpacing: '-1px'
+              letterSpacing: '-0.5px'
             }}>
-              Match Notification
+              Match <span className="highlight" style={{ WebkitTextFillColor: 'initial', background: 'transparent' }}>Notification</span>
             </Typography>
           </Box>
-          <Typography variant="h5" sx={{
+          <Typography variant="h6" sx={{
             fontWeight: 600,
             color: 'text.primary',
-            mb: 2,
+            mb: 1.5,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: 1
+            gap: 1,
+            fontSize: '1.1rem'
           }}>
-            Showing for Cricket Match <SportsCricketIcon color="error" />
+            Showing for Cricket Match <SportsCricketIcon color="error" fontSize="small" />
           </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ maxWidth: '600px', mx: 'auto', fontSize: '1.1rem' }}>
-            Never miss a ticket! Enter the match details below and get instantly notified the second tickets go live.
+          <Typography variant="body2" color="text.secondary" sx={{ maxWidth: '500px', mx: 'auto' }}>
+            Never miss a ticket! Select an event below and get instantly <span className="highlight">notified</span> the second tickets go live.
           </Typography>
         </Box>
       </Fade>
@@ -253,8 +253,8 @@ const AddMonitor = () => {
       {events.length > 0 && (
         <Fade in={showContent} style={{ transitionDelay: '200ms' }}>
           <Box sx={{ mb: 6 }}>
-            <Typography variant="h5" fontWeight={700} sx={{ mb: 3, textAlign: 'center' }}>
-              Select an Event to Track
+            <Typography variant="h6" fontWeight={700} sx={{ mb: 2.5, textAlign: 'center', fontSize: '1.1rem' }}>
+              Select an Event to <span className="highlight">Track</span>
             </Typography>
             <Grid container spacing={2}>
               {events.map((event) => (

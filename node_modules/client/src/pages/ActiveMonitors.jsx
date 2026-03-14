@@ -93,17 +93,17 @@ const ActiveMonitors = () => {
       <Fade in={true} timeout={800}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', mb: 4 }}>
           <Box>
-            <Typography variant="h3" sx={{
-              fontWeight: 900,
-              mb: 1,
+            <Typography variant="h4" sx={{
+              fontWeight: 800,
+              mb: 0.5,
               background: (theme) => `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent'
             }}>
-              History
+              Active Monitors
             </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 500 }}>
-              Tracking {monitors.length} active match ticket events
+            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+              Tracking <span className="highlight">{monitors.length} active</span> match ticket events
             </Typography>
           </Box>
           <Tooltip title="Refresh Data">
@@ -226,12 +226,12 @@ const ActiveMonitors = () => {
                           noWrap
                           title={monitor.matchName || 'Cricket Match Event'}
                           sx={{ 
-                            fontWeight: 800, 
-                            lineHeight: 1.3, 
-                            letterSpacing: '-0.3px', 
+                            fontWeight: 700, 
+                            lineHeight: 1.2, 
                             color: 'text.primary', 
                             mb: 0.5,
-                            width: '100%'
+                            width: '100%',
+                            fontSize: '1rem'
                           }}
                         >
                           {monitor.matchName || 'Cricket Match Event'}

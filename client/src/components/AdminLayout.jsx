@@ -91,7 +91,7 @@ const AdminLayout = ({ children }) => {
           }}>
             <DashboardIcon sx={{ fontSize: 24 }} />
           </Box>
-          <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: '-0.5px' }}>
+          <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: '-0.3px', fontSize: '1rem' }}>
             ADMIN<span style={{ opacity: 0.8 }}>PANEL</span>
           </Typography>
         </Box>
@@ -114,7 +114,7 @@ const AdminLayout = ({ children }) => {
               selected={location.pathname === item.path}
               sx={{
                 borderRadius: 2,
-                py: 1.5,
+                py: 1,
                 '&.Mui-selected': {
                   bgcolor: 'primary.main',
                   color: 'white',
@@ -150,7 +150,7 @@ const AdminLayout = ({ children }) => {
               to={item.path}
               sx={{
                 borderRadius: 2,
-                py: 1.5,
+                py: 1,
                 '&:hover': {
                   bgcolor: 'action.hover',
                   '& .MuiListItemIcon-root': { color: 'secondary.main' }
@@ -176,7 +176,7 @@ const AdminLayout = ({ children }) => {
             bgcolor: 'error.main', 
             color: 'white',
             '&:hover': { bgcolor: 'error.dark' },
-            py: 1.5
+            py: 1.2
           }}
         >
           <ListItemIcon sx={{ minWidth: 40, color: 'white' }}>

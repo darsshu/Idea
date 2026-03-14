@@ -76,10 +76,10 @@ const Register = () => {
 
                         <Box sx={{ mb: 4, textAlign: 'center' }}>
                             <SportsCricketIcon sx={{ fontSize: 48, color: 'primary.main', mb: 2 }} />
-                            <Typography variant="h4" sx={{ fontWeight: 900, mb: 1, letterSpacing: '-1px' }}>
+                            <Typography variant="h5" sx={{ fontWeight: 800, mb: 1, letterSpacing: '-0.5px' }}>
                                 Create Account
                             </Typography>
-                            <Typography variant="body1" color="text.secondary">
+                            <Typography variant="body2" color="text.secondary">
                                 Join the community of smart cricket fans
                             </Typography>
                         </Box>
@@ -166,9 +166,8 @@ const Register = () => {
                                     size="large"
                                     sx={{ 
                                         mt: 2, 
-                                        py: 1.8, 
-                                        fontSize: '1.1rem', 
-                                        boxShadow: (theme) => `0 8px 16px ${theme.palette.mode === 'light' ? 'rgba(46, 125, 50, 0.2)' : 'rgba(0, 0, 0, 0.3)'}`
+                                        py: 1.2, 
+                                        boxShadow: (theme) => `0 4px 12px ${theme.palette.mode === 'light' ? 'rgba(25, 118, 210, 0.2)' : 'rgba(0, 0, 0, 0.3)'}`
                                     }}
                                 >
                                     {loading ? <CircularProgress size={26} color="inherit" /> : 'Create My Account'}

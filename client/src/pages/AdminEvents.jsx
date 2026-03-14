@@ -96,10 +96,10 @@ const AdminEvents = () => {
     <Box>
       <Box sx={{ mb: 6, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 2 }}>
         <Box>
-          <Typography variant="h3" fontWeight={900} sx={{ letterSpacing: '-1.5px', color: 'text.primary', mb: 1 }}>
-            Manage <Box component="span" sx={{ color: 'error.main' }}>Events</Box>
+          <Typography variant="h4" fontWeight={800} sx={{ letterSpacing: '-0.5px', color: 'text.primary', mb: 0.5 }}>
+            Manage <Box component="span" className="highlight">Events</Box>
           </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 500 }}>
+          <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
             Create and manage match notifications for your users
           </Typography>
         </Box>
@@ -133,8 +133,8 @@ const AdminEvents = () => {
 
       {/* Active Events List */}
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h6" fontWeight={800} sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
-          Active Events <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: 'success.main', animation: 'pulse 2s infinite' }} />
+        <Typography variant="h6" fontWeight={700} sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1, fontSize: '1.1rem' }}>
+          Active Events <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'success.main', animation: 'pulse 2s infinite' }} />
         </Typography>
         
         <Grid container spacing={3}>
@@ -184,7 +184,7 @@ const AdminEvents = () => {
                     </Box>
                   </Box>
                   <CardContent sx={{ p: 3 }}>
-                    <Typography variant="h6" fontWeight={800} sx={{ mb: 0.5, lineHeight: 1.3 }}>{event.title}</Typography>
+                    <Typography variant="h6" fontWeight={700} sx={{ mb: 0.5, lineHeight: 1.2, fontSize: '1rem' }}>{event.title}</Typography>
                     <Typography 
                       variant="caption" 
                       color="text.secondary" 

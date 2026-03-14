@@ -44,16 +44,50 @@ export const getDesignTokens = (mode) => ({
         }),
   },
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    h1: {
+      fontSize: '2.5rem',
+      fontWeight: 800,
+      letterSpacing: '-0.02em',
+    },
+    h2: {
+      fontSize: '2rem',
+      fontWeight: 800,
+      letterSpacing: '-0.02em',
+    },
+    h3: {
+      fontSize: '1.75rem',
+      fontWeight: 700,
+      letterSpacing: '-0.01em',
+    },
     h4: {
-      fontWeight: 500,
+      fontSize: '1.5rem',
+      fontWeight: 700,
+    },
+    h5: {
+      fontSize: '1.25rem',
+      fontWeight: 600,
     },
     h6: {
-      fontWeight: 500,
+      fontSize: '1.1rem',
+      fontWeight: 600,
+    },
+    body1: {
+      fontSize: '0.95rem',
+      lineHeight: 1.5,
+    },
+    body2: {
+      fontSize: '0.875rem',
+      lineHeight: 1.5,
+    },
+    caption: {
+      fontSize: '0.75rem',
+      lineHeight: 1.4,
     },
     button: {
-      textTransform: 'uppercase',
-      fontWeight: 500,
+      textTransform: 'none',
+      fontWeight: 600,
+      fontSize: '0.875rem',
     },
   },
   shape: {
