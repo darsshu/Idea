@@ -29,7 +29,8 @@ app.use(async (req, res, next) => {
         console.error('Database connection middleware failed:', err.message);
         res.status(500).json({ 
             error: 'Database connection failed', 
-            details: 'Please check MONGODB_URI and IP Whitelisting' 
+            message: err.message,
+            details: 'Please check MONGODB_URI and MongoDB Atlas IP Whitelisting (0.0.0.0/0)' 
         });
     }
 });

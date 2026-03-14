@@ -4,7 +4,7 @@ const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
     console.error('❌ MONGODB_URI is MISSING in environment variables.');
-    console.log('Current environment variables:', Object.keys(process.env).filter(key => !key.includes('SECRET') && !key.includes('KEY')));
+    throw new Error('MONGODB_URI is not defined. Please add it to your Vercel Project Settings > Environment Variables.');
 }
 
 /**
