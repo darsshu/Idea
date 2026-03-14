@@ -13,10 +13,19 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Connect to MongoDB
-connectDB()
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('MongoDB connection error:', err));
+// Middleware to ensure DB connection
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (err) {
+        console.error('Database connection middleware failed:', err.message);
+        res.status(500).json({ 
+            error: 'Database connection failed', 
+            details: 'Please check MONGODB_URI and IP Whitelisting' 
+        });
+    }
+});
 
 // Routes
 app.use('/api', monitorRoutes);
