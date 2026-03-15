@@ -29,6 +29,8 @@ import LinkIcon from '@mui/icons-material/Link';
 import EmailIcon from '@mui/icons-material/Email';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { useAuth } from '../context/AuthContext';
+import ConfirmationDialog from '../components/ConfirmationDialog';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 
 const AddMonitor = () => {
   const { user } = useAuth();
@@ -282,94 +284,47 @@ const AddMonitor = () => {
       )}
 
       {/* Confirmation Dialog */}
-      <Dialog
-        open={confirmOpen}
+      <ConfirmationDialog
+        isOpen={confirmOpen}
         onClose={() => setConfirmOpen(false)}
-        PaperProps={{
-          sx: {
-            borderRadius: 5,
-            p: 2,
-            minWidth: { xs: '90%', sm: 400 },
-            backgroundImage: 'linear-gradient(to bottom right, rgba(25, 118, 210, 0.05), rgba(156, 39, 176, 0.05))'
-          }
-        }}
+        onConfirm={confirmTrack}
+        title="Confirm Tracking"
+        type="primary"
+        confirmText="Start Tracking"
+        cancelText="Cancel"
+        icon={<NotificationsActiveIcon fontSize="large" />}
       >
-        <DialogTitle sx={{ fontWeight: 900, fontSize: '1.5rem', pb: 1, display: 'flex', color: 'red', alignItems: 'center', gap: 1.5 }}>
-          <NotificationsActiveIcon color="info" /> Confirm Tracking
-        </DialogTitle>
-        <DialogContent>
-          <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5 }}>
-            {selectedEvent?.title}
+        <Typography variant="h6" sx={{ fontWeight: 700, mb: 1, textAlign: 'center' }}>
+          {selectedEvent?.title}
+        </Typography>
+
+        <Box sx={{ p: 2, bgcolor: 'action.hover', borderRadius: 3, border: '1px solid', borderColor: 'divider' }}>
+          <Typography variant="caption" display="block" color="text.secondary" sx={{ textTransform: 'uppercase', fontWeight: 800, mb: 0.5 }}>
+            Notifications sent to
           </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Would you like to start monitoring this event for ticket availability?
+          <Typography variant="body2" sx={{ fontWeight: 700, color: 'primary.main' }}>
+            {email}
           </Typography>
-          <Box sx={{ mt: 3, p: 2, bgcolor: 'action.hover', borderRadius: 3, border: '1px solid', borderColor: 'divider' }}>
-            <Typography variant="caption" display="block" color="text.secondary" sx={{ textTransform: 'uppercase', fontWeight: 800, mb: 0.5 }}>
-              Notifications sent to
-            </Typography>
-            <Typography variant="body2" sx={{ fontWeight: 700, color: 'primary.main' }}>
-              {email}
-            </Typography>
-          </Box>
-        </DialogContent>
-        <DialogActions sx={{ p: 3, gap: 1.5 }}>
-          <Button
-            onClick={() => setConfirmOpen(false)}
-            sx={{ fontWeight: 800, borderRadius: 3, px: 3, color: 'text.secondary' }}
-          >
-            Not Now
-          </Button>
-          <Button
-            onClick={confirmTrack}
-            variant="contained"
-            sx={{
-              fontWeight: 800,
-              borderRadius: 3,
-              px: 4,
-              py: 1.2,
-              background: 'linear-gradient(45deg, #1976d2, #2196f3)',
-              boxShadow: '0 4px 15px rgba(25, 118, 210, 0.3)'
-            }}
-          >
-            Start Tracking
-          </Button>
-        </DialogActions>
-      </Dialog>
+        </Box>
+      </ConfirmationDialog>
 
       {/* Success Dialog */}
-      <Dialog
-        open={successOpen}
+      <ConfirmationDialog
+        isOpen={successOpen}
         onClose={() => setSuccessOpen(false)}
-        PaperProps={{ sx: { borderRadius: 5, p: 3, textAlign: 'center', maxWidth: 400 } }}
+        onConfirm={() => setSuccessOpen(false)}
+        title="Awesome!"
+        type="success"
+        confirmText="Great!"
+        cancelText=""
       >
-        <DialogContent>
-          <Box sx={{
-            width: 80, height: 80, borderRadius: '50%', bgcolor: 'success.main',
-            color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            mx: 'auto', mb: 3, boxShadow: '0 10px 20px rgba(76, 175, 80, 0.3)'
-          }}>
-            <NotificationsActiveIcon sx={{ fontSize: 40 }} />
-          </Box>
-          <Typography variant="h5" fontWeight={900} gutterBottom>Awesome!</Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-            We've set up a monitor for <strong>{selectedEvent?.title}</strong>.
-          </Typography>
-          <Typography variant="body2" sx={{ fontWeight: 600, bgcolor: 'success.light', color: 'success.dark', p: 1, borderRadius: 2 }}>
-            We will email you the moment tickets go live!
-          </Typography>
-        </DialogContent>
-        <DialogActions sx={{ justifyContent: 'center', pb: 3 }}>
-          <Button
-            onClick={() => setSuccessOpen(false)}
-            variant="contained"
-            color="success"
-            sx={{ fontWeight: 800, borderRadius: 3, px: 6, py: 1.5 }}
-          >
-            Great!
-          </Button>
-        </DialogActions>
-      </Dialog>
+        <Typography variant="body1" color="text.secondary" sx={{ mb: 2, textAlign: 'center' }}>
+          We've set up a monitor for <strong>{selectedEvent?.title}</strong>.
+        </Typography>
+        <Typography variant="body2" sx={{ fontWeight: 600, bgcolor: 'success.light', color: 'success.dark', p: 1.5, borderRadius: 3, textAlign: 'center' }}>
+          We will email you the moment tickets go live!
+        </Typography>
+      </ConfirmationDialog>
 
       {/* Manual section removed as per user request */}
       {/* Keeping loading state overlay if needed */}

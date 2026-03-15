@@ -29,11 +29,14 @@ import SportsCricketIcon from '@mui/icons-material/SportsCricket';
 import HistoryIcon from '@mui/icons-material/History';
 import SensorsIcon from '@mui/icons-material/Sensors';
 import { Link as RouterLink } from 'react-router-dom';
+import ConfirmationDialog from '../components/ConfirmationDialog';
 
 const ActiveMonitors = () => {
   const [monitors, setMonitors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [monitorToDelete, setMonitorToDelete] = useState(null);
   const theme = useTheme();
 
   const fetchMonitors = async () => {
@@ -60,15 +63,23 @@ const ActiveMonitors = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Stop monitoring this event?')) {
-      try {
-        const apiUrl = import.meta.env.VITE_API_URL || '';
-        await axios.delete(`${apiUrl}/api/monitor/${id}`);
-        setMonitors(monitors.filter(m => (m._id || m.id) !== id));
-      } catch (err) {
-        setError('Failed to remove monitor.');
-      }
+  const handleDelete = (id) => {
+    setMonitorToDelete(id);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!monitorToDelete) return;
+    
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      await axios.delete(`${apiUrl}/api/monitor/${monitorToDelete}`);
+      setMonitors(monitors.filter(m => (m._id || m.id) !== monitorToDelete));
+      setError(null);
+    } catch (err) {
+      setError('Failed to remove monitor.');
+    } finally {
+      setMonitorToDelete(null);
     }
   };
 
@@ -355,6 +366,17 @@ const ActiveMonitors = () => {
           ))}
         </Grid>
       )}
+
+      <ConfirmationDialog
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onConfirm={confirmDelete}
+        title="Stop Monitoring?"
+        message="Are you sure you want to stop tracking this match? You will no longer receive notifications for it."
+        confirmText="Stop Monitoring"
+        cancelText="Keep Tracking"
+        type="danger"
+      />
     </Box>
   );
 };
