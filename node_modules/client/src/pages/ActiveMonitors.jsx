@@ -152,7 +152,7 @@ const ActiveMonitors = () => {
             </Typography>
           </Box>
 
-          <Tooltip title="Refresh Data">
+          {/* <Tooltip title="Refresh Data">
             <IconButton
               onClick={fetchMonitors}
               sx={{
@@ -166,7 +166,7 @@ const ActiveMonitors = () => {
             >
               <RefreshIcon size="small" />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
         </Box>
       </Fade>
 
