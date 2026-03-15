@@ -148,20 +148,18 @@ const AdminEvents = () => {
             }}>
               <EventIcon sx={{ fontSize: 24, color: 'primary.main' }} />
             </Box>
-            <Typography variant="overline" sx={{ fontWeight: 900, color: 'primary.main', letterSpacing: 1 }}>
-              EVENT MANAGEMENT
+            <Typography variant="h3" sx={{
+              fontWeight: 900,
+              letterSpacing: '-1.5px',
+              fontSize: { xs: '1.75rem', md: '3rem' },
+              background: 'linear-gradient(45deg, #1976d2 30%, #9c27b0 90%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}>
+              Published <Box component="span" sx={{ WebkitTextFillColor: 'initial', background: 'transparent' }}>Matches</Box>
             </Typography>
           </Stack>
-          <Typography variant="h3" sx={{
-            fontWeight: 900,
-            letterSpacing: '-1.5px',
-            fontSize: { xs: '1.75rem', md: '3rem' },
-            background: 'linear-gradient(45deg, #1976d2 30%, #9c27b0 90%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          }}>
-            Published <Box component="span" sx={{ WebkitTextFillColor: 'initial', background: 'transparent' }}>Matches</Box>
-          </Typography>
+
         </Box>
 
         <Box sx={{

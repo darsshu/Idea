@@ -129,7 +129,11 @@ const ActiveMonitors = () => {
   }
 
   return (
-    <Box>
+    <Box
+      sx={{
+
+        py: 4,
+      }}>
       <Fade in={true} timeout={800}>
         <Box sx={{ width: '100%', mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>

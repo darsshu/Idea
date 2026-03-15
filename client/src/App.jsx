@@ -450,12 +450,14 @@ function AppContent() {
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/" element={
             <PrivateRoute>
-              <Home />
+              <Container maxWidth={false} sx={{ py: { xs: 2, md: 4 }, px: { xs: 1, sm: 2, md: 3 } }}>
+                <Home />
+              </Container>
             </PrivateRoute>
           } />
           <Route path="/monitors" element={
             <PrivateRoute>
-              <Container maxWidth={false} sx={{ py: { xs: 2, md: 4 }, px: { xs: 2, md: 6 } }}>
+              <Container maxWidth={false} sx={{ py: { xs: 2, md: 4 }, px: { xs: 1, sm: 2, md: 3 } }}>
                 <ActiveMonitors />
               </Container>
             </PrivateRoute>

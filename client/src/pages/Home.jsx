@@ -87,18 +87,14 @@ const Home = () => {
 
   return (
     <Box sx={{
-      position: 'relative',
       width: '100%',
-      minHeight: 'calc(100vh - 64px)',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      overflow: 'hidden'
+      minHeight: '100vh',
+      bgcolor: 'background.default',
+      py: 4,
     }}>
       <BackgroundScene />
 
-      <Container maxWidth={false} sx={{ position: 'relative', zIndex: 1, py: { xs: 4, md: 6 }, px: { xs: 2, md: 8 }, width: '100%' }}>
+      <Container maxWidth={false} sx={{ position: 'relative', zIndex: 1, width: '100%' }}>
         <Grid container spacing={0} justifyContent="center" alignItems="center">
 
           {/* Centralized Hero Section */}

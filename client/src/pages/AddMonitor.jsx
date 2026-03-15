@@ -137,7 +137,7 @@ const AddMonitor = () => {
       width: '100%',
       minHeight: '100vh',
       bgcolor: 'background.default',
-      pb: 10,
+      py: 4,
     }}>
       <Fade in={true} timeout={800}>
         <Box sx={{ width: '100%', mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
