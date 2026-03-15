@@ -189,12 +189,19 @@ const AddMonitor = () => {
         {/* Matches Grid */}
         <Box sx={{ px: { xs: 2, md: 0 } }}>
           {fetching ? (
-            <Grid container spacing={3}>
-              {[...Array(8)].map((_, i) => (
-                <Grid item key={i} xs={12} sm={6} md={4} lg={3}>
-                  <Skeleton variant="rectangular" height={240} sx={{ borderRadius: 5, mb: 1.5 }} />
-                  <Skeleton variant="text" width="90%" height={28} />
-                  <Skeleton variant="text" width="60%" height={20} />
+            <Grid container spacing={3} sx={{ justifyContent: 'center' }}>
+              {[...Array(6)].map((_, i) => (
+                <Grid item key={i} xs={12} sm={6} md={6} lg={6} sx={{ width: isMobile ? '100%' : isTablet ? '40%' : '30%' }}>
+                  <Card sx={{ borderRadius: 5, border: '1px solid', borderColor: 'divider', height: '100%' }}>
+                    <Box sx={{ pt: '65%', position: 'relative' }}>
+                      <Skeleton variant="rectangular" sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
+                    </Box>
+                    <CardContent sx={{ p: 2.5 }}>
+                      <Skeleton variant="text" width="100%" height={28} sx={{ mb: 1 }} />
+                      <Skeleton variant="text" width="60%" height={28} sx={{ mb: 2 }} />
+                      <Skeleton variant="rectangular" height={32} sx={{ borderRadius: 2 }} />
+                    </CardContent>
+                  </Card>
                 </Grid>
               ))}
             </Grid>
