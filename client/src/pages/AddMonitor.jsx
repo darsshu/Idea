@@ -248,9 +248,7 @@ const AddMonitor = () => {
       {events.length > 0 && (
         <Fade in={showContent} style={{ transitionDelay: '200ms' }}>
           <Box sx={{ mb: 6 }}>
-            <Typography variant="h6" fontWeight={800} sx={{ mb: 3, letterSpacing: '-0.5px' }}>
-              Select an Event to <span style={{ color: theme.palette.primary.main }}>Track</span>
-            </Typography>
+
             <Grid container spacing={2}>
               {events.map((event) => (
                 <Grid item xs={12} sm={6} md={4} key={event._id}>

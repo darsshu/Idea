@@ -26,6 +26,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LinkIcon from '@mui/icons-material/Link';
 import SportsCricketIcon from '@mui/icons-material/SportsCricket';
+import HistoryIcon from '@mui/icons-material/History';
 import SensorsIcon from '@mui/icons-material/Sensors';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -91,38 +92,52 @@ const ActiveMonitors = () => {
   return (
     <Box>
       <Fade in={true} timeout={800}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', mb: 4 }}>
-          <Box>
-            <Typography variant="h4" sx={{
-              fontWeight: 800,
-              mb: 0.5,
-              background: (theme) => `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
+        <Box sx={{ width: '100%', mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{
+              p: 1,
+              borderRadius: 2,
+              bgcolor: 'rgba(25, 118, 210, 0.1)',
+              display: 'flex'
             }}>
-              Active Monitors
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
-              Tracking <span className="highlight">{monitors.length} active</span> match ticket events
+              <HistoryIcon sx={{ fontSize: { xs: 24, md: 30 }, color: 'primary.main' }} />
+            </Box>
+            <Typography variant="h4" sx={{
+              fontWeight: 900,
+              background: 'linear-gradient(45deg, #1976d2 30%, #9c27b0 90%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              letterSpacing: '-1px'
+            }}>
+              Tracked <span style={{ WebkitTextFillColor: 'initial', background: 'transparent' }}>History</span>
             </Typography>
           </Box>
+
           <Tooltip title="Refresh Data">
             <IconButton
               onClick={fetchMonitors}
               sx={{
-                bgcolor: 'background.paper',
+                bgcolor: 'action.hover',
                 border: '1px solid',
                 borderColor: 'divider',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                borderRadius: 2,
                 transition: 'all 0.3s',
                 '&:hover': { bgcolor: 'primary.main', color: 'white', transform: 'rotate(180deg)' }
               }}
             >
-              <RefreshIcon />
+              <RefreshIcon size="small" />
             </IconButton>
           </Tooltip>
         </Box>
       </Fade>
+
+      <Divider sx={{ mb: 2, opacity: 0.6 }} />
+
+      {monitors.length > 0 && (
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 3, fontWeight: 600, opacity: 0.8 }}>
+          Tracking <span style={{ color: theme.palette.primary.main }}>{monitors.length} active</span> match ticket events
+        </Typography>
+      )}
 
       {error && (
         <Alert severity="error" variant="filled" sx={{ mb: 4, borderRadius: 2 }}>
@@ -132,34 +147,43 @@ const ActiveMonitors = () => {
 
       {monitors.length === 0 ? (
         <Fade in={true} timeout={1000}>
-          <Card
-            elevation={0}
+          <Box
             sx={{
-              p: 8,
+              py: 10,
+              px: 3,
               textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
               bgcolor: 'background.paper',
-              border: '2px dashed',
+              borderRadius: 6,
+              border: '1px solid',
               borderColor: 'divider',
-              borderRadius: 6
+              boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
+              mt: 4
             }}
           >
-            <Box sx={{ mb: 3 }}>
-              <SensorsIcon sx={{ fontSize: 80, color: 'text.disabled', opacity: 0.5 }} />
+            <Box sx={{
+              width: 80,
+              height: 80,
+              borderRadius: '50%',
+              bgcolor: 'action.hover',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              mb: 3,
+              border: '1px solid',
+              borderColor: 'divider'
+            }}>
+              <SensorsIcon sx={{ fontSize: 40, color: 'text.disabled' }} />
             </Box>
-            <Typography variant="h5" gutterBottom sx={{ fontWeight: 700 }}>No Monitors Active</Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mb: 4, maxWidth: 400, mx: 'auto' }}>
-              You haven't started tracking any match yet. Head back to the home page to start!
+            <Typography variant="h5" sx={{ fontWeight: 900, mb: 1, letterSpacing: '-0.5px' }}>
+              No Data Found
             </Typography>
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to="/"
-              startIcon={<SportsCricketIcon />}
-              size="large"
-            >
-              Start Tracking
-            </Button>
-          </Card>
+
+
+          </Box>
         </Fade>
       ) : (
         <Grid container spacing={3}>
@@ -219,16 +243,16 @@ const ActiveMonitors = () => {
                       >
                         <SportsCricketIcon fontSize="medium" />
                       </Avatar>
-                      
+
                       <Box sx={{ minWidth: 0, flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                        <Typography 
-                          variant="h6" 
+                        <Typography
+                          variant="h6"
                           noWrap
                           title={monitor.matchName || 'Cricket Match Event'}
-                          sx={{ 
-                            fontWeight: 700, 
-                            lineHeight: 1.2, 
-                            color: 'text.primary', 
+                          sx={{
+                            fontWeight: 700,
+                            lineHeight: 1.2,
+                            color: 'text.primary',
                             mb: 0.5,
                             width: '100%',
                             fontSize: '1rem'
