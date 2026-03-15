@@ -25,7 +25,7 @@ const ConfirmationDialog = ({
   isOpen,
   onClose,
   onConfirm,
-  title = "Are you sure?",
+  title,
   message,
   children,
   confirmText = "Confirm",
@@ -125,52 +125,75 @@ const ConfirmationDialog = ({
         zIndex: 0
       }} />
 
-      <DialogTitle sx={{
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'flex-end',
-        p: 1,
-        zIndex: 1
-      }}>
-        <IconButton onClick={onClose} size="small" sx={{ color: 'text.secondary' }}>
-          <CloseRoundedIcon />
-        </IconButton>
-      </DialogTitle>
+      <IconButton
+        onClick={onClose}
+        sx={{
+          position: 'absolute',
+          right: 16,
+          top: 16,
+          color: 'text.secondary',
+          zIndex: 10,
+          bgcolor: 'rgba(0,0,0,0.05)',
+          '&:hover': {
+            bgcolor: 'rgba(0,0,0,0.1)',
+            transform: 'rotate(90deg)',
+          },
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+        }}
+        size="small"
+      >
+        <CloseRoundedIcon fontSize="small" />
+      </IconButton>
 
       <DialogContent sx={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         textAlign: 'center',
-        pb: 2,
-        pt: 0,
+        pb: 3,
+        pt: 6, // More space for the close icon and better balance
+        px: 4,
         zIndex: 1
       }}>
         <motion.div
-          initial={{ scale: 0, rotate: -45 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ type: "spring", damping: 12, stiffness: 200, delay: 0.1 }}
+          initial={{ scale: 0, rotate: -45, opacity: 0 }}
+          animate={{ scale: 1, rotate: 0, opacity: 1 }}
+          transition={{
+            type: "spring",
+            damping: 15,
+            stiffness: 250,
+            delay: 0.1
+          }}
           style={{
-            width: 80,
-            height: 80,
-            borderRadius: 24,
+            width: 90,
+            height: 90,
+            borderRadius: '28%',
             background: getGradient(),
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             color: 'white',
-            marginBottom: 24,
-            boxShadow: `0 12px 24px -6px ${getThemeColor()}40`
+            marginBottom: 28,
+            boxShadow: `0 20px 40px -10px ${getThemeColor()}50`,
+            position: 'relative'
           }}
         >
+          <Box sx={{
+            position: 'absolute',
+            inset: -4,
+            borderRadius: 'inherit',
+            border: `2px solid ${getThemeColor()}30`,
+            opacity: 0.5
+          }} />
           {getIcon()}
         </motion.div>
 
-        <Typography variant="h5" sx={{
+        <Typography variant="h4" sx={{
           fontWeight: 900,
           mb: 1.5,
           color: 'text.primary',
-          letterSpacing: '-0.5px'
+          letterSpacing: '-1px',
+          fontSize: '1.75rem'
         }}>
           {title}
         </Typography>
@@ -180,7 +203,8 @@ const ConfirmationDialog = ({
             color: 'text.secondary',
             lineHeight: 1.6,
             mb: 2,
-            px: 2
+            px: 1,
+            fontSize: '1.05rem'
           }}>
             {message}
           </Typography>
@@ -199,31 +223,33 @@ const ConfirmationDialog = ({
         px: 3,
         display: 'flex',
         justifyContent: 'center',
-        gap: 2,
+        gap: cancelText ? 2 : 0,
         zIndex: 1,
         '& > button': {
           flex: 1,
-          maxWidth: '200px'
+          maxWidth: cancelText ? '200px' : '100%'
         }
       }}>
-        <Button
-          fullWidth
-          onClick={onClose}
-          variant="outlined"
-          sx={{
-            borderRadius: 3,
-            py: 1.5,
-            fontWeight: 800,
-            color: 'text.secondary',
-            textTransform: 'none',
-            fontSize: '1rem',
-            '&:hover': {
-              bgcolor: 'action.hover'
-            }
-          }}
-        >
-          {cancelText}
-        </Button>
+        {cancelText && (
+          <Button
+            fullWidth
+            onClick={onClose}
+            variant="outlined"
+            sx={{
+              borderRadius: 3,
+              py: 1.5,
+              fontWeight: 800,
+              color: 'text.secondary',
+              textTransform: 'none',
+              fontSize: '1rem',
+              '&:hover': {
+                bgcolor: 'action.hover'
+              }
+            }}
+          >
+            {cancelText}
+          </Button>
+        )}
         <Button
           fullWidth
           onClick={() => {

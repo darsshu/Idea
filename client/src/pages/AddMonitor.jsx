@@ -313,7 +313,6 @@ const AddMonitor = () => {
         isOpen={successOpen}
         onClose={() => setSuccessOpen(false)}
         onConfirm={() => setSuccessOpen(false)}
-        title="Awesome!"
         type="success"
         confirmText="Great!"
         cancelText=""
@@ -321,9 +320,7 @@ const AddMonitor = () => {
         <Typography variant="body1" color="text.secondary" sx={{ mb: 2, textAlign: 'center' }}>
           We've set up a monitor for <strong>{selectedEvent?.title}</strong>.
         </Typography>
-        <Typography variant="body2" sx={{ fontWeight: 600, bgcolor: 'success.light', color: 'success.dark', p: 1.5, borderRadius: 3, textAlign: 'center' }}>
-          We will email you the moment tickets go live!
-        </Typography>
+
       </ConfirmationDialog>
 
       {/* Manual section removed as per user request */}
