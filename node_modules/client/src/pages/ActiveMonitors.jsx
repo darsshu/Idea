@@ -91,6 +91,34 @@ const ActiveMonitors = () => {
     }
   };
 
+  const formatPerfectTime = (dateString) => {
+    if (!dateString) return 'Never checked';
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+
+    // Relative time part
+    let relativeTime = '';
+    if (diffInSeconds < 60) relativeTime = 'Just now';
+    else if (diffInSeconds < 3600) relativeTime = `${Math.floor(diffInSeconds / 60)}m ago`;
+    else if (diffInSeconds < 86400) relativeTime = `${Math.floor(diffInSeconds / 3600)}h ago`;
+    else relativeTime = `${Math.floor(diffInSeconds / 86400)}d ago`;
+
+    // Exact time part
+    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+    const dateOptions = { day: '2-digit', month: 'short' };
+    
+    const timeStr = date.toLocaleTimeString([], timeOptions);
+    const isToday = date.toDateString() === now.toDateString();
+    
+    if (isToday) {
+      return `${timeStr} (${relativeTime})`;
+    }
+    
+    const dateStr = date.toLocaleDateString([], dateOptions);
+    return `${dateStr}, ${timeStr} (${relativeTime})`;
+  };
+
   if (loading && monitors.length === 0) {
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '50vh', gap: 2 }}>
@@ -318,8 +346,8 @@ const ActiveMonitors = () => {
                       </Typography>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <AccessTimeIcon sx={{ fontSize: 16, color: 'primary.main' }} />
-                        <Typography variant="body2" sx={{ fontWeight: 700, color: 'text.primary' }}>
-                          {new Date(monitor.lastChecked).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                        <Typography variant="body2" sx={{ fontWeight: 700, color: 'text.primary', fontSize: '0.85rem' }}>
+                          {formatPerfectTime(monitor.lastChecked)}
                         </Typography>
                       </Box>
                     </Box>
