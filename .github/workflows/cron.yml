@@ -1,0 +1,14 @@
+name: Minute Cron
+
+on:
+  schedule:
+    - cron: '*/1 * * * *' # GitHub Action cron is not guaranteed to be exactly every minute, but it will try.
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Cron Endpoint
+        run: |
+          curl -X GET "https://idea-client-zeta.vercel.app/api/cron"
