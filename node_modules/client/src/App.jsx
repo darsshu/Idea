@@ -40,6 +40,7 @@ import Register from './pages/Register';
 import AdminEvents from './pages/AdminEvents';
 import AdminLogin from './pages/AdminLogin';
 import AdminLayout from './components/AdminLayout';
+import Profile from './pages/Profile';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeContextProvider, useColorMode } from './context/ThemeContext';
 import './App.css';
@@ -318,8 +319,9 @@ const NavBar = () => {
                   onClose={handleClose}
                   transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                   anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                  PaperProps={{ elevation: 4, sx: { mt: 1.5, minWidth: 180, borderRadius: 3, padding: 1, border: '1px solid', borderColor: 'divider' } }}
+                  PaperProps={{ elevation: 4, sx: { mt: 1.5, minWidth: 200, borderRadius: 4, padding: 1, border: '1px solid', borderColor: 'divider' } }}
                 >
+                  <MenuItem component={Link} to="/profile" onClick={handleClose} sx={{ borderRadius: 2, mb: 0.5, py: 1.5, fontWeight: 600 }}>Account Profile</MenuItem>
                   <MenuItem component={Link} to="/monitors" onClick={handleClose} sx={{ borderRadius: 2, mb: 0.5, py: 1.5, fontWeight: 500 }}>History</MenuItem>
                   <MenuItem component={Link} to="/add-monitor" onClick={handleClose} sx={{ borderRadius: 2, mb: 1, py: 1.5, fontWeight: 500, display: { md: 'none' } }}>Upcoming Match</MenuItem>
                   <Box sx={{ borderTop: '1px solid', borderColor: 'divider', my: 1 }} />
@@ -440,6 +442,11 @@ function AppContent() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={
+            <PrivateRoute>
+              <Profile />
+            </PrivateRoute>
+          } />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/" element={
             <PrivateRoute>
@@ -467,6 +474,7 @@ function AppContent() {
               <AdminLayout>
                 <Routes>
                   <Route path="events" element={<AdminEvents />} />
+                  <Route path="profile" element={<Profile />} />
                   <Route path="*" element={<Navigate to="events" />} />
                 </Routes>
               </AdminLayout>
