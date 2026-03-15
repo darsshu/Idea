@@ -20,6 +20,7 @@ import {
   Skeleton,
   Button,
   useMediaQuery,
+  Fade,
 } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
@@ -138,177 +139,52 @@ const AddMonitor = () => {
       bgcolor: 'background.default',
       pb: 10,
     }}>
-      {/* Refined Hero Section */}
-      <Box sx={{
-        position: 'relative',
-        pt: { xs: 4, md: 6 },
-        pb: { xs: 4, md: 6 },
-        mb: 6,
-        borderRadius: { xs: 0, md: 6 },
-        overflow: 'hidden',
-        background: theme.palette.mode === 'light'
-          ? 'linear-gradient(135deg, rgba(25, 118, 210, 0.08) 0%, rgba(255, 255, 255, 0) 100%)'
-          : 'linear-gradient(135deg, rgba(25, 118, 210, 0.15) 0%, rgba(0, 0, 0, 0) 100%)',
-        border: '1px solid',
-        borderColor: 'divider',
-      }}>
-        {/* Abstract blur circles */}
-        <Box sx={{
-          position: 'absolute',
-          top: -100,
-          right: -100,
-          width: 300,
-          height: 300,
-          borderRadius: '50%',
-          bgcolor: 'primary.main',
-          filter: 'blur(80px)',
-          opacity: 0.12,
-          zIndex: 0
-        }} />
+      <Fade in={true} timeout={800}>
+        <Box sx={{ width: '100%', mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{
+              p: 1,
+              borderRadius: 2,
+              bgcolor: 'rgba(25, 118, 210, 0.1)',
+              display: 'flex'
+            }}>
+              <NotificationsActiveIcon sx={{ fontSize: { xs: 24, md: 30 }, color: 'primary.main' }} />
+            </Box>
+            <Typography variant="h4" sx={{
+              fontWeight: 900,
+              background: 'linear-gradient(45deg, #1976d2 30%, #9c27b0 90%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              letterSpacing: '-1px'
+            }}>
+              Upcoming <span style={{ WebkitTextFillColor: 'initial', background: 'transparent' }}>Match</span>
+            </Typography>
+          </Box>
 
-        <Box sx={{ px: { xs: 2, md: 4 } }}>
-          <Grid container spacing={4} alignItems="center">
-            <Grid item xs={12} md={8}>
-              <MotionBox
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mb: 2 }}>
-                  <Box sx={{
-                    p: 1.2,
-                    borderRadius: 2.5,
-                    bgcolor: 'primary.main',
-                    color: 'white',
-                    display: 'flex',
-                    boxShadow: '0 4px 12px rgba(25, 118, 210, 0.25)'
-                  }}>
-                    <NotificationsActiveIcon sx={{ fontSize: 20 }} />
-                  </Box>
-                  <Typography variant="overline" sx={{ fontWeight: 900, color: 'primary.main', letterSpacing: 1.5 }}>
-                    CRICKET TICKET MONITORING
-                  </Typography>
-                </Stack>
-
-                <Typography variant="h2" sx={{
-                  fontWeight: 900,
-                  letterSpacing: '-1.5px',
-                  mb: 2,
-                  fontSize: { xs: '2.5rem', sm: '3.5rem', md: '3.75rem' },
-                }}>
-                  Upcoming <Box component="span" sx={{
-                    color: 'primary.main',
-                    background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent'
-                  }}>Matches</Box>
-                </Typography>
-
-              </MotionBox>
-            </Grid>
-
-            {/* Quick Stats Card */}
-            {/* <Grid item xs={12} md={4} sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 4,
-                  borderRadius: 6,
-                  bgcolor: theme.palette.mode === 'light' ? 'white' : 'background.paper',
-                  border: '1px solid',
-                  borderColor: 'divider',
-                  textAlign: 'center',
-                  minWidth: 220,
-                  boxShadow: '0 10px 30px rgba(0,0,0,0.03)'
-                }}
-              >
-                <Box sx={{
-                  width: 56,
-                  height: 56,
-                  borderRadius: '16px',
-                  bgcolor: 'primary.50',
-                  color: 'primary.main',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 16px'
-                }}>
-                  <EventAvailableIcon sx={{ fontSize: 32 }} />
-                </Box>
-                <Typography variant="h3" sx={{ fontWeight: 900, color: 'text.primary', mb: 0.5 }}>
-                  {fetching ? '...' : events.length}
-                </Typography>
-                <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 1 }}>
-                  Active Matches
-                </Typography>
-              </Paper>
-            </Grid> */}
-          </Grid>
+          {/* <Tooltip title="Refresh Data">
+            <IconButton
+              onClick={fetchMonitors}
+              sx={{
+                bgcolor: 'action.hover',
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: 2,
+                transition: 'all 0.3s',
+                '&:hover': { bgcolor: 'primary.main', color: 'white', transform: 'rotate(180deg)' }
+              }}
+            >
+              <RefreshIcon size="small" />
+            </IconButton>
+          </Tooltip> */}
         </Box>
-      </Box>
+      </Fade>
+      <Divider sx={{ mb: 2, opacity: 0.6 }} />
+
 
       {/* Main Content Area */}
       <Box sx={{ px: { xs: 0, md: 2 } }}>
         {/* Toolbar: Search and Filter */}
-        <Box sx={{ mb: 4, px: { xs: 2, md: 0 } }}>
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            spacing={2}
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Paper
-              elevation={0}
-              sx={{
-                p: '4px 16px',
-                display: 'flex',
-                alignItems: 'center',
-                width: { xs: '100%', sm: 400 },
-                borderRadius: 4,
-                bgcolor: theme.palette.mode === 'light' ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.05)',
-                border: '1px solid',
-                borderColor: 'divider',
-                transition: 'border-color 0.2s',
-                '&:focus-within': { borderColor: 'primary.main' }
-              }}
-            >
-              <SearchIcon sx={{ color: 'text.secondary', mr: 1, fontSize: 20 }} />
-              <InputBase
-                sx={{ ml: 1, flex: 1, fontWeight: 600, fontSize: '0.95rem' }}
-                placeholder="Search for a match..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              {searchQuery && (
-                <IconButton size="small" onClick={() => setSearchQuery('')}>
-                  <Box sx={{ fontSize: '0.7rem', fontWeight: 800, color: 'text.secondary' }}>CLEAR</Box>
-                </IconButton>
-              )}
-            </Paper>
 
-            <Stack direction="row" spacing={1.5}>
-              <Tooltip title="Refresh List">
-                <IconButton
-                  onClick={fetchEvents}
-                  disabled={fetching}
-                  sx={{
-                    bgcolor: 'background.paper',
-                    border: '1px solid',
-                    borderColor: 'divider',
-                    width: 44,
-                    height: 44,
-                    '&:hover': { bgcolor: 'primary.main', color: 'white' }
-                  }}
-                >
-                  <RefreshIcon sx={{ fontSize: 20 }} className={fetching ? 'spin-animation' : ''} />
-                </IconButton>
-              </Tooltip>
-              <IconButton sx={{ bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider', width: 44, height: 44 }}>
-                <FilterListIcon sx={{ fontSize: 20 }} />
-              </IconButton>
-            </Stack>
-          </Stack>
-        </Box>
 
         {/* Matches Grid */}
         <Box sx={{ px: { xs: 2, md: 0 } }}>
