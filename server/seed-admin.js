@@ -27,7 +27,7 @@ const seedAdmin = async () => {
 
         console.log(`Admin Email: ${adminEmail}`);
         console.log(`Admin Password: ${adminPassword}`);
-        
+
         process.exit(0);
     } catch (err) {
         console.error(err);

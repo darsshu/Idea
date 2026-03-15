@@ -29,13 +29,31 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['user', 'admin'],
         default: 'user'
+    },
+    mobile: {
+        type: String,
+        required: [true, 'Please add a mobile number'],
+        unique: true,
+        trim: true
+    },
+    otp: {
+        type: String,
+        select: false
+    },
+    otpExpires: {
+        type: Date,
+        select: false
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
     }
 });
 
 // Encrypt password using bcrypt
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function() {
     if (!this.isModified('password')) {
-        next();
+        return;
     }
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
