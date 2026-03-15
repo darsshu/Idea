@@ -427,8 +427,8 @@ function AppContent() {
       {/* Conditionally hide NavBar for auth and admin routes */}
       {!['/login', '/register', '/admin'].some(path => location.pathname.startsWith(path)) && <NavBar />}
 
-      <Box 
-        component="main" 
+      <Box
+        component="main"
         sx={{
           flexGrow: 1,
           display: 'flex',
@@ -436,7 +436,7 @@ function AppContent() {
           position: 'relative',
           width: '100%',
           // Add padding top only when NavBar is present (not on auth/admin pages)
-          pt: !['/login', '/register', '/admin'].some(path => location.pathname.startsWith(path)) ? '64px' : 0
+          pt: !['/login', '/register', '/admin'].some(path => location.pathname.startsWith(path)) ? '30px' : 0
         }}
       >
         <Routes>

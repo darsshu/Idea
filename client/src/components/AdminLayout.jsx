@@ -110,9 +110,7 @@ const AdminLayout = ({ children }) => {
             <Typography variant="subtitle1" sx={{ fontWeight: 900, lineHeight: 1, mb: 0.2 }}>
               ADMIN
             </Typography>
-            <Typography variant="caption" sx={{ fontWeight: 700, opacity: 0.6, textTransform: 'uppercase', letterSpacing: 1 }}>
-              Control Panel
-            </Typography>
+
           </Box>
         </Box>
         {isMobile && (
@@ -222,17 +220,7 @@ const AdminLayout = ({ children }) => {
             <Typography variant="subtitle2" sx={{ fontWeight: 800, noWrap: true, overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {user?.name || 'Admin'}
             </Typography>
-            <Chip
-              label="System Admin"
-              size="small"
-              sx={{
-                height: 18,
-                fontSize: '0.65rem',
-                fontWeight: 800,
-                bgcolor: 'secondary.light',
-                color: 'secondary.dark'
-              }}
-            />
+
           </Box>
           <IconButton size="small" onClick={handleLogout} color="error">
             <LogoutIcon fontSize="small" />
@@ -305,10 +293,10 @@ const AdminLayout = ({ children }) => {
             >
               <Avatar
                 sx={{
-                  width: 32,
-                  height: 32,
+                  width: { xs: 32, md: 24, lg: 28 },
+                  height: { xs: 32, md: 24, lg: 28 },
                   bgcolor: 'primary.main',
-                  fontSize: '0.85rem',
+                  fontSize: { xs: '0.85rem', md: '0.7rem', lg: '0.75rem' },
                   fontWeight: 700,
                   color: 'white'
                 }}
@@ -337,10 +325,7 @@ const AdminLayout = ({ children }) => {
                 <ListItemIcon><PeopleIcon fontSize="small" /></ListItemIcon>
                 Account Profile
               </MenuItem>
-              <MenuItem onClick={handleProfileMenuClose} sx={{ borderRadius: 2 }}>
-                <ListItemIcon><SettingsIcon fontSize="small" /></ListItemIcon>
-                Settings
-              </MenuItem>
+
               <Divider sx={{ my: 1 }} />
               <MenuItem onClick={handleLogout} sx={{ borderRadius: 2, color: 'error.main', fontWeight: 700 }}>
                 <ListItemIcon><LogoutIcon fontSize="small" color="error" /></ListItemIcon>
@@ -385,7 +370,7 @@ const AdminLayout = ({ children }) => {
           p: { xs: 2.5, md: 5 },
           width: { lg: `calc(100% - ${open ? drawerWidth : 0}px)` },
           minHeight: '100vh',
-          pt: { xs: 12, md: 14 },
+          pt: { xs: 10, md: 10 },
           bgcolor: 'background.default',
           transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,

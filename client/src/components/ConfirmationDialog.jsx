@@ -34,14 +34,15 @@ const ConfirmationDialog = ({
   icon
 }) => {
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const getIcon = () => {
     if (icon) return icon;
     switch (type) {
-      case 'danger': return <WarningRoundedIcon sx={{ fontSize: 40 }} />;
-      case 'success': return <CheckCircleRoundedIcon sx={{ fontSize: 40 }} />;
-      default: return <InfoRoundedIcon sx={{ fontSize: 40 }} />;
+      case 'danger': return <WarningRoundedIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 } }} />;
+      case 'success': return <CheckCircleRoundedIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 } }} />;
+      default: return <InfoRoundedIcon sx={{ fontSize: { xs: 30, sm: 35, md: 40 } }} />;
     }
   };
 
@@ -67,14 +68,14 @@ const ConfirmationDialog = ({
     <Dialog
       open={isOpen}
       onClose={onClose}
-      fullScreen={fullScreen}
+      fullScreen={isMobile}
       maxWidth="xs"
       fullWidth
       TransitionComponent={Zoom}
       transitionDuration={400}
       PaperProps={{
         sx: {
-          borderRadius: fullScreen ? 0 : 5,
+          borderRadius: isMobile ? 0 : 5,
           background: theme.palette.mode === 'dark'
             ? 'rgba(30, 41, 59, 0.9)'
             : 'rgba(255, 255, 255, 0.9)',
@@ -155,7 +156,8 @@ const ConfirmationDialog = ({
         px: 4,
         zIndex: 1
       }}>
-        <motion.div
+        <Box
+          component={motion.div}
           initial={{ scale: 0, rotate: -45, opacity: 0 }}
           animate={{ scale: 1, rotate: 0, opacity: 1 }}
           transition={{
@@ -164,16 +166,16 @@ const ConfirmationDialog = ({
             stiffness: 250,
             delay: 0.1
           }}
-          style={{
-            width: 90,
-            height: 90,
+          sx={{
+            width: { xs: 70, sm: 80, md: 90 },
+            height: { xs: 70, sm: 80, md: 90 },
             borderRadius: '28%',
             background: getGradient(),
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             color: 'white',
-            marginBottom: 28,
+            marginBottom: { xs: 2, sm: 3 },
             boxShadow: `0 20px 40px -10px ${getThemeColor()}50`,
             position: 'relative'
           }}
@@ -186,14 +188,15 @@ const ConfirmationDialog = ({
             opacity: 0.5
           }} />
           {getIcon()}
-        </motion.div>
+        </Box>
 
-        <Typography variant="h4" sx={{
+        <Typography sx={{
           fontWeight: 900,
           mb: 1.5,
           color: 'text.primary',
           letterSpacing: '-1px',
-          fontSize: '1.75rem'
+          fontSize: { xs: '1.4rem', sm: '1.6rem', md: '1.75rem' },
+          lineHeight: 1.2
         }}>
           {title}
         </Typography>
@@ -204,7 +207,7 @@ const ConfirmationDialog = ({
             lineHeight: 1.6,
             mb: 2,
             px: 1,
-            fontSize: '1.05rem'
+            fontSize: { xs: '0.875rem', sm: '0.95rem', md: '1.05rem' }
           }}>
             {message}
           </Typography>
@@ -241,7 +244,7 @@ const ConfirmationDialog = ({
               fontWeight: 800,
               color: 'text.secondary',
               textTransform: 'none',
-              fontSize: '1rem',
+              fontSize: { xs: '0.85rem', sm: '0.925rem', md: '1rem' },
               '&:hover': {
                 bgcolor: 'action.hover'
               }
@@ -262,7 +265,7 @@ const ConfirmationDialog = ({
             py: 1.5,
             fontWeight: 800,
             textTransform: 'none',
-            fontSize: '1rem',
+            fontSize: { xs: '0.85rem', sm: '0.925rem', md: '1rem' },
             background: getGradient(),
             boxShadow: `0 8px 16px -4px ${getThemeColor()}40`,
             '&:hover': {
