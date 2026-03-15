@@ -110,13 +110,23 @@ const NavBar = () => {
               onClick={handleDrawerToggle}
               selected={location.pathname === item.path}
               sx={{
-                borderRadius: 2,
+                // borderRadius: 2,
                 py: 1.5,
+                transition: 'all 0.3s',
+                '&:hover': {
+                  bgcolor: 'transparent',
+                  color: 'primary.main',
+                  borderBottom: `2px solid ${theme.palette.primary.main}`,
+                  border: "none",
+                  transform: 'scale(1.1)',
+                  '& .MuiListItemIcon-root': { color: 'primary.main' }
+                },
                 '&.Mui-selected': {
-                  bgcolor: 'primary.main',
-                  color: 'white',
-                  '&:hover': { bgcolor: 'primary.dark' },
-                  '& .MuiListItemIcon-root': { color: 'white' }
+                  bgcolor: 'rgba(25, 118, 210, 0.08)',
+                  color: 'primary.main',
+                  fontWeight: 800,
+                  '& .MuiListItemIcon-root': { color: 'primary.main' },
+                  '&:hover': { bgcolor: 'rgba(25, 118, 210, 0.12)' }
                 }
               }}
             >
@@ -199,13 +209,72 @@ const NavBar = () => {
 
           {/* Navigation Links (Center) */}
           {user && (
-            <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', md: 'flex' }, position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
-              <Button component={Link} to="/" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>Home</Button>
-              <Button component={Link} to="/add-monitor" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>Upcoming Match</Button>
-              <Button component={Link} to="/monitors" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>History</Button>
-              {user.role === 'admin' && (
-                <Button component={Link} to="/admin/events" sx={{ color: 'text.primary', fontWeight: 600, px: 2, py: 1, borderRadius: 8, '&:hover': { bgcolor: 'action.hover' } }}>Admin</Button>
-              )}
+            <Stack direction="row" spacing={3} sx={{ display: { xs: 'none', md: 'flex' }, position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+              {[
+                { text: 'Home', path: '/' },
+                { text: 'Upcoming Match', path: '/add-monitor' },
+                { text: 'History', path: '/monitors' },
+                ...(user.role === 'admin' ? [{ text: 'Admin', path: '/admin/events' }] : [])
+              ].map((item) => {
+                const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
+                return (
+                  <Button
+                    key={item.text}
+                    component={Link}
+                    to={item.path}
+                    disableRipple
+                    sx={{
+                      color: isActive ? "primary.main" : "text.primary",
+                      fontWeight: isActive ? 800 : 600,
+                      px: 2,
+                      py: 1,
+                      border: "none",
+                      outline: "none",
+                      boxShadow: "none",
+                      background: "transparent",
+                      position: "relative",
+                      textTransform: "none",
+                      fontSize: "1rem",
+                      transition: "all 0.3s ease",
+
+                      "&:hover": {
+                        background: "transparent",   // removes white hover box
+                        boxShadow: "none",
+                        color: "secondary.main",
+                        transform: "scale(1.2)",
+                      },
+
+                      "&:focus": {
+                        outline: "none",
+                      },
+
+                      "&:focus-visible": {
+                        outline: "none",
+                      },
+
+                      "& .MuiTouchRipple-root": {
+                        display: "none", // removes ripple
+                      },
+
+                      "&::after": isActive
+                        ? {
+                          content: '""',
+                          position: "absolute",
+                          bottom: 0,
+                          left: "20%",
+                          right: "20%",
+                          height: "3px",
+                          borderRadius: "10px",
+                          background: (theme) =>
+                            `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                        }
+                        : {},
+                    }}
+                  >
+                    {item.text}
+                  </Button>
+                );
+              })}
             </Stack>
           )}
 

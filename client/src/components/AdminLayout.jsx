@@ -115,15 +115,27 @@ const AdminLayout = ({ children }) => {
               sx={{
                 borderRadius: 2,
                 py: 1,
-                '&.Mui-selected': {
-                  bgcolor: 'primary.main',
-                  color: 'white',
-                  '&:hover': { bgcolor: 'primary.dark' },
-                  '& .MuiListItemIcon-root': { color: 'white' }
-                },
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 '&:hover': {
-                  bgcolor: 'action.hover',
+                  bgcolor: 'transparent',
+                  color: 'primary.main',
+                  transform: 'scale(1.2) translateX(5px)',
                   '& .MuiListItemIcon-root': { color: 'primary.main' }
+                },
+                '&.Mui-selected': {
+                  bgcolor: 'rgba(25, 118, 210, 0.1)',
+                  color: 'primary.main',
+                  '& .MuiListItemIcon-root': { color: 'primary.main' },
+                  '& .MuiListItemText-primary': { fontWeight: 800 },
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    left: -16,
+                    height: '70%',
+                    width: '4px',
+                    bgcolor: 'primary.main',
+                    borderRadius: '0 4px 4px 0'
+                  }
                 }
               }}
             >
