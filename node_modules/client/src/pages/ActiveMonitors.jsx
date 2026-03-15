@@ -70,7 +70,7 @@ const ActiveMonitors = () => {
 
   const confirmDelete = async () => {
     if (!monitorToDelete) return;
-    
+
     try {
       const apiUrl = import.meta.env.VITE_API_URL || '';
       await axios.delete(`${apiUrl}/api/monitor/${monitorToDelete}`);
@@ -107,14 +107,14 @@ const ActiveMonitors = () => {
     // Exact time part
     const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
     const dateOptions = { day: '2-digit', month: 'short' };
-    
+
     const timeStr = date.toLocaleTimeString([], timeOptions);
     const isToday = date.toDateString() === now.toDateString();
-    
+
     if (isToday) {
-      return `${timeStr} (${relativeTime})`;
+      return `${timeStr} `;
     }
-    
+
     const dateStr = date.toLocaleDateString([], dateOptions);
     return `${dateStr}, ${timeStr} (${relativeTime})`;
   };
@@ -253,9 +253,9 @@ const ActiveMonitors = () => {
                   width: '100%',
                 }}>
                   {/* Status Indicator Bar */}
-                  <Box sx={{ 
-                    width: { xs: '100%', md: '8px' }, 
-                    height: { xs: '8px', md: 'auto' }, 
+                  <Box sx={{
+                    width: { xs: '100%', md: '8px' },
+                    height: { xs: '8px', md: 'auto' },
                     alignSelf: 'stretch',
                     bgcolor: getStatusColor(monitor.status),
                     opacity: 0.8
@@ -335,10 +335,10 @@ const ActiveMonitors = () => {
                       borderLeft: { md: `1px solid ${theme.palette.divider}` },
                       minWidth: { md: 180 }
                     }}>
-                      <Typography variant="caption" color="text.disabled" sx={{ 
-                        fontWeight: 800, 
-                        textTransform: 'uppercase', 
-                        letterSpacing: '1px', 
+                      <Typography variant="caption" color="text.disabled" sx={{
+                        fontWeight: 800,
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
                         fontSize: '0.7rem',
                         mb: { md: 0.5 }
                       }}>
