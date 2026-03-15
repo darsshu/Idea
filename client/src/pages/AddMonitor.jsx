@@ -20,6 +20,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Divider,
   useTheme
 } from '@mui/material';
 import axios from 'axios';
@@ -179,8 +180,6 @@ const AddMonitor = () => {
       minHeight: 'calc(100vh - 150px)',
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
       position: 'relative',
       overflow: 'hidden',
       py: 4
@@ -218,44 +217,39 @@ const AddMonitor = () => {
       }} />
 
       <Fade in={showContent} timeout={1000}>
-        <Box sx={{ textAlign: 'center', mb: 4 }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', mb: 2, gap: 1 }}>
-            <NotificationsActiveIcon sx={{ fontSize: { xs: 32, md: 40 }, color: 'primary.main' }} />
-            <Typography variant="h3" sx={{
-              fontWeight: 800,
-              textAlign: 'center',
+        <Box sx={{ width: '100%', mb: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{
+              p: 1,
+              borderRadius: 2,
+              bgcolor: 'rgba(25, 118, 210, 0.1)',
+              display: 'flex'
+            }}>
+              <NotificationsActiveIcon sx={{ fontSize: { xs: 24, md: 30 }, color: 'primary.main' }} />
+            </Box>
+            <Typography variant="h4" sx={{
+              fontWeight: 900,
               background: 'linear-gradient(45deg, #1976d2 30%, #9c27b0 90%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              letterSpacing: '-0.5px'
+              letterSpacing: '-1px'
             }}>
-              Upcoming <span className="highlight" style={{ WebkitTextFillColor: 'initial', background: 'transparent' }}>Match</span>
+              Upcoming <span style={{ WebkitTextFillColor: 'initial', background: 'transparent' }}>Match</span>
             </Typography>
           </Box>
-          <Typography variant="h6" sx={{
-            fontWeight: 600,
-            color: 'text.primary',
-            mb: 1.5,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 1,
-            fontSize: '1.1rem'
-          }}>
-            Showing for Cricket Match <SportsCricketIcon color="error" fontSize="small" />
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ maxWidth: '500px', mx: 'auto' }}>
-            Never miss a ticket! Select an event below and get instantly <span className="highlight">notified</span> the second tickets go live.
-          </Typography>
+
+
         </Box>
       </Fade>
+
+      <Divider sx={{ mb: 2, opacity: 0.6 }} />
 
       {/* Events Selection Grid */}
       {events.length > 0 && (
         <Fade in={showContent} style={{ transitionDelay: '200ms' }}>
           <Box sx={{ mb: 6 }}>
-            <Typography variant="h6" fontWeight={700} sx={{ mb: 2.5, textAlign: 'center', fontSize: '1.1rem' }}>
-              Select an Event to <span className="highlight">Track</span>
+            <Typography variant="h6" fontWeight={800} sx={{ mb: 3, letterSpacing: '-0.5px' }}>
+              Select an Event to <span style={{ color: theme.palette.primary.main }}>Track</span>
             </Typography>
             <Grid container spacing={2}>
               {events.map((event) => (
