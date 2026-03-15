@@ -370,7 +370,7 @@ const AdminLayout = ({ children }) => {
           p: { xs: 2.5, md: 5 },
           width: { lg: `calc(100% - ${open ? drawerWidth : 0}px)` },
           minHeight: '100vh',
-          pt: { xs: 10, md: 10 },
+          pt: { xs: 20, md: 10 },
           bgcolor: 'background.default',
           transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
