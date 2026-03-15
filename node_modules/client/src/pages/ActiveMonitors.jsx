@@ -289,13 +289,13 @@ const ActiveMonitors = () => {
                         <Typography
                           variant="h6"
                           noWrap
-                          title={monitor.matchName || 'Cricket Match Event'}
+                          title={monitor.matchName}
                           sx={{
                             fontWeight: 800,
                             lineHeight: 1.2,
                             color: 'text.primary',
                             mb: 1,
-                            fontSize: { xs: '1.1rem', md: '1.25rem' },
+                            fontSize: { xs: '0.75rem', sm: '1rem', md: '1.75rem' },
                             letterSpacing: '-0.3px'
                           }}
                         >
