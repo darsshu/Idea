@@ -153,14 +153,17 @@ const NavBar = () => {
 
   return (
     <AppBar
-      position="sticky"
+      position="fixed"
       elevation={0}
       sx={{
-        background: theme.palette.mode === 'light' ? 'rgba(255,255,255,0.85)' : 'rgba(18,18,18,0.85)',
-        backdropFilter: 'blur(12px)',
+        background: theme.palette.mode === 'light' ? 'rgba(255,255,255,0.9)' : 'rgba(18,18,18,0.9)',
+        backdropFilter: 'blur(20px)',
         borderBottom: `1px solid ${theme.palette.divider}`,
         transition: 'all 0.3s ease',
-        zIndex: theme.zIndex.drawer + 1
+        zIndex: theme.zIndex.drawer + 1,
+        width: '100%',
+        top: 0,
+        left: 0
       }}
     >
       <Container maxWidth="xl">
@@ -422,13 +425,18 @@ function AppContent() {
       {/* Conditionally hide NavBar for auth and admin routes */}
       {!['/login', '/register', '/admin'].some(path => location.pathname.startsWith(path)) && <NavBar />}
 
-      <Box component="main" sx={{
-        flexGrow: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
-        width: '100%',
-      }}>
+      <Box 
+        component="main" 
+        sx={{
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'relative',
+          width: '100%',
+          // Add padding top only when NavBar is present (not on auth/admin pages)
+          pt: !['/login', '/register', '/admin'].some(path => location.pathname.startsWith(path)) ? '64px' : 0
+        }}
+      >
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -447,7 +455,7 @@ function AppContent() {
           } />
           <Route path="/add-monitor" element={
             <PrivateRoute>
-              <Container maxWidth="xl" sx={{ py: { xs: 2, md: 4 } }}>
+              <Container maxWidth="xl" sx={{ py: { xs: 2, md: 4 }, px: { xs: 1, sm: 2, md: 3 } }}>
                 <AddMonitor />
               </Container>
             </PrivateRoute>
