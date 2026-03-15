@@ -18,6 +18,7 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Sphere, MeshDistortMaterial, Environment, Float, Stars } from '@react-three/drei';
 import { motion } from 'framer-motion';
+import { ArtTrack, EventAvailable } from '@mui/icons-material';
 
 const AnimatedSphere = ({ color, distort, speed, scale, position }) => {
   const meshRef = useRef();
@@ -62,9 +63,9 @@ const BackgroundScene = () => {
 
 const Home = () => {
   const features = [
-    { icon: <LinkIcon fontSize="large" />, title: 'Paste URL', desc: 'Copy link direct from BookMyShow' },
-    { icon: <SpeedIcon fontSize="large" />, title: 'Real-time Checks', desc: 'Automated pings every 60 Seconds' },
-    { icon: <NotificationsActiveIcon fontSize="large" />, title: 'Instant Alerts', desc: 'Email notification the moment tickets drop' },
+    { icon: <EventAvailable fontSize="large" />, title: 'Select Match', desc: 'Select match from the list' },
+    { icon: <ArtTrack fontSize="large" />, title: 'Track Tickets', desc: 'Track tickets in real-time' },
+    { icon: <NotificationsActiveIcon fontSize="large" />, title: 'Instant Alerts', desc: 'Get notified when tickets are available' },
   ];
 
   const containerVariants = {
