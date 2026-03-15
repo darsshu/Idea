@@ -101,7 +101,11 @@ const AddMonitor = () => {
         return;
       }
 
-      await axios.post(`${apiUrl}/api/monitor`, { url: trackingUrl, email: trackingEmail });
+      await axios.post(`${apiUrl}/api/monitor`, { 
+        url: trackingUrl, 
+        email: trackingEmail,
+        matchName: selectedEvent.title 
+      });
       setSuccessOpen(true);
     } catch (error) {
       console.error('Tracking Error:', error.response?.data || error.message);

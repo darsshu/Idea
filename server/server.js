@@ -8,6 +8,19 @@ const monitorRoutes = require('./routes/monitor');
 const cronRoutes = require('./routes/cron');
 const authRoutes = require('./routes/auth');
 const eventRoutes = require('./routes/event');
+const cron = require('node-cron');
+const monitorService = require('./services/monitor.service');
+
+// Initialize local cron job for monitoring (runs every 1 minute)
+// This will run when the server is running locally (npm run dev)
+cron.schedule('* * * * *', async () => {
+    console.log('--- Background Cron: Starting 1-minute check ---');
+    try {
+        await monitorService.runMonitoringCycle();
+    } catch (err) {
+        console.error('Background Cron Error:', err.message);
+    }
+});
 
 const app = express();
 const PORT = process.env.PORT || 5000;
