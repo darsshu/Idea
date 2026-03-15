@@ -280,8 +280,65 @@ const NavBar = () => {
 };
 
 function AppContent() {
+  const { loading } = useAuth();
   const theme = useTheme();
   const location = useLocation();
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          height: '100vh',
+          width: '100vw',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: theme.palette.mode === 'light' ? '#f8faff' : '#0a0a0a',
+          gap: 3
+        }}
+      >
+        <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <CircularProgress
+            size={60}
+            thickness={4}
+            sx={{
+              color: 'primary.main',
+              '& .MuiCircularProgress-circle': {
+                strokeLinecap: 'round',
+              }
+            }}
+          />
+          <SportsCricketIcon
+            sx={{
+              position: 'absolute',
+              fontSize: 24,
+              color: 'primary.main',
+              animation: 'pulse 1.5s ease-in-out infinite',
+              '@keyframes pulse': {
+                '0%, 100%': { opacity: 0.5, transform: 'scale(0.8)' },
+                '50%': { opacity: 1, transform: 'scale(1.1)' }
+              }
+            }}
+          />
+        </Box>
+        <Stack alignItems="center" spacing={1}>
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 800,
+              letterSpacing: '2px',
+              color: 'text.primary',
+              opacity: 0.8
+            }}
+          >
+            NOTIFIER
+          </Typography>
+          <Box sx={{ width: 100, height: 2, bgcolor: 'primary.main', borderRadius: 1, opacity: 0.3 }} />
+        </Stack>
+      </Box>
+    );
+  }
 
   return (
     <Box
