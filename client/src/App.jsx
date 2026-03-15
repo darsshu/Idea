@@ -440,7 +440,7 @@ function AppContent() {
           } />
           <Route path="/monitors" element={
             <PrivateRoute>
-              <Container maxWidth="xl" sx={{ py: { xs: 4, md: 6 } }}>
+              <Container maxWidth={false} sx={{ py: { xs: 2, md: 4 }, px: { xs: 2, md: 6 } }}>
                 <ActiveMonitors />
               </Container>
             </PrivateRoute>

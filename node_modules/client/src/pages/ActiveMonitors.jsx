@@ -197,174 +197,182 @@ const ActiveMonitors = () => {
           </Box>
         </Fade>
       ) : (
-        <Grid container spacing={3}>
+        <Stack spacing={2} sx={{ width: '100%' }}>
           {monitors.map((monitor, index) => (
-            <Grid item xs={12} key={monitor._id || monitor.id}>
-              <Grow in={true} timeout={500 + (index * 100)}>
-                <Card
-                  elevation={0}
-                  sx={{
-                    display: 'flex',
-                    width: '100%',
-                    border: '1px solid',
-                    borderColor: 'divider',
-                    borderRadius: 3,
-                    transition: 'all 0.3s ease',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    bgcolor: 'background.paper',
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      left: 0,
-                      top: 0,
-                      width: '6px',
-                      height: '100%',
-                      background: getStatusColor(monitor.status),
-                      opacity: 0.9
-                    },
-                    '&:hover': {
-                      transform: 'translateY(-3px)',
-                      boxShadow: theme.palette.mode === 'light' ? '0 10px 30px rgba(0,0,0,0.06)' : '0 10px 30px rgba(0,0,0,0.4)',
-                      borderColor: getStatusColor(monitor.status),
-                    }
-                  }}
-                >
+            <Grow in={true} key={monitor._id || monitor.id} timeout={500 + (index * 100)}>
+              <Card
+                elevation={0}
+                sx={{
+                  width: '100%',
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  borderRadius: 4,
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  bgcolor: 'background.paper',
+                  '&:hover': {
+                    transform: 'scale(1.005)',
+                    boxShadow: theme.palette.mode === 'light' ? '0 12px 40px rgba(0,0,0,0.08)' : '0 12px 40px rgba(0,0,0,0.5)',
+                    borderColor: getStatusColor(monitor.status),
+                  }
+                }}
+              >
+                <Box sx={{
+                  display: 'flex',
+                  flexDirection: { xs: 'column', md: 'row' },
+                  alignItems: { xs: 'stretch', md: 'center' },
+                  width: '100%',
+                }}>
+                  {/* Status Indicator Bar */}
+                  <Box sx={{ 
+                    width: { xs: '100%', md: '8px' }, 
+                    height: { xs: '8px', md: 'auto' }, 
+                    alignSelf: 'stretch',
+                    bgcolor: getStatusColor(monitor.status),
+                    opacity: 0.8
+                  }} />
+
                   <Box sx={{
                     display: 'flex',
                     flexDirection: { xs: 'column', md: 'row' },
                     alignItems: { xs: 'flex-start', md: 'center' },
                     justifyContent: 'space-between',
-                    width: '100%',
-                    p: 2.5,
-                    pl: 3.5, // Space for the left colored bar
-                    gap: { xs: 2.5, md: 4 }
+                    flexGrow: 1,
+                    p: { xs: 2.5, md: 3 },
+                    gap: { xs: 3, md: 4 }
                   }}>
 
-                    {/* Column 1: Icon, Match Name, and Status */}
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5, flex: 1, minWidth: 0, width: '100%' }}>
+                    {/* Left: Info Section */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, flex: 1, minWidth: 0 }}>
                       <Avatar
                         sx={{
                           background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                          width: { xs: 48, md: 54 },
-                          height: { xs: 48, md: 54 },
-                          boxShadow: '0 4px 12px rgba(25,118,210,0.15)',
+                          width: { xs: 52, md: 60 },
+                          height: { xs: 52, md: 60 },
+                          boxShadow: '0 8px 16px rgba(25,118,210,0.2)',
                           flexShrink: 0
                         }}
                       >
-                        <SportsCricketIcon fontSize="medium" />
+                        <SportsCricketIcon fontSize="large" sx={{ fontSize: { xs: 28, md: 32 } }} />
                       </Avatar>
 
-                      <Box sx={{ minWidth: 0, flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                      <Box sx={{ minWidth: 0 }}>
                         <Typography
                           variant="h6"
                           noWrap
                           title={monitor.matchName || 'Cricket Match Event'}
                           sx={{
-                            fontWeight: 700,
+                            fontWeight: 800,
                             lineHeight: 1.2,
                             color: 'text.primary',
-                            mb: 0.5,
-                            width: '100%',
-                            fontSize: '1rem'
+                            mb: 1,
+                            fontSize: { xs: '1.1rem', md: '1.25rem' },
+                            letterSpacing: '-0.3px'
                           }}
                         >
                           {monitor.matchName || 'Cricket Match Event'}
                         </Typography>
-                        <Chip
-                          size="small"
-                          label={monitor.status}
-                          sx={{
-                            bgcolor: `${getStatusColor(monitor.status)}15`,
-                            color: getStatusColor(monitor.status),
-                            fontWeight: 800,
-                            border: `1px solid ${getStatusColor(monitor.status)}40`,
-                            px: 1,
-                            height: 24,
-                            '& .MuiChip-label': { px: 1.5 },
-                            marginTop: '2px'
-                          }}
-                        />
+                        <Stack direction="row" spacing={1.5} alignItems="center">
+                          <Chip
+                            size="small"
+                            label={monitor.status}
+                            sx={{
+                              bgcolor: `${getStatusColor(monitor.status)}15`,
+                              color: getStatusColor(monitor.status),
+                              fontWeight: 800,
+                              border: `1px solid ${getStatusColor(monitor.status)}40`,
+                              height: 24,
+                              px: 0.5,
+                              '& .MuiChip-label': { px: 1.5 }
+                            }}
+                          />
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'text.secondary' }}>
+                            <LinkIcon sx={{ fontSize: 14 }} />
+                            <Typography variant="caption" sx={{ fontWeight: 600, opacity: 0.7 }} noWrap>
+                              {new URL(monitor.url).hostname}
+                            </Typography>
+                          </Box>
+                        </Stack>
                       </Box>
                     </Box>
 
-                    {/* Column 2: Last Checked */}
+                    {/* Middle: Stats/Time */}
                     <Box sx={{
                       display: 'flex',
-                      alignItems: 'center',
-                      gap: 2,
-                      flexShrink: 0,
+                      flexDirection: { xs: 'row', md: 'column' },
+                      alignItems: { xs: 'center', md: 'flex-start' },
+                      gap: { xs: 4, md: 0.5 },
+                      px: { md: 4 },
                       borderLeft: { md: `1px solid ${theme.palette.divider}` },
-                      borderTop: { xs: `1px solid ${theme.palette.divider}`, md: 'none' },
-                      pt: { xs: 2, md: 0 },
-                      pl: { md: 4 },
-                      width: { xs: '100%', md: 'auto' }
+                      minWidth: { md: 180 }
                     }}>
-                      <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Box sx={{ position: 'absolute', width: 32, height: 32, borderRadius: '50%', border: `1px solid ${theme.palette.divider}`, bgcolor: 'background.default' }} />
-                        <AccessTimeIcon sx={{ fontSize: 16, color: 'text.secondary', zIndex: 1 }} />
-                      </Box>
-                      <Box>
-                        <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.8px', fontSize: '0.65rem' }}>
-                          Last Checked
-                        </Typography>
-                        <Typography variant="body2" sx={{ fontWeight: 700, color: 'text.secondary', fontSize: '0.85rem' }}>
+                      <Typography variant="caption" color="text.disabled" sx={{ 
+                        fontWeight: 800, 
+                        textTransform: 'uppercase', 
+                        letterSpacing: '1px', 
+                        fontSize: '0.7rem',
+                        mb: { md: 0.5 }
+                      }}>
+                        Last Updated
+                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <AccessTimeIcon sx={{ fontSize: 16, color: 'primary.main' }} />
+                        <Typography variant="body2" sx={{ fontWeight: 700, color: 'text.primary' }}>
                           {new Date(monitor.lastChecked).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                         </Typography>
                       </Box>
                     </Box>
 
-                    {/* Column 3: Actions */}
+                    {/* Right: Actions */}
                     <Box sx={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 1.5,
-                      flexShrink: 0,
-                      width: { xs: '100%', md: 'auto' },
-                      pl: { md: 2 }
+                      gap: 2,
+                      width: { xs: '100%', md: 'auto' }
                     }}>
                       <Button
                         variant="contained"
                         color="primary"
-                        startIcon={<LaunchIcon sx={{ fontSize: 16 }} />}
+                        startIcon={<LaunchIcon />}
                         href={monitor.url}
                         target="_blank"
-                        disableElevation
+                        fullWidth
                         sx={{
                           fontWeight: 800,
-                          borderRadius: 2,
-                          px: 2.5,
-                          py: 0.8,
-                          transition: 'all 0.2s',
-                          flex: { xs: 1, md: 'none' }
+                          borderRadius: 3,
+                          px: 4,
+                          py: 1.2,
+                          textTransform: 'none',
+                          boxShadow: '0 4px 14px rgba(25,118,210,0.3)',
+                          '&:hover': {
+                            boxShadow: '0 6px 20px rgba(25,118,210,0.4)',
+                          }
                         }}
                       >
-                        Visit
+                        View Event
                       </Button>
                       <IconButton
                         color="error"
                         onClick={() => handleDelete(monitor._id || monitor.id)}
-                        aria-label="Delete Monitor"
                         sx={{
-                          border: '1px solid',
-                          borderColor: 'error.light',
-                          borderRadius: 2,
-                          p: '6px',
+                          bgcolor: 'error.lighter',
+                          borderRadius: 3,
+                          p: 1.5,
                           color: 'error.main',
-                          '&:hover': { bgcolor: 'error.main', color: 'white', borderColor: 'error.main' },
-                          transition: 'all 0.2s'
+                          border: '1px solid currentColor',
+                          '&:hover': { bgcolor: 'error.main', color: 'white' },
                         }}
                       >
-                        <DeleteIcon fontSize="small" />
+                        <DeleteIcon />
                       </IconButton>
                     </Box>
-
                   </Box>
-                </Card>
-              </Grow>
-            </Grid>
+                </Box>
+              </Card>
+            </Grow>
           ))}
-        </Grid>
+        </Stack>
       )}
 
       <ConfirmationDialog
