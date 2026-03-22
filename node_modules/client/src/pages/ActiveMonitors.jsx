@@ -299,7 +299,7 @@ const ActiveMonitors = () => {
                             lineHeight: 1.2,
                             color: 'text.primary',
                             mb: 1,
-                            fontSize: { xs: '0.75rem', sm: '1rem', md: '1.75rem' },
+                            fontSize: { xs: '1.1rem', sm: '1.3rem', md: '1.5rem' },
                             letterSpacing: '-0.3px'
                           }}
                         >

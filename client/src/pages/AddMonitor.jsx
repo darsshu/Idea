@@ -141,9 +141,9 @@ const AddMonitor = () => {
     }}>
       <Fade in={true} timeout={800}>
         <Box sx={{ width: '100%', mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.5, md: 2 } }}>
             <Box sx={{
-              p: 1,
+              p: { xs: 0.8, md: 1 },
               borderRadius: 2,
               bgcolor: 'rgba(25, 118, 210, 0.1)',
               display: 'flex'
@@ -191,7 +191,7 @@ const AddMonitor = () => {
           {fetching ? (
             <Grid container spacing={3} sx={{ justifyContent: 'center' }}>
               {[...Array(6)].map((_, i) => (
-                <Grid item key={i} xs={12} sm={6} md={6} lg={6} sx={{ width: isMobile ? '100%' : isTablet ? '40%' : '30%' }}>
+                <Grid item key={i} xs={12} sm={6} md={4} lg={3}>
                   <Card sx={{ borderRadius: 5, border: '1px solid', borderColor: 'divider', height: '100%' }}>
                     <Box sx={{ pt: '65%', position: 'relative' }}>
                       <Skeleton variant="rectangular" sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
@@ -209,7 +209,7 @@ const AddMonitor = () => {
             <AnimatePresence mode="popLayout">
               <Grid container spacing={3} sx={{ justifyContent: 'center', }}>
                 {filteredEvents.map((event, index) => (
-                  <Grid item key={event.id} xs={12} sm={6} md={6} lg={6} sx={{ height: '100%', width: isMobile ? '100%' : isTablet ? '40%' : '30%' }}>
+                  <Grid item key={event.id} xs={12} sm={6} md={4} lg={3} sx={{ height: '100%' }}>
                     <MotionBox
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}

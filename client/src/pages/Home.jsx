@@ -6,7 +6,8 @@ import {
   Paper,
   Button,
   useTheme,
-  Container
+  Container,
+  Stack
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import LinkIcon from '@mui/icons-material/Link';
@@ -96,10 +97,10 @@ const Home = () => {
       <BackgroundScene />
 
       <Container maxWidth={false} sx={{ position: 'relative', zIndex: 1, width: '100%' }}>
-        <Grid container spacing={0} justifyContent="center" alignItems="center">
+        <Stack spacing={{ xs: 6, md: 10 }} alignItems="center">
 
           {/* Centralized Hero Section */}
-          <Grid item xs={12}>
+          <Box sx={{ width: '100%' }}>
             <motion.div
               variants={containerVariants}
               initial="hidden"
@@ -125,7 +126,7 @@ const Home = () => {
               </motion.div>
 
               <motion.div variants={itemVariants}>
-                <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 500, mb: 4, lineHeight: 1.6, maxWidth: '1000px', mx: 'auto', fontSize: '1.1rem' }}>
+                <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 500, mb: { xs: 3, md: 4 }, lineHeight: 1.6, maxWidth: '1000px', mx: 'auto', fontSize: { xs: '1rem', md: '1.1rem' } }}>
                   Automated ticket monitoring for your favorite <span className="highlight">cricket matches</span> and events. We actively monitor availability so you don't have to keep refreshing.
                 </Typography>
               </motion.div>
@@ -136,7 +137,7 @@ const Home = () => {
                 <Paper
                   elevation={4}
                   sx={{
-                    p: { xs: 3, md: 4 },
+                    p: { xs: 2.5, md: 4 },
                     borderRadius: 5,
                     background: (theme) => theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(30, 30, 30, 0.8)',
                     backdropFilter: 'blur(12px)',
@@ -148,25 +149,26 @@ const Home = () => {
                     gap: 1.5
                   }}
                 >
-                  <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5, letterSpacing: '-0.3px' }}>How it works</Typography>
-                  <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.6, textAlign: 'center', maxWidth: '900px' }}>
+                  <Typography variant="h5" sx={{ fontWeight: 800, mb: 0.5, letterSpacing: '-0.3px', fontSize: { xs: '1.3rem', md: '1.5rem' } }}>How it works</Typography>
+                  <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.6, textAlign: 'center', maxWidth: '900px', fontSize: { xs: '0.9rem', md: '1rem' } }}>
                     Submit your BookMyShow event URL. We run background checks continuously. The moment tickets drop or cancellations occur, we instantly dispatch an alert to your email, ensuring you're first to book.
                   </Typography>
                 </Paper>
               </motion.div>
             </motion.div>
-          </Grid>
+          </Box>
 
           {/* Features Row */}
-          <Grid item xs={12}>
+          <Box sx={{ width: '100%' }}>
             <motion.div variants={containerVariants} initial="hidden" animate="visible">
               <Box sx={{
                 display: 'flex',
-                flexDirection: { xs: 'column', md: 'row' },
+                flexDirection: { xs: 'column', sm: 'row' },
+                flexWrap: 'wrap',
                 gap: 3,
                 justifyContent: 'center',
                 alignItems: 'stretch',
-                mt: 4
+                mt: { xs: 4, md: 6 }
               }}>
                 {features.map((feature, index) => (
                   <motion.div
@@ -221,9 +223,9 @@ const Home = () => {
                 ))}
               </Box>
             </motion.div>
-          </Grid>
+          </Box>
 
-        </Grid>
+        </Stack>
       </Container>
     </Box>
   );

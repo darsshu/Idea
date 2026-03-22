@@ -177,7 +177,7 @@ const NavBar = () => {
                 aria-label="open drawer"
                 edge="start"
                 onClick={handleDrawerToggle}
-                sx={{ mr: 1, display: { md: 'none' }, color: 'text.primary' }}
+                sx={{ mr: { xs: 0.5, sm: 1 }, display: { md: 'none' }, color: 'text.primary' }}
               >
                 <MenuIcon />
               </IconButton>
@@ -190,7 +190,7 @@ const NavBar = () => {
                 borderRadius: 3,
                 background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                 display: 'flex',
-                mr: 2,
+                mr: { xs: 1, sm: 2 },
                 color: 'white',
                 boxShadow: '0 4px 15px rgba(25,118,210,0.3)'
               }}>
@@ -202,8 +202,8 @@ const NavBar = () => {
                   fontWeight: 800,
                   color: 'text.primary',
                   letterSpacing: '-0.3px',
-                  fontSize: '1.1rem',
-                  display: { xs: 'none', sm: 'block' }
+                  fontSize: { xs: '0.9rem', sm: '1.1rem' },
+                  display: 'block'
                 }}
               >
                 CRICKET<span style={{ color: theme.palette.primary.main }}>NOTIFIER</span>
@@ -436,7 +436,7 @@ function AppContent() {
           position: 'relative',
           width: '100%',
           // Add padding top only when NavBar is present (not on auth/admin pages)
-          pt: !['/login', '/register', '/admin'].some(path => location.pathname.startsWith(path)) ? '30px' : 0
+          pt: !['/login', '/register', '/admin'].some(path => location.pathname.startsWith(path)) ? { xs: '64px', md: '74px' } : 0
         }}
       >
         <Routes>

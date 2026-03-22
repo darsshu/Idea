@@ -1,4 +1,6 @@
-export const getDesignTokens = (mode) => ({
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
+
+const getDesignTokens = (mode) => ({
   palette: {
     mode,
     ...(mode === 'light'
@@ -51,7 +53,7 @@ export const getDesignTokens = (mode) => ({
       letterSpacing: '-0.02em',
     },
     h2: {
-      fontSize: '2rem',
+      fontSize: '2.1rem',
       fontWeight: 800,
       letterSpacing: '-0.02em',
     },
@@ -61,15 +63,15 @@ export const getDesignTokens = (mode) => ({
       letterSpacing: '-0.01em',
     },
     h4: {
-      fontSize: '1.5rem',
+      fontSize: '1.4rem',
       fontWeight: 700,
     },
     h5: {
-      fontSize: '1.25rem',
+      fontSize: '1.2rem',
       fontWeight: 600,
     },
     h6: {
-      fontSize: '1.1rem',
+      fontSize: '1.05rem',
       fontWeight: 600,
     },
     body1: {
@@ -91,14 +93,14 @@ export const getDesignTokens = (mode) => ({
     },
   },
   shape: {
-    borderRadius: 4,
+    borderRadius: 8,
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 4,
-          padding: '6px 16px',
+          borderRadius: 8,
+          padding: '8px 20px',
           boxShadow: 'none',
           '&:hover': {
             boxShadow: '0 2px 4px -1px rgba(0,0,0,0.2),0 4px 5px 0 rgba(0,0,0,0.14),0 1px 10px 0 rgba(0,0,0,0.12)',
@@ -113,7 +115,7 @@ export const getDesignTokens = (mode) => ({
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 4,
+          borderRadius: 12,
           boxShadow: '0 2px 1px -1px rgba(0,0,0,0.2),0 1px 1px 0 rgba(0,0,0,0.14),0 1px 3px 0 rgba(0,0,0,0.12)',
           border: 'none',
           transition: 'box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -134,3 +136,8 @@ export const getDesignTokens = (mode) => ({
     },
   },
 });
+
+export const getTheme = (mode) => {
+  const theme = createTheme(getDesignTokens(mode));
+  return responsiveFontSizes(theme);
+};
