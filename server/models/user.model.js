@@ -47,6 +47,10 @@ const userSchema = new mongoose.Schema({
     isVerified: {
         type: Boolean,
         default: false
+    },
+    walletBalance: {
+        type: Number,
+        default: 0
     }
 });
 

@@ -3,6 +3,8 @@ const router = express.Router();
 const connectDB = require('../services/db');
 const storage = require('../services/storage');
 const { protect } = require('../middleware/auth');
+const User = require('../models/user.model');
+const Transaction = require('../models/transaction.model');
 
 // Get all monitors for the logged in user
 router.get('/monitors', protect, async (req, res) => {
@@ -45,6 +47,27 @@ router.post('/monitor', protect, async (req, res) => {
                 matchName = 'Cricket Match';
             }
         }
+
+        // Check balance
+        const user = await User.findById(req.user.id);
+        const FEE = 10;
+        
+        if (user.walletBalance < FEE) {
+            return res.status(400).json({ error: `Insufficient balance. You need at least ₹${FEE} to activate a tracker.` });
+        }
+
+        // Deduct fee
+        user.walletBalance -= FEE;
+        await user.save();
+
+        // Create fee transaction
+        await Transaction.create({
+            userId: req.user.id,
+            type: 'fee_deduction',
+            amount: FEE,
+            status: 'completed',
+            description: `Fee for activating tracker: ${matchName}`
+        });
 
         const monitor = await storage.addMonitor({ 
             url, 

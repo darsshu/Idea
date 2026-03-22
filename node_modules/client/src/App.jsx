@@ -41,6 +41,7 @@ import AdminEvents from './pages/AdminEvents';
 import AdminLogin from './pages/AdminLogin';
 import AdminLayout from './components/AdminLayout';
 import Profile from './pages/Profile';
+import Wallet from './pages/Wallet';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeContextProvider, useColorMode } from './context/ThemeContext';
 import './App.css';
@@ -82,6 +83,7 @@ const NavBar = () => {
     { text: 'Home', icon: <HomeIcon />, path: '/' },
     { text: 'Upcoming Match', icon: <EventIcon />, path: '/add-monitor' },
     { text: 'History', icon: <HistoryIcon />, path: '/monitors' },
+    { text: 'Wallet', icon: <SportsCricketIcon />, path: '/wallet' },
   ];
 
   if (user?.role === 'admin') {
@@ -309,9 +311,14 @@ const NavBar = () => {
                   <Avatar sx={{ width: 32, height: 32, background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`, fontSize: '0.875rem', fontWeight: 700, color: 'white' }}>
                     {user.name?.charAt(0).toUpperCase() || 'U'}
                   </Avatar>
-                  <Typography variant="body2" sx={{ display: { xs: 'none', sm: 'block' }, fontWeight: 600, color: 'text.primary' }}>
-                    {user.name}
-                  </Typography>
+                  <Box sx={{ display: { xs: 'none', sm: 'block' }, textAlign: 'left' }}>
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                      {user.name}
+                    </Typography>
+                    <Typography variant="caption" sx={{ fontWeight: 700, color: 'primary.main', display: 'block', lineHeight: 1 }}>
+                      ₹{user.walletBalance?.toFixed(2) || '0.00'}
+                    </Typography>
+                  </Box>
                 </Box>
                 <Menu
                   anchorEl={anchorEl}
@@ -322,6 +329,7 @@ const NavBar = () => {
                   PaperProps={{ elevation: 4, sx: { mt: 1.5, minWidth: 200, borderRadius: 4, padding: 1, border: '1px solid', borderColor: 'divider' } }}
                 >
                   <MenuItem component={Link} to="/profile" onClick={handleClose} sx={{ borderRadius: 2, mb: 0.5, py: 1.5, fontWeight: 600 }}>Account Profile</MenuItem>
+                  <MenuItem component={Link} to="/wallet" onClick={handleClose} sx={{ borderRadius: 2, mb: 0.5, py: 1.5, fontWeight: 600 }}>My Wallet</MenuItem>
                   <MenuItem component={Link} to="/monitors" onClick={handleClose} sx={{ borderRadius: 2, mb: 0.5, py: 1.5, fontWeight: 500 }}>History</MenuItem>
                   <MenuItem component={Link} to="/add-monitor" onClick={handleClose} sx={{ borderRadius: 2, mb: 1, py: 1.5, fontWeight: 500, display: { md: 'none' } }}>Upcoming Match</MenuItem>
                   <Box sx={{ borderTop: '1px solid', borderColor: 'divider', my: 1 }} />
@@ -459,6 +467,13 @@ function AppContent() {
             <PrivateRoute>
               <Container maxWidth={false} sx={{ py: { xs: 2, md: 4 }, px: { xs: 1, sm: 2, md: 3 } }}>
                 <ActiveMonitors />
+              </Container>
+            </PrivateRoute>
+          } />
+          <Route path="/wallet" element={
+            <PrivateRoute>
+              <Container maxWidth={false} sx={{ py: { xs: 2, md: 4 }, px: { xs: 1, sm: 2, md: 3 } }}>
+                <Wallet />
               </Container>
             </PrivateRoute>
           } />

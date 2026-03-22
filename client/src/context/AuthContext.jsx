@@ -90,8 +90,18 @@ export const AuthProvider = ({ children }) => {
         delete axios.defaults.headers.common['Authorization'];
     };
 
+    const refreshUser = async () => {
+        if (!token) return;
+        try {
+            const res = await axios.get(`${API_URL}/auth/me`);
+            setUser(res.data.data);
+        } catch (err) {
+            console.error('Failed to refresh user:', err);
+        }
+    };
+
     return (
-        <AuthContext.Provider value={{ user, token, loading, error, register, login, logout, verifyOTP, setError }}>
+        <AuthContext.Provider value={{ user, token, loading, error, register, login, logout, verifyOTP, setError, refreshUser }}>
             {children}
         </AuthContext.Provider>
     );

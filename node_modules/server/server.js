@@ -8,6 +8,7 @@ const monitorRoutes = require('./routes/monitor');
 const cronRoutes = require('./routes/cron');
 const authRoutes = require('./routes/auth');
 const eventRoutes = require('./routes/event');
+const walletRoutes = require('./routes/wallet');
 const cron = require('node-cron');
 const monitorService = require('./services/monitor.service');
 
@@ -55,6 +56,7 @@ app.use('/api', monitorRoutes);
 app.use('/api', cronRoutes);
 app.use('/api', authRoutes);
 app.use('/api', eventRoutes);
+app.use('/api/wallet', walletRoutes);
 
 app.get('/', (req, res) => {
     res.send('Cricket Ticket Notifier API is running...');
